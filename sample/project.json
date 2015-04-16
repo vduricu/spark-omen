@@ -1,0 +1,26 @@
+{
+  "name": "spark/sampleNoDeps",
+  "version": "0.1.1",
+  "description": "Sample package",
+  "keywords": [
+    "sample",
+    "package",
+    "omen"
+  ],
+  "homepage": "http://omen.duricu.ro",
+  "license": "http://asd.omen.duricu.ro",
+  "author": {
+    "name": "Gigel Frone",
+    "email": "gigel@duricu.ro"
+  },
+  "contributors": [
+    {
+      "name": "Gigel",
+      "email": "gigel@dorel.com"
+    },
+    {
+      "name": "Dorel",
+      "email": "dorel@dorel.com"
+    }
+  ]
+}
