@@ -1,27 +1,28 @@
-var cli = require('cli').enable('status');
+var cli = require('cli').enable('status'),
+    commandUtils = require('./../engine/utils/command-utils');
 
 cli.parse({
-    about: ['a', 'Displays project information.'],
-    install: ['i', 'Installs the application defined in the project file.'],
-    update: ['u', 'Updates the application defined in the project file.']
+    file: ['f', 'Selects the file to work with.'],
+    version: ['v', "Displays the application version information."]
 });
-
-var CommandExecutor = function (command) {
-    var cmd = require('../engine/commands/' + command + '.js');
-    return new cmd(cli);
-};
 
 cli.main(function (args, options) {
     try {
-        if (options.install)
-            return CommandExecutor('install').run(args);
+        var command = args[0],
+            filename = "project.json";
 
-        if (options.about)
-            return CommandExecutor('about').run(args);
+        if (options.file) {
+            filename = args[0];
+            command = args[1];
+        }
+        commandUtils.SetInit(this, filename);
 
-        return this.getUsage();
+        if (options.version)
+            return commandUtils.CommandExecutor('version').run();
+
+        return commandUtils.CommandExecutor(command).run(filename);
 
     } catch (err) {
-        this.error(err);
+        this.error(err.message);
     }
 });

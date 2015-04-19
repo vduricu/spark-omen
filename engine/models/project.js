@@ -1,19 +1,58 @@
 /**
- * Created by valentin on 16.04.2015.
+ * Loads a project description file and returns several information from it.
+ *
+ * @package engine\models
+ * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @date 16.04.2015
  */
 var fs = require('fs');
 
 var Project;
 
+/**
+ * Project information.
+ *
+ * @param {String} filename The name of the file to be parsed.
+ * @return Project
+ */
 Project = function (filename) {
-    var _filename = filename;
-    var _infos = {};
-    var self = this;
+    /**
+     * The name of the file to parse.
+     *
+     * @var String
+     */
+    var _filename = filename,
+        /**
+         * The list of properties.
+         *
+         * @var Object
+         */
+        _infos = {},
+        /**
+         * Holds a reference to the current object.
+         *
+         * @var Project
+         */
+        self = this;
 
+    /**
+     * Returns a property of the project.
+     *
+     * @param {String} key The property name.
+     * @return Object|String|Object[]|String[]
+     */
     this.get = function (key) {
         return _infos[key];
     };
 
+    /**
+     * Returns a property of the project.
+     *
+     * @param {String} key The property name.
+     * @param {String|Object} defValue The default value, if the element isn't defined.
+     * If none is specified "-" is used.
+     * @return Object|String
+     */
     this.getWithDefault = function (key, defValue) {
         if (defValue == null || defValue == undefined)
             defValue = "-";
@@ -21,23 +60,40 @@ Project = function (filename) {
         return self.has(key) ? self.get(key) : defValue;
     };
 
+    /**
+     * Tests if a property is defined.
+     *
+     * @param {String} key The property name.
+     * @return boolean
+     */
     this.has = function (key) {
         return _infos[key] != null && _infos[key] != undefined;
     };
 
+    /**
+     * Returns all the properties as a dictionary.
+     *
+     * @return Object
+     */
     this.all = function () {
         return _infos;
     };
 
-    /* --- MAIN BLOCK --- */
-    try {
-        _infos = JSON.parse(fs.readFileSync(_filename, 'utf8'));
-    } catch (err) {
-        throw new Error("File 'project.json' not found");
-    }
+    /**
+     * The main block of the application.
+     */
+    var mainBlock = function () {
+        try {
+            _infos = JSON.parse(fs.readFileSync(_filename, 'utf8'));
+        } catch (err) {
+            throw new Error("File 'project.json' not found");
+        }
 
-    if (!this.has('name') || !this.has('version'))
-        throw new Error("The project must have a name and a version!");
+        if (!self.has('name') || !self.has('version'))
+            throw new Error("The project must have a name and a version!");
+    };
+
+    mainBlock();
 
     return this;
 };
