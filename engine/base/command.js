@@ -5,6 +5,7 @@
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 17.04.2015
  */
+"use strict";
 
 var util = require("util");
 

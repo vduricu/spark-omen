@@ -5,9 +5,10 @@
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
  */
+"use strict";
 
-var Spark = require('./../base/spark.js');
-var CommandOmen = require('./../base/command.js');
+var Spark = require('./../base/spark'),
+    CommandOmen = require('./../base/command');
 var VersionOmen;
 
 /**

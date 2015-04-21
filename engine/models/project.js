@@ -5,6 +5,7 @@
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
  */
+"use strict";
 var fs = require('fs');
 
 var Project;
@@ -33,7 +34,34 @@ Project = function (filename) {
          *
          * @var Project
          */
-        self = this;
+        self = this,
+        /**
+         * Holds a list of functions to be used when mandatory elements checks are performed.
+         *
+         * @var Object
+         */
+        _mandatory = require('./project_mandatory'),
+        /**
+         * Holds a list of functions to be used when checks are performed.
+         *
+         * @var Object
+         */
+        _extras = require('./project_extras');
+
+    /**
+     * Checks the project to be ok.
+     *
+     * @throws Error|EvalError
+     */
+    this.check = function () {
+        for (var i in _mandatory) {
+            _mandatory[i](_infos[i]);
+        }
+        for (var i in _extras) {
+            if (self.has(i))
+                _extras[i](_infos[i]);
+        }
+    };
 
     /**
      * Returns a property of the project.

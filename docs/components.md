@@ -18,12 +18,10 @@ An Omen project file is described by the following elements: *v0.1.1*
          * "2.3.0" - Exact version
          * ">=2.3.0" - First version available greater or equal than given
          * ">2.3.0" - First version available greater than given
-         * "2.x" - Latest version of (latest sub version of, latest patch of)
+         * "2.\*" - Latest version of (latest sub version of, latest patch of)
          * "<=2.3.0" - First version available less or equal than given
          * "<2.3.0" - First version available less than given
-         * "stable" - Latest version marked as stable
-         * "dev" - Development version
-         * "master" - Latest version available
+
 
 ```javascript
 {

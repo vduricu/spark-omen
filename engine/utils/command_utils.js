@@ -5,6 +5,8 @@
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 17.04.2015
  */
+"use strict";
+
 var _cli = null,
     _filename = "project.json";
 
@@ -23,7 +25,7 @@ var CommandExecutor = function (command) {
     if (classCmd == null || classCmd == undefined)
         return _cli.getUsage();
 
-    cmd = new classCmd();
+    var cmd = new classCmd();
     cmd.init(_cli, _filename);
     return cmd;
 };

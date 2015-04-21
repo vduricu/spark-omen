@@ -6,9 +6,11 @@
  * @date 16.04.2015
  */
 
-var Project = require('./../models/project.js');
-var Spark = require('./../base/spark.js');
-var CommandOmen = require('./../base/command.js');
+"use strict";
+
+var Project = require('./../models/project'),
+    Spark = require('./../base/spark'),
+    CommandOmen = require('./../base/command');
 var AboutOmen;
 
 /**

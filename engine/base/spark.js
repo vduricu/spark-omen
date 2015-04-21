@@ -5,6 +5,7 @@
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
  */
+"use strict";
 
 module.exports = {
     /**

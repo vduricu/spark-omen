@@ -1,0 +1,12 @@
+{
+  "env": "dev",
+  "dev": {
+    "url": "http://omen.webdev.dev"
+  },
+  "test": {
+    "url": "http://localhost"
+  },
+  "live": {
+    "url": "http://omen.cloud-studio.ro"
+  }
+}
