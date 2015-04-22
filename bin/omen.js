@@ -11,9 +11,10 @@ cli.parse({
 });
 
 cli.main(function (args, options) {
-    //try {
+    try {
         var command = args[0],
             filename = "project.json";
+        GLOBAL.OMEN_CLI_ARGS = args;
 
         GLOBAL.OMEN_ENV = GLOBAL.OMEN_CONFIG[GLOBAL.OMEN_CONFIG.env];
         if (process.env.OMEN_ENV)
@@ -29,8 +30,7 @@ cli.main(function (args, options) {
             return commandUtils.CommandExecutor('version').run();
 
         return commandUtils.CommandExecutor(command).run(filename);
-
-    //} catch (err) {
-    //    this.error(err.message);
-    //}
+    } catch (err) {
+        this.error(err.message);
+    }
 });

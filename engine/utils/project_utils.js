@@ -8,7 +8,8 @@
 "use strict";
 
 var unirest = require('unirest'),
-    OmenAPI = require('./omen_api');
+    OmenAPI = require('./omen_api'),
+    AdmZip = require('adm-zip');
 
 var self = {};
 
@@ -62,6 +63,28 @@ self.checkDependencies = function (dependencies, success, error) {
     unirest.post(OmenAPI.buildURL('/dependency/check'))
         .type('json')
         .send({deps: dependencies})
+        .end(function (response) {
+            if (response.statusType == 4 || response.statusType == 5)
+                return error(response.status, response.body);
+            return success(response.body);
+        });
+};
+
+
+self.publish = function (project, promptResult, success, error) {
+    var archive = new AdmZip();
+
+    archive.addLocalFolder('.', project.get('name').replace(/[\/ ]/ig, '_') + '/');
+    archive.writeZip('./archive.zip');
+
+    unirest.post(OmenAPI.buildURL('/publish/project'))
+        .auth({
+            user: project.get('author').email,
+            pass: promptResult.Password,
+            sendImmediately: true
+        })
+        .type('json')
+        .send({omenFile: project.all()})
         .end(function (response) {
             if (response.statusType == 4 || response.statusType == 5)
                 return error(response.status, response.body);
