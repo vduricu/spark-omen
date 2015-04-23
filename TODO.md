@@ -7,3 +7,5 @@
    * Test application on a windows instance
    * Store which file has been used to install
        * in case the file has changed (name) then prompt the user for deletion or canceling
+   * Delete files on transaction fail
+   * Check if dependencies can be implemented

@@ -68,6 +68,7 @@ PublishOmen.prototype.run = function (filename) {
         if (err) {
             throw new Error(err);
         }
+        var result = {};
 
         ProjectUtils.publish(project, result, function (result) {
             if (result.status == "update")

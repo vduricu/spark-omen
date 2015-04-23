@@ -81,6 +81,7 @@ self.publish = function (project, promptResult, success, error) {
         var lines = data.split(/\n/),
             fullPath = path.resolve('.');
 
+        var writer = fstream.Writer({'path': 'omenpackage.spk'});
         fstream.Reader({
             'path': '.',
             'type': 'Directory',
@@ -108,21 +109,23 @@ self.publish = function (project, promptResult, success, error) {
         })
             .pipe(tar.Pack())/* Convert the directory to a .tar file */
             .pipe(zlib.Gzip())/* Compress the .tar file */
-            .pipe(fstream.Writer({'path': 'omenpackage.spk'}));
-    });
+            .pipe(writer);
 
-
-    unirest.post(OmenAPI.buildURL('/publish/project'))
-        .headers({'Accept': 'application/json'})
-        .attach('file', './omenpackage.spk') // Attachment
-        .field("omenFile", project.all())
-        .field("user", project.get('author').email)
-        .field("pass", promptResult.Password)
-        .end(function (response) {
-            if (response.statusType == 4 || response.statusType == 5)
-                return error(response.status, response.body);
-            return success(response.body);
+        writer.on("ready", function () {
+            unirest.post(OmenAPI.buildURL('/publish/project'))
+                .headers({'Accept': 'application/json'})
+                .attach('file', './omenpackage.spk') // Attachment
+                .field("omenFile", project.all())
+                .field("user", project.get('author').email)
+                //.field("pass", promptResult.Password)
+                .end(function (response) {
+                    console.log(response.body);
+                    if (response.statusType == 4 || response.statusType == 5)
+                        return error(response.status, response.body);
+                    return success(response.body);
+                });
         });
+    });
 
 };
 

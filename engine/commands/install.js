@@ -67,22 +67,25 @@ InstallOmen.prototype.run = function (filename) {
         if (!fs.existsSync("./vendor"))
             fs.mkdirSync("./vendor");
 
-        var downloads = Download({mode: '755', extract: true}).dest('./vendor');
-        for (var i in res.dependencies) {
-            downloads.get(res.dependencies[i]);
-        }
+        if (res.dependencies != null && res.dependencies != undefined) {
+            var downloads = Download({mode: '755', extract: true}).dest('./vendor');
 
-        self.cli().info("Downloading files");
-
-        downloads.run(function (err, files) {
-            if (err != null && err != undefined) {
-                self.cli().error(err);
-                self.cli().ok('====================================================');
+            for (var i in res.dependencies) {
+                downloads.get(res.dependencies[i]);
             }
 
-            self.cli().ok("Packages installed");
-            self.cli().ok('====================================================');
-        });
+            self.cli().info("Downloading files");
+
+            downloads.run(function (err, files) {
+                if (err != null && err != undefined) {
+                    self.cli().error(err);
+                    self.cli().ok('====================================================');
+                }
+
+                self.cli().ok("Packages installed");
+                self.cli().ok('====================================================');
+            });
+        }
 
     }, function (code, err) {
         console.log(JSON.stringify(err));
