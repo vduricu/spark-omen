@@ -8,7 +8,7 @@
 var self = {};
 
 self.buildURL = function (url) {
-    return GLOBAL.OMEN_ENV.url + ("/" + url).replace("\/\/", "/");
+    return GLOBAL.OMEN_ENV.url + ("/api/v1/" + url).replace("\/\/", "/");
 };
 
 module.exports = self;

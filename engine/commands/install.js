@@ -64,10 +64,10 @@ InstallOmen.prototype.run = function (filename) {
             return;
         }
 
-        if (!fs.existsSync("./vendors"))
-            fs.mkdirSync("./vendors");
+        if (!fs.existsSync("./vendor"))
+            fs.mkdirSync("./vendor");
 
-        var downloads = Download({mode: '755', extract: true}).dest('./vendors');
+        var downloads = Download({mode: '755', extract: true}).dest('./vendor');
         for (var i in res.dependencies) {
             downloads.get(res.dependencies[i]);
         }

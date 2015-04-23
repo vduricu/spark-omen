@@ -24,7 +24,6 @@
     }
   ],
   "dependencies": {
-    "spark/test": ">=0.2.*",
-    "spark/omen2": ">1.2.1"
+    "spark/sampleNoDeps": ">0.1.0"
   }
 }

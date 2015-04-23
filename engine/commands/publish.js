@@ -34,11 +34,6 @@ PublishOmen.prototype = new CommandOmen();
  */
 PublishOmen.prototype.run = function (filename) {
     var properties = [
-        //{
-        //    name: 'EMail',
-        //    validator: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-        //    warning: 'The email must be a valid one.'
-        //},
         {
             name: 'Password',
             hidden: true
@@ -76,9 +71,10 @@ PublishOmen.prototype.run = function (filename) {
 
         ProjectUtils.publish(project, result, function (result) {
             if (result.status == "update")
-                return self.cli().info("You must run 'publish update' command!");
+                self.cli().ok("Package updated!");
+            else
+                self.cli().ok("Packages published");
 
-            self.cli().ok("Packages published");
             self.cli().ok('====================================================');
         }, function (err, body) {
             self.cli().error(err);

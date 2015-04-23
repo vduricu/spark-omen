@@ -8,8 +8,7 @@
     "name": "Valentin Duricu",
     "email": "valentin@duricu.ro"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git://github.com/thg2oo6/spark-omen.git"
@@ -19,12 +18,13 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "unirest": "~0.4.0",
-    "download": "~4.1.2",
+    "cli": "~0.6.6",
     "decompress": "~2.3.0",
+    "download": "~4.1.2",
+    "fstream": "^1.0.4",
     "prompt": "<10.*",
-    "adm-zip": "~0.4.*",
-    "cli": "~0.6.6"
+    "tar": "^2.1.0",
+    "unirest": "~0.4.0"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

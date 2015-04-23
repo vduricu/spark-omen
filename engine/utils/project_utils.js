@@ -9,7 +9,11 @@
 
 var unirest = require('unirest'),
     OmenAPI = require('./omen_api'),
-    AdmZip = require('adm-zip');
+    fs = require('fs'),
+    path = require('path'),
+    fstream = require('fstream'),
+    tar = require('tar'),
+    zlib = require('zlib');
 
 var self = {};
 
@@ -72,24 +76,54 @@ self.checkDependencies = function (dependencies, success, error) {
 
 
 self.publish = function (project, promptResult, success, error) {
-    var archive = new AdmZip();
+    fs.readFile('.omenignore', "utf-8", function (err, data) {
+        if (err) throw err;
+        var lines = data.split(/\n/),
+            fullPath = path.resolve('.');
 
-    archive.addLocalFolder('.', project.get('name').replace(/[\/ ]/ig, '_') + '/');
-    archive.writeZip('./archive.zip');
+        fstream.Reader({
+            'path': '.',
+            'type': 'Directory',
+            filter: function () {
+                var file = this.path.substring(fullPath.length);
+
+                if (this.basename.match(/^\.git/) ||
+                    this.basename.match(/^vendor/) ||
+                    this.basename.match(/^omenpackage.spk/) ||
+                    this.basename.match(/^node_modules/))
+                    return false;
+
+                for (var iLine in lines) {
+                    var line = lines[iLine].trim();
+
+                    if (this.basename.match(new RegExp(line)))
+                        return false;
+
+                    if (file.match(new RegExp(line)))
+                        return false;
+                }
+
+                return true;
+            }
+        })
+            .pipe(tar.Pack())/* Convert the directory to a .tar file */
+            .pipe(zlib.Gzip())/* Compress the .tar file */
+            .pipe(fstream.Writer({'path': 'omenpackage.spk'}));
+    });
+
 
     unirest.post(OmenAPI.buildURL('/publish/project'))
-        .auth({
-            user: project.get('author').email,
-            pass: promptResult.Password,
-            sendImmediately: true
-        })
-        .type('json')
-        .send({omenFile: project.all()})
+        .headers({'Accept': 'application/json'})
+        .attach('file', './omenpackage.spk') // Attachment
+        .field("omenFile", project.all())
+        .field("user", project.get('author').email)
+        .field("pass", promptResult.Password)
         .end(function (response) {
             if (response.statusType == 4 || response.statusType == 5)
                 return error(response.status, response.body);
             return success(response.body);
         });
+
 };
 
 module.exports = self;
