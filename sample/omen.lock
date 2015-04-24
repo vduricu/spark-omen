@@ -1,0 +1,6 @@
+{
+    "file": "projectDeps.json",
+    "packages": {
+        "spark/sampleNoDeps": "0.1.1"
+    }
+}

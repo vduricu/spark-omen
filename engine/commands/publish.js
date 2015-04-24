@@ -64,29 +64,49 @@ PublishOmen.prototype.run = function (filename) {
     this.cli().info("Checking project file");
     project.check();
 
-    prompt.get(properties, function (err, result) {
-        if (err) {
-            throw new Error(err);
+    this.cli().info("Building dependencies");
+    var deps = ProjectUtils.buildDependencies(project);
+
+    this.cli().info("Checking dependencies");
+
+    ProjectUtils.checkDependencies(deps).then(function (res) {
+        if (res.status == "error") {
+            self.cli().error("There were some errors:");
+            for (var errorLine in res.errors) {
+                var line = res.errors[errorLine];
+                if (line.available != null && line.available != undefined)
+                    self.cli().error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
+                else
+                    self.cli().error("   - " + errorLine + ": " + line.message);
+            }
+
+            return;
         }
-        var result = {};
 
-        ProjectUtils.publish(project, result, function (result) {
-            if (result.status == "update")
-                self.cli().ok("Package updated!");
-            else
-                self.cli().ok("Packages published");
+        prompt.get(properties, function (err, result) {
+            if (err) {
+                throw new Error(err);
+            }
 
-            self.cli().ok('====================================================');
-        }, function (err, body) {
-            self.cli().error(err);
-            if (body.error != null && body.error != undefined)
-                self.cli().error(body.error.message);
-            else
-                self.cli().error(body.message);
-            self.cli().error('====================================================');
+            ProjectUtils.publish(project, result).then(function (result) {
+                if (result.status == "update")
+                    self.cli().ok("Package updated!");
+                else
+                    self.cli().ok("Packages published");
+
+                self.cli().ok('====================================================');
+            }, function (err) {
+                self.cli().error(err);
+                if (err.message.body != null) {
+                    if (err.message.body.error != null && err.message.body.error != undefined)
+                        self.cli().error(err.message.body.error.message);
+                    else
+                        self.cli().error(body.message);
+                }
+                self.cli().error('====================================================');
+            });
         });
     });
-
 };
 
 

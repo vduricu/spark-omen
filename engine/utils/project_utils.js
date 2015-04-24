@@ -13,7 +13,9 @@ var unirest = require('unirest'),
     path = require('path'),
     fstream = require('fstream'),
     tar = require('tar'),
-    zlib = require('zlib');
+    zlib = require('zlib'),
+    Download = require('download'),
+    Q = require("q");
 
 var self = {};
 
@@ -21,7 +23,7 @@ var _isValid = function (value) {
     return value !== undefined && value !== null;
 };
 
-self.buildDependencies = function (project, cli) {
+self.buildDependencies = function (project) {
     var versionPattern = new RegExp("^(<|>|<=|>=)?([0-9]+).((\\*|[0-9]+)(\.([0-9]+|\\*))?)$", "i"),
         returnDeps = [],
         dependencies = project.get('dependencies'),
@@ -63,21 +65,50 @@ self.buildDependencies = function (project, cli) {
     return returnDeps;
 };
 
-self.checkDependencies = function (dependencies, success, error) {
+self.checkDependencies = function (dependencies) {
+    var deferred = Q.defer();
+
     unirest.post(OmenAPI.buildURL('/dependency/check'))
         .type('json')
         .send({deps: dependencies})
         .end(function (response) {
             if (response.statusType == 4 || response.statusType == 5)
-                return error(response.status, response.body);
-            return success(response.body);
+                deferred.reject(new Error({status: response.status, body: response.body}));
+            else
+                deferred.resolve(response.body);
         });
+
+    return deferred.promise;
 };
 
+self.downloadDependencies = function (dependencies) {
+    var downloads = Download({mode: '755'}).dest('./vendor'),
+        deferred = Q.defer();
 
-self.publish = function (project, promptResult, success, error) {
+    for (var i in dependencies) {
+        downloads.get(dependencies[i]);
+    }
+
+    downloads.run(function (err, files) {
+        if (err != null && err != undefined) {
+            deferred.reject(new Error(err));
+            return;
+        }
+
+        deferred.resolve(files);
+    });
+
+    return deferred.promise;
+};
+
+self.publish = function (project, promptResult) {
+    var deferred = Q.defer();
     fs.readFile('.omenignore', "utf-8", function (err, data) {
-        if (err) throw err;
+        if (err) {
+            deferred.reject(err);
+            return;
+        }
+
         var lines = data.split(/\n/),
             fullPath = path.resolve('.');
 
@@ -111,22 +142,24 @@ self.publish = function (project, promptResult, success, error) {
             .pipe(zlib.Gzip())/* Compress the .tar file */
             .pipe(writer);
 
-        writer.on("ready", function () {
+        writer.on("close", function () {
             unirest.post(OmenAPI.buildURL('/publish/project'))
                 .headers({'Accept': 'application/json'})
                 .attach('file', './omenpackage.spk') // Attachment
                 .field("omenFile", project.all())
                 .field("user", project.get('author').email)
-                //.field("pass", promptResult.Password)
+                .field("pass", promptResult.Password)
                 .end(function (response) {
                     console.log(response.body);
                     if (response.statusType == 4 || response.statusType == 5)
-                        return error(response.status, response.body);
-                    return success(response.body);
+                        deferred.reject(new Error({status: response.status, body: response.body}));
+                    else
+                        deferred.resolve(response.body);
                 });
         });
     });
 
+    return deferred.promise;
 };
 
 module.exports = self;

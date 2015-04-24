@@ -64,6 +64,15 @@ Project = function (filename) {
     };
 
     /**
+     * Returns the name of the loaded file.
+     *
+     * @return String
+     */
+    this.getFilename = function () {
+        return _filename;
+    };
+
+    /**
      * Returns a property of the project.
      *
      * @param {String} key The property name.
