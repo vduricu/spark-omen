@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: project/project.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: project/project.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Loads a project description file and returns several information from it.
+ *
+ * @package engine\models
+ * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @date 16.04.2015
+ * @module project
+ */
+"use strict";
+var fs = require('fs');
+
+var Project;
+
+/**
+ * Project information.
+ *
+ * @class
+ * @param {String} filename The name of the file to be parsed.
+ * @return Project
+ */
+Project = function (filename) {
+    /**
+     * The name of the file to parse.
+     *
+     * @var String
+     */
+    var _filename = filename,
+        /**
+         * The list of properties.
+         *
+         * @var Object
+         */
+        _infos = {},
+        /**
+         * Holds a reference to the current object.
+         *
+         * @var Project
+         */
+        self = this,
+        /**
+         * Holds a list of functions to be used when mandatory elements checks are performed.
+         *
+         * @var ProjectMandatory
+         */
+        _mandatory = require('./mandatory'),
+        /**
+         * Holds a list of functions to be used when checks are performed.
+         *
+         * @var ProjectExtras
+         */
+        _extras = require('./extras');
+
+    /**
+     * Checks the project to be ok.
+     *
+     * @throws Error|EvalError
+     */
+    this.check = function () {
+        /* Validates the mandatory elements of the project definition. */
+        for (var i in _mandatory) {
+            _mandatory[i](_infos[i]);
+        }
+
+        /* Validates the optional elements for project definition. */
+        for (var i in _extras) {
+            if (self.has(i))
+                _extras[i](_infos[i]);
+        }
+    };
+
+    /**
+     * Returns the name of the loaded file.
+     *
+     * @return String
+     */
+    this.getFilename = function () {
+        return _filename;
+    };
+
+    /**
+     * Returns a property of the project.
+     *
+     * @param {String} key The property name.
+     * @return Object|String|Object[]|String[]
+     */
+    this.get = function (key) {
+        return _infos[key];
+    };
+
+    /**
+     * Returns a property of the project.
+     *
+     * @param {String} key The property name.
+     * @param {String|Object} defValue The default value, if the element isn't defined.
+     * If none is specified "-" is used.
+     * @return Object|String
+     */
+    this.getWithDefault = function (key, defValue) {
+        if (defValue == null || defValue == undefined)
+            defValue = "-";
+
+        return self.has(key) ? self.get(key) : defValue;
+    };
+
+    /**
+     * Tests if a property is defined.
+     *
+     * @param {String} key The property name.
+     * @return boolean
+     */
+    this.has = function (key) {
+        return _infos[key] != null &amp;&amp; _infos[key] != undefined;
+    };
+
+    /**
+     * Returns all the properties as a dictionary.
+     *
+     * @return Object
+     */
+    this.all = function () {
+        return _infos;
+    };
+
+    /**
+     * The main block of the application.
+     */
+    var mainBlock = function () {
+        try {
+            _infos = JSON.parse(fs.readFileSync(_filename, 'utf8'));
+        } catch (err) {
+            throw new Error("File 'project.json' not found");
+        }
+
+        if (!self.has('name') || !self.has('version'))
+            throw new Error("The project must have a name and a version!");
+    };
+
+    mainBlock();
+
+    return this;
+};
+
+module.exports = Project;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue Apr 28 2015 22:13:49 GMT+0300 (EEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

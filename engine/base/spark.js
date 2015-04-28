@@ -4,10 +4,16 @@
  * @package engine\base
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
+ * @module base/spark
  */
 "use strict";
 
-module.exports = {
+/**
+ * Holds information about version.
+ *
+ * @class Object Spark
+ */
+var Spark = {
     /**
      * Holds the major version number.
      *
@@ -42,3 +48,5 @@ module.exports = {
         return this.major + "." + this.minor + "." + this.sprint;
     }
 };
+
+module.exports = Spark;

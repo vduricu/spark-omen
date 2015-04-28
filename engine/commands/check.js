@@ -4,10 +4,11 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
+ * @module commands/check
  */
 "use strict";
 
-var Project = require('./../models/project'),
+var Project = require('././project'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     ProjectUtils = require('./../utils/project_utils');
@@ -16,6 +17,12 @@ var CheckOmen;
 
 var _checks = {};
 
+/**
+ * Checks the dependencies on the repository.
+ *
+ * @param {Project} project The project to be checked.
+ * @param {cli} cli The reference to the CLI object.
+ */
 _checks.dependencies = function (project, cli) {
     cli.info("Building dependencies");
     var deps = ProjectUtils.buildDependencies(project);
@@ -43,6 +50,13 @@ _checks.dependencies = function (project, cli) {
         cli.ok('====================================================');
     });
 };
+
+/**
+ * Checks the information related to the project.
+ *
+ * @param {Project} project The project to be checked.
+ * @param {cli} cli The reference to the CLI object.
+ */
 _checks.information = function (project, cli) {
     project.check();
     cli.ok("The file has passed the information checks!");
@@ -50,6 +64,8 @@ _checks.information = function (project, cli) {
 
 /**
  * Check command constructor.
+ *
+ * @class
  */
 CheckOmen = function () {
 };

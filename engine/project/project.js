@@ -4,6 +4,7 @@
  * @package engine\models
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
+ * @module project
  */
 "use strict";
 var fs = require('fs');
@@ -13,6 +14,7 @@ var Project;
 /**
  * Project information.
  *
+ * @class
  * @param {String} filename The name of the file to be parsed.
  * @return Project
  */
@@ -38,15 +40,15 @@ Project = function (filename) {
         /**
          * Holds a list of functions to be used when mandatory elements checks are performed.
          *
-         * @var Object
+         * @var ProjectMandatory
          */
-        _mandatory = require('./project_mandatory'),
+        _mandatory = require('./mandatory'),
         /**
          * Holds a list of functions to be used when checks are performed.
          *
-         * @var Object
+         * @var ProjectExtras
          */
-        _extras = require('./project_extras');
+        _extras = require('./extras');
 
     /**
      * Checks the project to be ok.
@@ -54,9 +56,12 @@ Project = function (filename) {
      * @throws Error|EvalError
      */
     this.check = function () {
+        /* Validates the mandatory elements of the project definition. */
         for (var i in _mandatory) {
             _mandatory[i](_infos[i]);
         }
+
+        /* Validates the optional elements for project definition. */
         for (var i in _extras) {
             if (self.has(i))
                 _extras[i](_infos[i]);

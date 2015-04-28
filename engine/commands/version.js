@@ -4,6 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
+ * @module commands/version
  */
 "use strict";
 
@@ -13,6 +14,8 @@ var VersionOmen;
 
 /**
  * Version command constructor.
+ *
+ * @class
  */
 VersionOmen = function () {
 };

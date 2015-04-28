@@ -4,23 +4,25 @@
  * @package engine\models
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 20.04.2015
+ * @module project/mandatory
  */
 
 /**
  * Exposes all the methods to perform checks.
  *
- * @var Object
+ * @class
  */
-var self = {};
+var ProjectMandatory = {};
 
 /**
  * Checks the name of a given project.
  *
+ * @protected
  * @param {string} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.name = function (value) {
+ProjectMandatory.name = function (value) {
     var namePattern = new RegExp("^[a-z0-9_]+\/[a-z0-9_]+$", "i");
 
     if (value === null || value === undefined || value.length === 0)
@@ -35,11 +37,12 @@ self.name = function (value) {
 /**
  * Checks the version of a given project.
  *
+ * @protected
  * @param {string} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.version = function (value) {
+ProjectMandatory.version = function (value) {
     var namePattern = new RegExp("^[0-9]+\.[0-9]+\.[0-9]+$", "i");
 
     if (value === null || value === undefined || value.length === 0)
@@ -54,11 +57,12 @@ self.version = function (value) {
 /**
  * Checks the author of a given project.
  *
+ * @protected
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.author = function (value) {
+ProjectMandatory.author = function (value) {
     var namePattern = new RegExp("^[a-z \-]*$", "i"),
         emailPattern = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", "i");
 
@@ -82,11 +86,12 @@ self.author = function (value) {
 /**
  * Checks the dependencies of a given project.
  *
+ *
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.dependencies = function (value) {
+ProjectMandatory.dependencies = function (value) {
     if (value === null || value === undefined)
         return;
 
@@ -112,4 +117,4 @@ self.dependencies = function (value) {
 };
 
 
-module.exports = self;
+module.exports = ProjectMandatory;

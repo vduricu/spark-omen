@@ -4,6 +4,7 @@
  * @package engine\base
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 17.04.2015
+ * @module base/command
  */
 "use strict";
 
@@ -14,6 +15,7 @@ var CommandOmen;
 /**
  * The base command class.
  *
+ * @class
  * @return CommandOmen
  */
 CommandOmen = function () {

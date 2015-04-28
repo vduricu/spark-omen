@@ -4,19 +4,28 @@
  * @package engine\utils
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 17.04.2015
+ * @module utils/command_utils
  */
 "use strict";
 
 var _cli = null,
-    _filename = "project.json";
+    _filename = "project.json",
+    CommandUtils;
+
+/**
+ * Command execution utilities.
+ *
+ * @class
+ */
+CommandUtils = {};
 
 /**
  * Executes a command sent in the CLI.
  *
- * @param command The command to be executed.
+ * @param {String} command The command to be executed.
  * @return CommandOmen
  */
-var CommandExecutor = function (command) {
+CommandUtils.CommandExecutor = function (command) {
     if (command == null || command == undefined)
         return _cli.getUsage();
 
@@ -33,15 +42,12 @@ var CommandExecutor = function (command) {
 /**
  * Initializes some variables used by the CommandExecutor function.
  *
- * @param cli The reference to cli library.
- * @param filename
+ * @param {cli} cli The reference to cli library.
+ * @param {String} filename The filename.
  */
-var SetInit = function (cli, filename) {
+CommandUtils.SetInit = function (cli, filename) {
     _cli = cli;
     _filename = filename;
 };
 
-module.exports = {
-    SetInit: SetInit,
-    CommandExecutor: CommandExecutor
-};
+module.exports = CommandUtils;

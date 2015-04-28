@@ -4,18 +4,20 @@
  * @package engine\models
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 20.04.2015
+ * @module project/extras
  */
 
 /**
  * Exposes all the methods to perform checks.
  *
- * @var Object
+ * @class
  */
-var self = {};
+var ProjectExtras = {};
 
 /**
  * Checks the contributor of a given project.
  *
+ * @protected
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
@@ -45,11 +47,12 @@ var _contributor = function (value) {
 /**
  * Checks the contributors of a given project.
  *
+ * @protected
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.contributors = function (value) {
+ProjectExtras.contributors = function (value) {
     for (var i in value) {
         _contributor(value[i]);
     }
@@ -58,11 +61,12 @@ self.contributors = function (value) {
 /**
  * Checks the keywords of a given project.
  *
+ * @protected
  * @param {String[]} value The array to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.keywords = function (value) {
+ProjectExtras.keywords = function (value) {
     var keywordPattern = new RegExp("^[a-z0-9 _\-]*$", "i");
 
     for (var i in value) {
@@ -74,11 +78,12 @@ self.keywords = function (value) {
 /**
  * Checks the homepage of a given project.
  *
+ * @protected
  * @param {string} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.homepage = function (value) {
+ProjectExtras.homepage = function (value) {
     var homepagePattern = new RegExp("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", "i");
 
     if (!homepagePattern.test(value))
@@ -88,11 +93,12 @@ self.homepage = function (value) {
 /**
  * Checks the license of a given project.
  *
+ *
  * @param {string} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
  */
-self.license = function (value) {
+ProjectExtras.license = function (value) {
     var licensePattern = new RegExp("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", "i"),
         licenseSPattern = new RegExp("^[a-z \.-]+[a-z0-9 \.-]*$", "i");
 
@@ -101,4 +107,4 @@ self.license = function (value) {
             throw new EvalError("The license '" + value + "' is not valid! (example: GPL, MIT, or URL to CC)");
 };
 
-module.exports = self;
+module.exports = ProjectExtras;

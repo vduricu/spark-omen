@@ -4,17 +4,20 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin (at) duricu.ro)
  * @date 16.04.2015
+ * @module commands/about
  */
 
 "use strict";
 
-var Project = require('./../models/project'),
+var Project = require('././project'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command');
 var AboutOmen;
 
 /**
  * About command constructor.
+ *
+ * @class
  */
 AboutOmen = function () {
 };
