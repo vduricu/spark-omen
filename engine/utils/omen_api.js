@@ -2,7 +2,7 @@
  * Omen API calls.
  *
  * @package engine\utils
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
  * @module utils/omen_api
  */

@@ -2,7 +2,7 @@
  * Project manipulation utilities. Installs the dependencies defined in the project.json file.
  *
  * @package engine\utils
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
  * @module utils/project_utils
  */
@@ -16,6 +16,7 @@ var unirest = require('unirest'),
     tar = require('tar'),
     zlib = require('zlib'),
     Download = require('download'),
+    Decompress = require("decompress"),
     Q = require("q");
 
 /**
@@ -33,6 +34,17 @@ var ProjectUtils = {};
  */
 var _isValid = function (value) {
     return value !== undefined && value !== null;
+};
+
+/**
+ * Writes the omen lock file - used for the update command.
+ *
+ * @param {cli} cli The CLI object reference.
+ * @param {Object} omenLock The properties to be written in the lock file.
+ */
+ProjectUtils.omenLockWrite = function (cli, omenLock) {
+    cli.ok("Writing omen.lock file...");
+    fs.writeFile(path.resolve("./omen.lock"), JSON.stringify(omenLock, null, 4));
 };
 
 /**
@@ -87,15 +99,27 @@ ProjectUtils.buildDependencies = function (project) {
  * Performs a check of the dependencies on the server.
  *
  * @param {Array} dependencies The dependencies to be checked.
+ * @param {Array} [update] The installed dependencies.
  * @return Promise
  */
-ProjectUtils.checkDependencies = function (dependencies) {
-    var deferred = Q.defer();
+ProjectUtils.checkDependencies = function (dependencies, update) {
+    var deferred = Q.defer(),
+        data = {deps: dependencies},
+        url = '/dependency/check';
+
+    /**
+     * In case the update command is run, we must attach the
+     * installed dependencies.
+     */
+    if (_isValid(update)) {
+        data.installed = update;
+        url = '/dependency/update';
+    }
 
     /* The check of the dependencies is being done on the server. */
-    unirest.post(OmenAPI.buildURL('/dependency/check'))
+    unirest.post(OmenAPI.buildURL(url))
         .type('json')
-        .send({deps: dependencies})
+        .send(data)
         .end(function (response) {
             if (response.statusType == 4 || response.statusType == 5)
                 deferred.reject(new Error({status: response.status, body: response.body}));
@@ -113,7 +137,7 @@ ProjectUtils.checkDependencies = function (dependencies) {
  * @return Promise
  */
 ProjectUtils.downloadDependencies = function (dependencies) {
-    var downloads = Download({mode: '755'}).dest('./vendor'),
+    var downloads = Download({mode: '755'}).dest('./vendors'),
         deferred = Q.defer();
 
     /* Build the download list. */
@@ -211,6 +235,91 @@ ProjectUtils.publish = function (project, promptResult) {
 
 
     return deferred.promise;
+};
+
+/**
+ * Performs the installation of the packages requested in the project.json file.
+ *
+ * @param {Object} omenLock The lock file object.
+ * @param {Object} cli The CLI object reference.
+ * @param {Object} res The response from the server.
+ */
+ProjectUtils.install = function (omenLock, cli, res) {
+
+    /* If there is an error, then notify the developer about it and end the execution. */
+    if (res.status == "error") {
+        cli.error("There were some errors:");
+        for (var errorLine in res.errors) {
+            var line = res.errors[errorLine];
+            if (line.available != null && line.available != undefined)
+                cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
+            else
+                cli.error("   - " + errorLine + ": " + line.message);
+        }
+
+        return;
+    }
+
+    /* Check the existence of the vendors folder and create if it doesn't.*/
+    if (!fs.existsSync("./vendors"))
+        fs.mkdirSync("./vendors");
+
+    if (res.dependencies != null && res.dependencies != undefined) {
+        cli.info("Downloading files");
+
+        /* Download the dependencies. */
+        ProjectUtils.downloadDependencies(res.dependencies).then(function (files) {
+                var fullPath = path.resolve('./vendors/');
+
+                /* Store the received dependencies in the lock object. */
+                for (var i in res.packages) {
+                    omenLock.packages[res.packages[i].package] = res.packages[i].version;
+                }
+
+                /* Store the lock object*/
+                ProjectUtils.omenLockWrite(cli, omenLock);
+
+                /* Decompress each of the received files. */
+                for (var i in files) {
+                    Decompress({mode: '755'})
+                        .src(files[i].path)
+                        .dest(fullPath)
+                        .use(Decompress.targz({strip: 1}))
+                        .run(function (err, archFiles) {
+                            var pack = res.packages[files[i].path.substring(fullPath.length + 1)];
+
+                            if (err) {
+                                cli.error("Problems installing: " + pack.package + " (version: " + pack.version + ") - ");
+                                cli.error(err);
+                                return;
+                            }
+
+                            cli.ok("Package: " + pack.package + " (version: " + pack.version + ") - Installed");
+                        });
+                }
+            },
+            function (err) {
+                /* In case an error is received, display it. */
+                cli.error(err.message);
+                cli.ok('====================================================');
+            });
+    }
+    else
+        ProjectUtils.omenLockWrite(cli, omenLock);
+
+};
+
+/**
+ * Displays an error that occurs during the package installation.
+ *
+ * @param {Object} cli The CLI object reference.
+ * @param {Object} err The error response.
+ */
+ProjectUtils.installError = function (cli, err) {
+    /* In case an error is received, display it. */
+    console.log(JSON.stringify(err.message.body));
+    self.cli().error("Got HTTP: " + err.message.status);
+    self.cli().ok('====================================================');
 };
 
 module.exports = ProjectUtils;

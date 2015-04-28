@@ -2,13 +2,13 @@
  * Checks the given project.json file.
  *
  * @package engine\commands
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
  * @module commands/check
  */
 "use strict";
 
-var Project = require('././project'),
+var Project = require('./../project/project'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     ProjectUtils = require('./../utils/project_utils');

@@ -2,7 +2,7 @@
  * Display information about current version.
  *
  * @package engine\commands
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
  * @module commands/version
  */

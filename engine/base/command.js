@@ -2,7 +2,7 @@
  * The base command on which all other commands are created.
  *
  * @package engine\base
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 17.04.2015
  * @module base/command
  */

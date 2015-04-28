@@ -30,7 +30,7 @@
  * Project manipulation utilities. Installs the dependencies defined in the project.json file.
  *
  * @package engine\utils
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
  * @module utils/project_utils
  */
@@ -44,6 +44,7 @@ var unirest = require('unirest'),
     tar = require('tar'),
     zlib = require('zlib'),
     Download = require('download'),
+    Decompress = require("decompress"),
     Q = require("q");
 
 /**
@@ -61,6 +62,17 @@ var ProjectUtils = {};
  */
 var _isValid = function (value) {
     return value !== undefined &amp;&amp; value !== null;
+};
+
+/**
+ * Writes the omen lock file - used for the update command.
+ *
+ * @param {cli} cli The CLI object reference.
+ * @param {Object} omenLock The properties to be written in the lock file.
+ */
+ProjectUtils.omenLockWrite = function (cli, omenLock) {
+    cli.ok("Writing omen.lock file...");
+    fs.writeFile(path.resolve("./omen.lock"), JSON.stringify(omenLock, null, 4));
 };
 
 /**
@@ -115,15 +127,27 @@ ProjectUtils.buildDependencies = function (project) {
  * Performs a check of the dependencies on the server.
  *
  * @param {Array} dependencies The dependencies to be checked.
+ * @param {Array} [update] The installed dependencies.
  * @return Promise
  */
-ProjectUtils.checkDependencies = function (dependencies) {
-    var deferred = Q.defer();
+ProjectUtils.checkDependencies = function (dependencies, update) {
+    var deferred = Q.defer(),
+        data = {deps: dependencies},
+        url = '/dependency/check';
+
+    /**
+     * In case the update command is run, we must attach the
+     * installed dependencies.
+     */
+    if (_isValid(update)) {
+        data.installed = update;
+        url = '/dependency/update';
+    }
 
     /* The check of the dependencies is being done on the server. */
-    unirest.post(OmenAPI.buildURL('/dependency/check'))
+    unirest.post(OmenAPI.buildURL(url))
         .type('json')
-        .send({deps: dependencies})
+        .send(data)
         .end(function (response) {
             if (response.statusType == 4 || response.statusType == 5)
                 deferred.reject(new Error({status: response.status, body: response.body}));
@@ -141,7 +165,7 @@ ProjectUtils.checkDependencies = function (dependencies) {
  * @return Promise
  */
 ProjectUtils.downloadDependencies = function (dependencies) {
-    var downloads = Download({mode: '755'}).dest('./vendor'),
+    var downloads = Download({mode: '755'}).dest('./vendors'),
         deferred = Q.defer();
 
     /* Build the download list. */
@@ -241,6 +265,91 @@ ProjectUtils.publish = function (project, promptResult) {
     return deferred.promise;
 };
 
+/**
+ * Performs the installation of the packages requested in the project.json file.
+ *
+ * @param {Object} omenLock The lock file object.
+ * @param {Object} cli The CLI object reference.
+ * @param {Object} res The response from the server.
+ */
+ProjectUtils.install = function (omenLock, cli, res) {
+
+    /* If there is an error, then notify the developer about it and end the execution. */
+    if (res.status == "error") {
+        cli.error("There were some errors:");
+        for (var errorLine in res.errors) {
+            var line = res.errors[errorLine];
+            if (line.available != null &amp;&amp; line.available != undefined)
+                cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
+            else
+                cli.error("   - " + errorLine + ": " + line.message);
+        }
+
+        return;
+    }
+
+    /* Check the existence of the vendors folder and create if it doesn't.*/
+    if (!fs.existsSync("./vendors"))
+        fs.mkdirSync("./vendors");
+
+    if (res.dependencies != null &amp;&amp; res.dependencies != undefined) {
+        cli.info("Downloading files");
+
+        /* Download the dependencies. */
+        ProjectUtils.downloadDependencies(res.dependencies).then(function (files) {
+                var fullPath = path.resolve('./vendors/');
+
+                /* Store the received dependencies in the lock object. */
+                for (var i in res.packages) {
+                    omenLock.packages[res.packages[i].package] = res.packages[i].version;
+                }
+
+                /* Store the lock object*/
+                ProjectUtils.omenLockWrite(cli, omenLock);
+
+                /* Decompress each of the received files. */
+                for (var i in files) {
+                    Decompress({mode: '755'})
+                        .src(files[i].path)
+                        .dest(fullPath)
+                        .use(Decompress.targz({strip: 1}))
+                        .run(function (err, archFiles) {
+                            var pack = res.packages[files[i].path.substring(fullPath.length + 1)];
+
+                            if (err) {
+                                cli.error("Problems installing: " + pack.package + " (version: " + pack.version + ") - ");
+                                cli.error(err);
+                                return;
+                            }
+
+                            cli.ok("Package: " + pack.package + " (version: " + pack.version + ") - Installed");
+                        });
+                }
+            },
+            function (err) {
+                /* In case an error is received, display it. */
+                cli.error(err.message);
+                cli.ok('====================================================');
+            });
+    }
+    else
+        ProjectUtils.omenLockWrite(cli, omenLock);
+
+};
+
+/**
+ * Displays an error that occurs during the package installation.
+ *
+ * @param {Object} cli The CLI object reference.
+ * @param {Object} err The error response.
+ */
+ProjectUtils.installError = function (cli, err) {
+    /* In case an error is received, display it. */
+    console.log(JSON.stringify(err.message.body));
+    self.cli().error("Got HTTP: " + err.message.status);
+    self.cli().ok('====================================================');
+};
+
 module.exports = ProjectUtils;</code></pre>
         </article>
     </section>
@@ -251,13 +360,13 @@ module.exports = ProjectUtils;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_update.html">commands/update</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue Apr 28 2015 22:13:49 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue Apr 28 2015 23:10:52 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

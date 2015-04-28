@@ -2,7 +2,7 @@
  * Loads a project description file and returns several information from it.
  *
  * @package engine\models
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
  * @module project
  */
@@ -128,7 +128,7 @@ Project = function (filename) {
         try {
             _infos = JSON.parse(fs.readFileSync(_filename, 'utf8'));
         } catch (err) {
-            throw new Error("File 'project.json' not found");
+            throw new Error("File '" + _filename + "' not found");
         }
 
         if (!self.has('name') || !self.has('version'))

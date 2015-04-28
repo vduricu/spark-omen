@@ -1,10 +1,10 @@
 /**
- * Installs the dependencies defined in the project.json file.
+ * Updates the project with the dependencies defined in the project.json file.
  *
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
- * @date 16.04.2015
- * @module commands/install
+ * @date 28.04.2015
+ * @module commands/update
  */
 "use strict";
 
@@ -14,14 +14,14 @@ var Project = require('./../project/project'),
     CommandOmen = require('./../base/command'),
     fs = require("fs");
 
-var InstallOmen;
+var UpdateOmen;
 
 /**
- * Install command constructor.
+ * Update command constructor.
  *
  * @class
  */
-InstallOmen = function () {
+UpdateOmen = function () {
 };
 
 /**
@@ -29,21 +29,27 @@ InstallOmen = function () {
  *
  * @var CommandOmen
  */
-InstallOmen.prototype = new CommandOmen();
+UpdateOmen.prototype = new CommandOmen();
 
 /**
  * Code that runs when a command is executed.
  *
  * @param {String} filename The name of the file to be installed.
  */
-InstallOmen.prototype.run = function (filename) {
+UpdateOmen.prototype.run = function (filename) {
     this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project installation:');
+    this.cli().ok('    Omen (' + Spark.version() + ') - Project update:');
     this.cli().ok('----------------------------------------------------');
     this.cli().info("Reading project information");
 
     var project = new Project(filename),
+        lock = new Project('omen.lock'),
         self = this;
+
+    if (filename != lock.get('file')) {
+        this.cli().error("The file used to install the project differs from the one used for update.");
+        return;
+    }
 
     this.cli().info("Checking project file");
     project.check();
@@ -57,13 +63,13 @@ InstallOmen.prototype.run = function (filename) {
     omenLock.file = project.getFilename();
     omenLock.name = project.get('name');
     omenLock.version = project.get('version');
-    omenLock.packages = {};
+    omenLock.packages = lock.get('packages');
 
     if (deps.length == 0) {
-        return ProjectUtils.omenLockWrite(self.cli(), omenLock);
+        return _omenLockWrite(omenLock);
     }
 
-    ProjectUtils.checkDependencies(deps).then(function (res) {
+    ProjectUtils.checkDependencies(deps, omenLock.packages).then(function (res) {
         ProjectUtils.install(omenLock, self.cli(), res);
     }, function (err) {
         ProjectUtils.installError(self.cli(), err);
@@ -73,4 +79,4 @@ InstallOmen.prototype.run = function (filename) {
 };
 
 
-module.exports = InstallOmen;
+module.exports = UpdateOmen;

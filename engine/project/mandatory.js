@@ -2,7 +2,7 @@
  * Exports the mandatory checks for the project.
  *
  * @package engine\models
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
  * @module project/mandatory
  */

@@ -2,7 +2,7 @@
  * Version information object.
  *
  * @package engine\base
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
  * @module base/spark
  */

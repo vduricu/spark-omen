@@ -2,13 +2,13 @@
  * Installs the dependencies defined in the project.json file.
  *
  * @package engine\commands
- * @author Valentin Duricu (valentin (at) duricu.ro)
+ * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
  * @module commands/publish
  */
 "use strict";
 
-var Project = require('././project'),
+var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/project_utils'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
