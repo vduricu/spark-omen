@@ -6,6 +6,7 @@
  * @date 16.04.2015
  * @module commands/publish
  */
+/*jslint node: true */
 "use strict";
 
 var Project = require('./../project/project'),
@@ -51,7 +52,7 @@ PublishOmen.prototype.run = function (filename) {
     for (var i in args) {
         if (args[i] == "publish") {
             whatToDo = args[i + 1];
-            if (whatToDo == null || whatToDo == undefined)
+            if (whatToDo === null || whatToDo === undefined)
                 whatToDo = "new";
         }
     }
@@ -70,16 +71,16 @@ PublishOmen.prototype.run = function (filename) {
     project.check();
 
     this.cli().info("Building dependencies");
-    var deps = ProjectUtils.buildDependencies(project);
+    var dependencies = ProjectUtils.buildDependencies(project);
 
     this.cli().info("Checking dependencies");
 
-    ProjectUtils.checkDependencies(deps).then(function (res) {
+    ProjectUtils.checkDependencies(dependencies).then(function (res) {
         if (res.status == "error") {
             self.cli().error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (line.available != null && line.available != undefined)
+                if (line.available !== null && line.available !== undefined)
                     self.cli().error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     self.cli().error("   - " + errorLine + ": " + line.message);
@@ -102,11 +103,11 @@ PublishOmen.prototype.run = function (filename) {
                 self.cli().ok('====================================================');
             }, function (err) {
                 self.cli().error(err);
-                if (err.message.body != null) {
-                    if (err.message.body.error != null && err.message.body.error != undefined)
+                if (err.message.body !== null) {
+                    if (err.message.body.error !== null && err.message.body.error !== undefined)
                         self.cli().error(err.message.body.error.message);
                     else
-                        self.cli().error(body.message);
+                        self.cli().error(err.message.body.message);
                 }
                 self.cli().error('====================================================');
             });

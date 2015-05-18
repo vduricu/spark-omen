@@ -6,7 +6,7 @@
  * @date 16.04.2015
  * @module commands/about
  */
-
+/*jslint node: true */
 "use strict";
 
 var Project = require('./../project/project'),
@@ -58,8 +58,8 @@ AboutOmen.prototype.run = function (filename) {
         var contributors = project.get('contributors');
         this.cli().ok('----------------------------------------------------');
         this.cli().ok('Contributors:');
-        for (var contribId in contributors) {
-            var contributor = contributors[contribId];
+        for (var contributorId in contributors) {
+            var contributor = contributors[contributorId];
             this.cli().ok('\t- Name:\t\t' + contributor.name + "\n\t- Email:\t" + contributor.email);
         }
     }

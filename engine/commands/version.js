@@ -6,6 +6,7 @@
  * @date 16.04.2015
  * @module commands/version
  */
+/*jslint node: true */
 "use strict";
 
 var Spark = require('./../base/spark'),

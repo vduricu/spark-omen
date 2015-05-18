@@ -6,6 +6,7 @@
  * @date 16.04.2015
  * @module commands/install
  */
+/*jslint node: true */
 "use strict";
 
 var Project = require('./../project/project'),
@@ -59,7 +60,7 @@ InstallOmen.prototype.run = function (filename) {
     omenLock.version = project.get('version');
     omenLock.packages = {};
 
-    if (deps.length == 0) {
+    if (deps.length === 0) {
         return ProjectUtils.omenLockWrite(self.cli(), omenLock);
     }
 

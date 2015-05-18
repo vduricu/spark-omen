@@ -1,0 +1,26 @@
+{
+  "name": "test/noDeps",
+  "version": "0.1.1",
+  "description": "Testing package. No Deps.",
+  "keywords": [
+    "testing",
+    "package",
+    "no deps"
+  ],
+  "homepage": "http://test.cloud-studio.ro",
+  "license": "GPL",
+  "author": {
+    "name": "Test User",
+    "email": "test@duricu.ro"
+  },
+  "contributors": [
+    {
+      "name": "Tester Unu",
+      "email": "tester@duricu.ro"
+    },
+    {
+      "name": "Tester Doi",
+      "email": "tester@cloud-studio.ro"
+    }
+  ]
+}

@@ -6,9 +6,8 @@
  * @date 17.04.2015
  * @module base/command
  */
+/*jslint node: true */
 "use strict";
-
-var util = require("util");
 
 var CommandOmen;
 
@@ -20,7 +19,7 @@ var CommandOmen;
  */
 CommandOmen = function () {
     /* -- Private properties definition -- */
-    var _cli,
+    var _cli = null,
         _filename = "project.json";
 
     /**
@@ -32,7 +31,7 @@ CommandOmen = function () {
     this.init = function (cli, filename) {
         _cli = cli;
 
-        if (filename != null && filename != undefined && filename.length > 0)
+        if (filename !== null && filename !== undefined && filename.length > 0)
             _filename = filename;
     };
 
@@ -57,7 +56,7 @@ CommandOmen = function () {
     /**
      * Code that runs when a command is executed.
      *
-     * @param {String|Object|Object[]} args The parameters sent to the command.
+     * @param {String|Object|Object[]} [args] The parameters sent to the command.
      */
     this.run = function (args) {
         throw new Error("Command not implemented");

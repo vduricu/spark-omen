@@ -1,6 +1,9 @@
+/*jslint node: true */
 "use strict";
 
-var cli = require('cli').enable('status'),
+require('engine/utils/string_utils');
+
+var cli          = require('cli').enable('status'),
     commandUtils = require('./../engine/utils/command_utils');
 
 GLOBAL.OMEN_CONFIG = require('./../config/app.json');

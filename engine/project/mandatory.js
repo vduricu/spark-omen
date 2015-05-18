@@ -6,6 +6,8 @@
  * @date 20.04.2015
  * @module project/mandatory
  */
+/*jslint node: true */
+"use strict";
 
 /**
  * Exposes all the methods to perform checks.

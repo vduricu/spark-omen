@@ -6,6 +6,7 @@
  * @date 16.04.2015
  * @module commands/check
  */
+/*jslint node: true */
 "use strict";
 
 var Project = require('./../project/project'),
@@ -25,16 +26,16 @@ var _checks = {};
  */
 _checks.dependencies = function (project, cli) {
     cli.info("Building dependencies");
-    var deps = ProjectUtils.buildDependencies(project);
+    var dependencies = ProjectUtils.buildDependencies(project);
 
     cli.info("Checking dependencies");
 
-    ProjectUtils.checkDependencies(deps).then(function (res) {
+    ProjectUtils.checkDependencies(dependencies).then(function (res) {
         if (res.status == "error") {
             cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (line.available != null && line.available != undefined)
+                if (line.available !== null && line.available !== undefined)
                     cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     cli.error("   - " + errorLine + ": " + line.message);
@@ -89,8 +90,8 @@ CheckOmen.prototype.run = function (filename) {
 
     try {
         var checks = [];
-        for (var i in GLOBAL.OMEN_CLI_ARGS) {
-            var argument = GLOBAL.OMEN_CLI_ARGS[i].trim();
+        for (var iArg in GLOBAL.OMEN_CLI_ARGS) {
+            var argument = GLOBAL.OMEN_CLI_ARGS[iArg].trim();
 
             if (argument == "dependencies" || argument == "all")
                 checks.push("dependencies");
@@ -99,11 +100,11 @@ CheckOmen.prototype.run = function (filename) {
                 checks.push("information");
         }
 
-        if (checks.length == 0)
+        if (checks.length === 0)
             checks.push("information");
 
-        for (var i in checks) {
-            _checks[checks[i]](project, this.cli());
+        for (var iCheck in checks) {
+            _checks[checks[iCheck]](project, this.cli());
         }
 
     } catch (err) {

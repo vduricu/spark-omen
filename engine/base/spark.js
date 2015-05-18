@@ -6,6 +6,7 @@
  * @date 16.04.2015
  * @module base/spark
  */
+/*jslint node: true */
 "use strict";
 
 /**

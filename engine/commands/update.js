@@ -6,6 +6,7 @@
  * @date 28.04.2015
  * @module commands/update
  */
+/*jslint node: true */
 "use strict";
 
 var Project = require('./../project/project'),
@@ -55,7 +56,7 @@ UpdateOmen.prototype.run = function (filename) {
     project.check();
 
     this.cli().info("Building dependencies");
-    var deps = ProjectUtils.buildDependencies(project);
+    var dependencies = ProjectUtils.buildDependencies(project);
 
     this.cli().info("Checking dependencies");
 
@@ -65,11 +66,11 @@ UpdateOmen.prototype.run = function (filename) {
     omenLock.version = project.get('version');
     omenLock.packages = lock.get('packages');
 
-    if (deps.length == 0) {
-        return _omenLockWrite(omenLock);
+    if (dependencies.length === 0) {
+        return ProjectUtils.omenLockWrite(this.cli(), omenLock);
     }
 
-    ProjectUtils.checkDependencies(deps, omenLock.packages).then(function (res) {
+    ProjectUtils.checkDependencies(dependencies, omenLock.packages).then(function (res) {
         ProjectUtils.install(omenLock, self.cli(), res);
     }, function (err) {
         ProjectUtils.installError(self.cli(), err);

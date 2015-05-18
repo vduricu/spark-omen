@@ -6,6 +6,8 @@
  * @date 20.04.2015
  * @module utils/omen_api
  */
+/*jslint node: true */
+"use strict";
 
 /**
  * API Calls Class

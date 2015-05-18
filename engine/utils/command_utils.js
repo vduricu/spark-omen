@@ -6,6 +6,7 @@
  * @date 17.04.2015
  * @module utils/command_utils
  */
+/*jslint node: true */
 "use strict";
 
 var _cli = null,
@@ -26,15 +27,15 @@ CommandUtils = {};
  * @return CommandOmen
  */
 CommandUtils.CommandExecutor = function (command) {
-    if (command == null || command == undefined)
+    if (command === null || command === undefined)
         return _cli.getUsage();
 
-    var classCmd = require('./../commands/' + command + '.js');
+    var ClassCmd = require('./../commands/' + command + '.js');
 
-    if (classCmd == null || classCmd == undefined)
+    if (ClassCmd === null || ClassCmd === undefined)
         return _cli.getUsage();
 
-    var cmd = new classCmd();
+    var cmd = new ClassCmd();
     cmd.init(_cli, _filename);
     return cmd;
 };

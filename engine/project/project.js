@@ -6,7 +6,9 @@
  * @date 16.04.2015
  * @module project
  */
+/*jslint node: true */
 "use strict";
+
 var fs = require('fs');
 
 var Project;
@@ -30,7 +32,7 @@ Project = function (filename) {
          *
          * @var Object
          */
-        _infos = {},
+        _information = {},
         /**
          * Holds a reference to the current object.
          *
@@ -57,14 +59,14 @@ Project = function (filename) {
      */
     this.check = function () {
         /* Validates the mandatory elements of the project definition. */
-        for (var i in _mandatory) {
-            _mandatory[i](_infos[i]);
+        for (var iMandatory in _mandatory) {
+            _mandatory[iMandatory](_information[iMandatory]);
         }
 
         /* Validates the optional elements for project definition. */
-        for (var i in _extras) {
-            if (self.has(i))
-                _extras[i](_infos[i]);
+        for (var iExtras in _extras) {
+            if (self.has(iExtras))
+                _extras[iExtras](_information[iExtras]);
         }
     };
 
@@ -84,19 +86,19 @@ Project = function (filename) {
      * @return Object|String|Object[]|String[]
      */
     this.get = function (key) {
-        return _infos[key];
+        return _information[key];
     };
 
     /**
      * Returns a property of the project.
      *
      * @param {String} key The property name.
-     * @param {String|Object} defValue The default value, if the element isn't defined.
+     * @param {String|Object} [defValue] The default value, if the element isn't defined.
      * If none is specified "-" is used.
      * @return Object|String
      */
     this.getWithDefault = function (key, defValue) {
-        if (defValue == null || defValue == undefined)
+        if (defValue === null || defValue === undefined)
             defValue = "-";
 
         return self.has(key) ? self.get(key) : defValue;
@@ -109,7 +111,7 @@ Project = function (filename) {
      * @return boolean
      */
     this.has = function (key) {
-        return _infos[key] != null && _infos[key] != undefined;
+        return _information[key] !== null && _information[key] !== undefined;
     };
 
     /**
@@ -118,7 +120,7 @@ Project = function (filename) {
      * @return Object
      */
     this.all = function () {
-        return _infos;
+        return _information;
     };
 
     /**
@@ -126,7 +128,7 @@ Project = function (filename) {
      */
     var mainBlock = function () {
         try {
-            _infos = JSON.parse(fs.readFileSync(_filename, 'utf8'));
+            _information = JSON.parse(fs.readFileSync(_filename, 'utf8'));
         } catch (err) {
             throw new Error("File '" + _filename + "' not found");
         }

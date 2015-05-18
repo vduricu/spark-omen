@@ -6,18 +6,19 @@
  * @date 20.04.2015
  * @module utils/project_utils
  */
+/*jslint node: true */
 "use strict";
 
-var unirest = require('unirest'),
-    OmenAPI = require('./omen_api'),
-    fs = require('fs'),
-    path = require('path'),
-    fstream = require('fstream'),
-    tar = require('tar'),
-    zlib = require('zlib'),
-    Download = require('download'),
+var unirest    = require('unirest'),
+    OmenAPI    = require('./omen_api'),
+    fs         = require('fs'),
+    path       = require('path'),
+    fstream    = require('fstream'),
+    tar        = require('tar'),
+    zlib       = require('zlib'),
+    Download   = require('download'),
     Decompress = require("decompress"),
-    Q = require("q");
+    Q          = require("q");
 
 /**
  * Project manipulation utilities.
@@ -39,12 +40,23 @@ var _isValid = function (value) {
 /**
  * Writes the omen lock file - used for the update command.
  *
- * @param {cli} cli The CLI object reference.
+ * @param {Object} cli The CLI object reference.
  * @param {Object} omenLock The properties to be written in the lock file.
  */
 ProjectUtils.omenLockWrite = function (cli, omenLock) {
     cli.ok("Writing omen.lock file...");
     fs.writeFile(path.resolve("./omen.lock"), JSON.stringify(omenLock, null, 4));
+};
+
+/**
+ * Writes the omen project file - used for the create command.
+ *
+ * @param {Object} cli The CLI object reference.
+ * @param {Object} omenJson The properties to be written in the project file.
+ */
+ProjectUtils.omenJsonWrite = function (cli, omenJson) {
+    cli.ok("Writing project.json file...");
+    fs.writeFile(path.resolve("./" + omenJson.name + "/project.json"), JSON.stringify(omenJson, null, 4));
 };
 
 /**
@@ -55,12 +67,12 @@ ProjectUtils.omenLockWrite = function (cli, omenLock) {
  */
 ProjectUtils.buildDependencies = function (project) {
     var versionPattern = new RegExp("^(<|>|<=|>=)?([0-9]+).((\\*|[0-9]+)(\.([0-9]+|\\*))?)$", "i"),
-        returnDeps = [],
+        returnDependencies = [],
         dependencies = project.get('dependencies'),
         i = 0;
 
     if (!_isValid(dependencies))
-        return returnDeps;
+        return returnDependencies;
 
 
     for (var iElem in dependencies) {
@@ -86,13 +98,13 @@ ProjectUtils.buildDependencies = function (project) {
         else if (version.patch == "*")
             version.like = true;
 
-        returnDeps.push({
+        returnDependencies.push({
             package: app,
             version: version
         });
     }
 
-    return returnDeps;
+    return returnDependencies;
 };
 
 /**
@@ -137,7 +149,7 @@ ProjectUtils.checkDependencies = function (dependencies, update) {
  * @return Promise
  */
 ProjectUtils.downloadDependencies = function (dependencies) {
-    var downloads = Download({mode: '755'}).dest('./vendors'),
+    var downloads = (new Download({mode: '755'})).dest('./vendors'),
         deferred = Q.defer();
 
     /* Build the download list. */
@@ -147,7 +159,7 @@ ProjectUtils.downloadDependencies = function (dependencies) {
 
     /* Downloads the files. */
     downloads.run(function (err, files) {
-        if (err != null && err != undefined) {
+        if (err !== null && err !== undefined) {
             deferred.reject(new Error(err));
             return;
         }
@@ -221,6 +233,7 @@ ProjectUtils.publish = function (project, promptResult) {
         unirest.post(OmenAPI.buildURL('/publish/project'))
             .headers({'Accept': 'application/json'})
             .attach('file', './omenpackage.spk') // Attachment
+            //.field("omenFile", JSON.stringify(project.all()))
             .field("omenFile", project.all())
             .field("user", project.get('author').email)
             .field("pass", promptResult.Password)
@@ -238,7 +251,7 @@ ProjectUtils.publish = function (project, promptResult) {
 };
 
 /**
- * Performs the installation of the packages requested in the project.json file.
+ * Performs the installation of the packages requested in the simple.json file.
  *
  * @param {Object} omenLock The lock file object.
  * @param {Object} cli The CLI object reference.
@@ -251,7 +264,7 @@ ProjectUtils.install = function (omenLock, cli, res) {
         cli.error("There were some errors:");
         for (var errorLine in res.errors) {
             var line = res.errors[errorLine];
-            if (line.available != null && line.available != undefined)
+            if (line.available !== null && line.available !== undefined)
                 cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
             else
                 cli.error("   - " + errorLine + ": " + line.message);
@@ -264,39 +277,40 @@ ProjectUtils.install = function (omenLock, cli, res) {
     if (!fs.existsSync("./vendors"))
         fs.mkdirSync("./vendors");
 
-    if (res.dependencies != null && res.dependencies != undefined) {
+    if (res.dependencies !== null && res.dependencies !== undefined) {
         cli.info("Downloading files");
 
         /* Download the dependencies. */
         ProjectUtils.downloadDependencies(res.dependencies).then(function (files) {
-                var fullPath = path.resolve('./vendors/');
-
-                /* Store the received dependencies in the lock object. */
-                for (var i in res.packages) {
-                    omenLock.packages[res.packages[i].package] = res.packages[i].version;
-                }
-
-                /* Store the lock object*/
-                ProjectUtils.omenLockWrite(cli, omenLock);
-
-                /* Decompress each of the received files. */
-                for (var i in files) {
-                    Decompress({mode: '755'})
-                        .src(files[i].path)
-                        .dest(fullPath)
-                        .use(Decompress.targz({strip: 1}))
-                        .run(function (err, archFiles) {
-                            var pack = res.packages[files[i].path.substring(fullPath.length + 1)];
-
-                            if (err) {
-                                cli.error("Problems installing: " + pack.package + " (version: " + pack.version + ") - ");
-                                cli.error(err);
-                                return;
-                            }
-
-                            cli.ok("Package: " + pack.package + " (version: " + pack.version + ") - Installed");
-                        });
-                }
+                throw new EvalError("Rewrite code");
+                //var fullPath = path.resolve('./vendors/');
+                //
+                ///* Store the received dependencies in the lock object. */
+                //for (var iPacks in res.packages) {
+                //    omenLock.packages[res.packages[iPacks].package] = res.packages[iPacks].version;
+                //}
+                //
+                ///* Store the lock object*/
+                //ProjectUtils.omenLockWrite(cli, omenLock);
+                //
+                ///* Decompress each of the received files. */
+                //for (var iFiles in files) {
+                //    (new Decompress({mode: '755'}))
+                //        .src(files[iFiles].path)
+                //        .dest(fullPath)
+                //        .use(Decompress.targz({strip: 1}))
+                //        .run(function (err, archFiles) {
+                //            var pack = res.packages[files[iFiles].path.substring(fullPath.length + 1)];
+                //
+                //            if (err) {
+                //                cli.error("Problems installing: " + pack.package + " (version: " + pack.version + ") - ");
+                //                cli.error(err);
+                //                return;
+                //            }
+                //
+                //            cli.ok("Package: " + pack.package + " (version: " + pack.version + ") - Installed");
+                //        });
+                //}
             },
             function (err) {
                 /* In case an error is received, display it. */
@@ -317,9 +331,9 @@ ProjectUtils.install = function (omenLock, cli, res) {
  */
 ProjectUtils.installError = function (cli, err) {
     /* In case an error is received, display it. */
-    console.log(JSON.stringify(err.message.body));
-    self.cli().error("Got HTTP: " + err.message.status);
-    self.cli().ok('====================================================');
+    //console.log(JSON.stringify(err.message.body));
+    cli.error("Got HTTP: " + err.message.status);
+    cli.ok('====================================================');
 };
 
 module.exports = ProjectUtils;

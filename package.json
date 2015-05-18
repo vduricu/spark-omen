@@ -32,7 +32,10 @@
     "grunt-cli": "~0.1.13",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-jsbeautifier": "~0.2.2"
+    "grunt-jsbeautifier": "~0.2.2",
+    "istanbul": "^0.3.14"
+  },
+  "scripts": {
+    "test": "grunt"
   }
 }

@@ -34,6 +34,7 @@
  * @date 16.04.2015
  * @module commands/publish
  */
+/*jslint node: true */
 "use strict";
 
 var Project = require('./../project/project'),
@@ -79,7 +80,7 @@ PublishOmen.prototype.run = function (filename) {
     for (var i in args) {
         if (args[i] == "publish") {
             whatToDo = args[i + 1];
-            if (whatToDo == null || whatToDo == undefined)
+            if (whatToDo === null || whatToDo === undefined)
                 whatToDo = "new";
         }
     }
@@ -98,16 +99,16 @@ PublishOmen.prototype.run = function (filename) {
     project.check();
 
     this.cli().info("Building dependencies");
-    var deps = ProjectUtils.buildDependencies(project);
+    var dependencies = ProjectUtils.buildDependencies(project);
 
     this.cli().info("Checking dependencies");
 
-    ProjectUtils.checkDependencies(deps).then(function (res) {
+    ProjectUtils.checkDependencies(dependencies).then(function (res) {
         if (res.status == "error") {
             self.cli().error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (line.available != null &amp;&amp; line.available != undefined)
+                if (line.available !== null &amp;&amp; line.available !== undefined)
                     self.cli().error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     self.cli().error("   - " + errorLine + ": " + line.message);
@@ -130,11 +131,11 @@ PublishOmen.prototype.run = function (filename) {
                 self.cli().ok('====================================================');
             }, function (err) {
                 self.cli().error(err);
-                if (err.message.body != null) {
-                    if (err.message.body.error != null &amp;&amp; err.message.body.error != undefined)
+                if (err.message.body !== null) {
+                    if (err.message.body.error !== null &amp;&amp; err.message.body.error !== undefined)
                         self.cli().error(err.message.body.error.message);
                     else
-                        self.cli().error(body.message);
+                        self.cli().error(err.message.body.message);
                 }
                 self.cli().error('====================================================');
             });
@@ -153,13 +154,13 @@ module.exports = PublishOmen;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_update.html">commands/update</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_create.html">commands/create</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_update.html">commands/update</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-engine_utils_cliMockup.html">engine/utils/cliMockup</a></li><li><a href="module-engine_utils_string_utils.html">engine/utils/string_utils</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_create-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Tue Apr 28 2015 23:10:52 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 18 2015 23:24:45 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
