@@ -13,9 +13,9 @@ var Command   = require('../../engine/commands/about'),
     CliMockup = require('../../engine/utils/cliMockup');
 
 var cli    = new CliMockup(),
-    simple = "./test/packages/simple.json",
-    deps   = "./test/packages/deps.json",
-    noDeps = "./test/packages/noDeps.json",
+    simple = "./tests/packages/simple.json",
+    deps   = "./tests/packages/deps.json",
+    noDeps = "./tests/packages/noDeps.json",
     cmd;
 
 module.exports = {

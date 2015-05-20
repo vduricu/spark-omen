@@ -19,7 +19,7 @@ var ProjectExtras = {};
 /**
  * Checks the contributor of a given project.
  *
- * @protected
+ * @private
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
@@ -45,7 +45,6 @@ var _contributor = function (value) {
     return true;
 };
 
-
 /**
  * Checks the contributors of a given project.
  *
@@ -55,8 +54,21 @@ var _contributor = function (value) {
  * @return boolean
  */
 ProjectExtras.contributors = function (value) {
-    for (var i in value) {
-        _contributor(value[i]);
+    for (var mainValue in value) {
+        _contributor(value[mainValue]);
+
+        for (var checkValue in value) {
+            if (checkValue == mainValue)
+                continue;
+
+            if (value[checkValue].name == value[mainValue].name && value[checkValue].email == value[mainValue].email)
+                throw new Error("Contributor '" + value[mainValue].name + "' with email '" + value[mainValue].email + "' already exists.");
+
+            if (value[checkValue].email == value[mainValue].email)
+                throw new Error("Contributor '" + value[mainValue].name + "' " +
+                "and '" + value[checkValue].email + "' have the same email '" + value[mainValue].email + "'.");
+
+        }
     }
 };
 
@@ -72,8 +84,19 @@ ProjectExtras.keywords = function (value) {
     var keywordPattern = new RegExp("^[a-z0-9 _\-]*$", "i");
 
     for (var i in value) {
+        if (value[i] === null || value[i] === undefined || value[i].length === 0)
+            throw new Error("The contributor name must be filled!");
+
         if (!keywordPattern.test(value[i]))
             throw new EvalError("The keyword '" + value[i] + "' is not valid! (example: omen, spark, project)");
+
+        for (var j in value) {
+            if (i == j)
+                continue;
+
+            if (value[i] == value[j])
+                throw new Error("The keyword '" + value[i] + "' is already defined.");
+        }
     }
 };
 
@@ -95,7 +118,7 @@ ProjectExtras.homepage = function (value) {
 /**
  * Checks the license of a given project.
  *
- *
+ * @protected
  * @param {string} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean

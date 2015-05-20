@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: CommandUtils</title>
+    <title>JSDoc: Class: CliMockup</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: CommandUtils</h1>
+    <h1 class="page-title">Class: CliMockup</h1>
 
     
 
@@ -29,9 +29,9 @@
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-utils_command_utils.html">utils/command_utils</a>~</span>
+            <span class="ancestors"><a href="module-engine_utils_cliMockup.html">engine/utils/cliMockup</a>~</span>
         
-        CommandUtils
+        CliMockup
         </h2>
         
     
@@ -44,14 +44,14 @@
 
     
 
-    <h4 class="name" id="CommandUtils"><span class="type-signature"></span>new CommandUtils<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="CliMockup"><span class="type-signature"></span>new CliMockup<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Command execution utilities.
+    Mockup class to be used for testing when displaying CLI messages.
 </div>
 
 
@@ -95,156 +95,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_command_utils.js.html">utils/command_utils.js</a>, <a href="utils_command_utils.js.html#line21">line 21</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id=".CommandExecutor"><span class="type-signature">(static) </span>CommandExecutor<span class="signature">(command)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Executes a command sent in the CLI.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>command</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The command to be executed.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_command_utils.js.html">utils/command_utils.js</a>, <a href="utils_command_utils.js.html#line29">line 29</a>
+        <a href="utils_cliMockup.js.html">utils/cliMockup.js</a>, <a href="utils_cliMockup.js.html#line21">line 21</a>
     </li></ul></dd>
     
 
@@ -271,7 +122,7 @@
 
         
 <div class="param-desc">
-    CommandOmen
+    CliMockup
 </div>
 
 
@@ -280,19 +131,119 @@
 
 
 
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
         
             
 
     
 
-    <h4 class="name" id=".SetInit"><span class="type-signature">(static) </span>SetInit<span class="signature">(cli, filename)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="clearAll"><span class="type-signature"></span>clearAll<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
 
 
 <div class="description">
-    Initializes some variables used by the CommandExecutor function.
+    Clears the message stack.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_cliMockup.js.html">utils/cliMockup.js</a>, <a href="utils_cliMockup.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="error"><span class="type-signature"></span>error<span class="signature">(message)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds an Error message to the message stack.
 </div>
 
 
@@ -328,30 +279,7 @@
 
         <tr>
             
-                <td class="name"><code>cli</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">cli</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">The reference to cli library.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>filename</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -367,7 +295,7 @@
 
             
 
-            <td class="description last">The filename.</td>
+            <td class="description last">The message to be displayed.</td>
         </tr>
 
     
@@ -408,7 +336,361 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_command_utils.js.html">utils/command_utils.js</a>, <a href="utils_command_utils.js.html#line49">line 49</a>
+        <a href="utils_cliMockup.js.html">utils/cliMockup.js</a>, <a href="utils_cliMockup.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getAll"><span class="type-signature"></span>getAll<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns the messages stack.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_cliMockup.js.html">utils/cliMockup.js</a>, <a href="utils_cliMockup.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Object[]
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="info"><span class="type-signature"></span>info<span class="signature">(message)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds an Info message to the message stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The message to be displayed.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_cliMockup.js.html">utils/cliMockup.js</a>, <a href="utils_cliMockup.js.html#line38">line 38</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="ok"><span class="type-signature"></span>ok<span class="signature">(message)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds an Ok message to the message stack.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The message to be displayed.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_cliMockup.js.html">utils/cliMockup.js</a>, <a href="utils_cliMockup.js.html#line29">line 29</a>
     </li></ul></dd>
     
 

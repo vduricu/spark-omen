@@ -88,7 +88,7 @@ ProjectMandatory.author = function (value) {
 /**
  * Checks the dependencies of a given project.
  *
- *
+ * @protected
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean

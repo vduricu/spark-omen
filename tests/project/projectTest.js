@@ -12,13 +12,13 @@
 var Project = require('../../engine/project/project');
 
 var files = {
-    simpleCorrect: "./test/packages/simpleCorrect.json",
-    invalidName: "./test/packages/invalidName.json",
-    invalidVersion: "./test/packages/invalidVersion.json",
-    invalidDeps: "./test/packages/invalidDeps.json",
-    noDeps: "./test/packages/noDeps.json",
-    deps: "./test/packages/deps.json",
-    simple: "./test/packages/simple.json"
+    simpleCorrect: "./tests/packages/simpleCorrect.json",
+    invalidName: "./tests/packages/invalidName.json",
+    invalidVersion: "./tests/packages/invalidVersion.json",
+    invalidDeps: "./tests/packages/invalidDeps.json",
+    noDeps: "./tests/packages/noDeps.json",
+    deps: "./tests/packages/deps.json",
+    simple: "./tests/packages/simple.json"
 };
 
 module.exports = {

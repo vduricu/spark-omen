@@ -16,6 +16,8 @@
    * Create a better readme page
    * Code coverage testing
    * Integration with Pacific AppServer (PAS)
+   * Better exception classes
+   * Optimize checking code
    * Possibility to add scripts to be ran
        * post install
        * post update

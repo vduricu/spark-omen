@@ -47,7 +47,7 @@ var ProjectExtras = {};
 /**
  * Checks the contributor of a given project.
  *
- * @protected
+ * @private
  * @param {Object} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
@@ -73,7 +73,6 @@ var _contributor = function (value) {
     return true;
 };
 
-
 /**
  * Checks the contributors of a given project.
  *
@@ -83,8 +82,21 @@ var _contributor = function (value) {
  * @return boolean
  */
 ProjectExtras.contributors = function (value) {
-    for (var i in value) {
-        _contributor(value[i]);
+    for (var mainValue in value) {
+        _contributor(value[mainValue]);
+
+        for (var checkValue in value) {
+            if (checkValue == mainValue)
+                continue;
+
+            if (value[checkValue].name == value[mainValue].name &amp;&amp; value[checkValue].email == value[mainValue].email)
+                throw new Error("Contributor '" + value[mainValue].name + "' with email '" + value[mainValue].email + "' already exists.");
+
+            if (value[checkValue].email == value[mainValue].email)
+                throw new Error("Contributor '" + value[mainValue].name + "' " +
+                "and '" + value[checkValue].email + "' have the same email '" + value[mainValue].email + "'.");
+
+        }
     }
 };
 
@@ -100,8 +112,19 @@ ProjectExtras.keywords = function (value) {
     var keywordPattern = new RegExp("^[a-z0-9 _\-]*$", "i");
 
     for (var i in value) {
+        if (value[i] === null || value[i] === undefined || value[i].length === 0)
+            throw new Error("The contributor name must be filled!");
+
         if (!keywordPattern.test(value[i]))
             throw new EvalError("The keyword '" + value[i] + "' is not valid! (example: omen, spark, project)");
+
+        for (var j in value) {
+            if (i == j)
+                continue;
+
+            if (value[i] == value[j])
+                throw new Error("The keyword '" + value[i] + "' is already defined.");
+        }
     }
 };
 
@@ -123,7 +146,7 @@ ProjectExtras.homepage = function (value) {
 /**
  * Checks the license of a given project.
  *
- *
+ * @protected
  * @param {string} value The value to be checked.
  * @throws Error|EvalError
  * @return boolean
@@ -147,13 +170,13 @@ module.exports = ProjectExtras;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_create.html">commands/create</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_update.html">commands/update</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-engine_utils_cliMockup.html">engine/utils/cliMockup</a></li><li><a href="module-engine_utils_string_utils.html">engine/utils/string_utils</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_create-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base_command.html">base/command</a></li><li><a href="module-base_spark.html">base/spark</a></li><li><a href="module-commands_about.html">commands/about</a></li><li><a href="module-commands_check.html">commands/check</a></li><li><a href="module-commands_create.html">commands/create</a></li><li><a href="module-commands_install.html">commands/install</a></li><li><a href="module-commands_publish.html">commands/publish</a></li><li><a href="module-commands_update.html">commands/update</a></li><li><a href="module-commands_version.html">commands/version</a></li><li><a href="module-engine_utils_cliMockup.html">engine/utils/cliMockup</a></li><li><a href="module-engine_utils_string_utils.html">engine/utils/string_utils</a></li><li><a href="module-project.html">project</a></li><li><a href="module-project_extras.html">project/extras</a></li><li><a href="module-project_mandatory.html">project/mandatory</a></li><li><a href="module-utils_command_utils.html">utils/command_utils</a></li><li><a href="module-utils_omen_api.html">utils/omen_api</a></li><li><a href="module-utils_project_utils.html">utils/project_utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base_command-CommandOmen.html">CommandOmen</a></li><li><a href="module-base_spark-Spark.html">Spark</a></li><li><a href="module-commands_about-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands_check-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands_create-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands_install-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands_publish-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands_version-VersionOmen.html">VersionOmen</a></li><li><a href="module-engine_utils_cliMockup-CliMockup.html">CliMockup</a></li><li><a href="module-project_extras-ProjectExtras.html">ProjectExtras</a></li><li><a href="module-project_mandatory-ProjectMandatory.html">ProjectMandatory</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-utils_command_utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils_omen_api-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils_project_utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon May 18 2015 23:24:45 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Wed May 20 2015 18:51:45 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>
