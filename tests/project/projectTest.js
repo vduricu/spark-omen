@@ -29,6 +29,12 @@ module.exports = {
             project.check();
         }, Error);
 
+        test.equal(project.get('name'), "test/simple");
+        test.equal(project.get('version'), "0.1.2");
+        var author = project.get('author');
+        test.equal(author.name, "Tester");
+        test.equal(author.email, "test@duricu.ro");
+
         test.done();
     },
     testIncompleteDefinition: function (test) {

@@ -66,7 +66,7 @@ ProjectMandatory.version = function (value) {
  */
 ProjectMandatory.author = function (value) {
     var namePattern = new RegExp("^[a-z \-]*$", "i"),
-        emailPattern = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", "i");
+        emailPattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$", "i");
 
     if (value === null || value === undefined)
         throw new Error("The author field must be filled!");

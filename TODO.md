@@ -12,7 +12,9 @@
    * Command to create a startup procedure
    * Command to display a correct propath for manual addition
    * Create wiki pages on github
-   * Create a good readme page
+   * Confluence page
+   * Create a better readme page
+   * Code coverage testing
    * Integration with Pacific AppServer (PAS)
    * Possibility to add scripts to be ran
        * post install
@@ -23,11 +25,13 @@
 # TODO - Every Version
 
    * Code comment
+   * Write unit tests
 
 # PARTIALY SOLVED
    * Adding promisses - partialy
    * Store which file has been used to install
-          * in case the file has changed (name) then prompt the user for deletion or canceling - on update command
-
+      * in case the file has changed (name) then prompt the user for deletion or canceling - on update command
    * Unit test
-   * Code coverage testing
+      * Extend project testing class
+      * Add tests for the commands that download from servers
+      * Test utilities class
