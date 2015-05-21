@@ -201,6 +201,11 @@ module.exports = {
             }, Error);
 
             test.done();
+        },
+        testInvalidParameters: function (test) {
+            test.expect(1);
+
+            test.done();
         }
     },
 
@@ -256,6 +261,99 @@ module.exports = {
             test.throws(function () {
                 Extras.keywords(["keyword", "keyword"]);
             }, Error);
+
+            test.done();
+        },
+        testInvalidParameters: function (test) {
+            test.expect(1);
+
+            test.done();
+        }
+    },
+
+    homepage: {
+        testOk: function (test) {
+            test.expect(1);
+
+            test.doesNotThrow(function () {
+                Extras.homepage("http://omen.cloud-studio.ro");
+            }, Error);
+
+            test.done();
+        },
+        testEmpty: function (test) {
+            test.expect(1);
+
+            test.throws(function () {
+                Extras.homepage("");
+            }, Error);
+
+            test.done();
+        },
+        testInvalid: function (test) {
+            test.expect(1);
+
+            test.throws(function () {
+                Extras.homepage("ht##:\\regular");
+            }, Error);
+
+            test.done();
+        },
+        testInvalidParameters: function (test) {
+            test.expect(1);
+
+            test.done();
+        }
+    },
+
+    license: {
+        testOkName: function (test) {
+            test.expect(1);
+
+            test.doesNotThrow(function () {
+                Extras.license("GPL V.3");
+            }, Error);
+
+            test.done();
+        },
+        testOkUrl: function (test) {
+            test.expect(1);
+
+            test.doesNotThrow(function () {
+                Extras.license("http://duricu.ro/license.txt");
+            }, Error);
+
+            test.done();
+        },
+        testEmpty: function (test) {
+            test.expect(1);
+
+            test.throws(function () {
+                Extras.homepage("");
+            }, Error);
+
+            test.done();
+        },
+        testInvalid: function (test) {
+            test.expect(1);
+
+            test.throws(function () {
+                Extras.homepage("ht##:\\regular");
+            }, Error);
+
+            test.done();
+        },
+        testInvalid2: function (test) {
+            test.expect(1);
+
+            test.throws(function () {
+                Extras.homepage("G3P3L3 ###");
+            }, Error);
+
+            test.done();
+        },
+        testInvalidParameters: function (test) {
+            test.expect(1);
 
             test.done();
         }

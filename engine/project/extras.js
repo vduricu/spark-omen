@@ -124,7 +124,7 @@ ProjectExtras.homepage = function (value) {
  * @return boolean
  */
 ProjectExtras.license = function (value) {
-    var licensePattern = new RegExp("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", "i"),
+    var licensePattern = new RegExp("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(\/[\w\.-]*)*\/?$", "i"),
         licenseSPattern = new RegExp("^[a-z \.-]+[a-z0-9 \.-]*$", "i");
 
     if (!licensePattern.test(value))
