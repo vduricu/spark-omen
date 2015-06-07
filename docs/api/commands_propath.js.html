@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: commands/update</title>
+    <title>JSDoc: Source: commands/propath.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,206 +17,65 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: commands/update</h1>
+    <h1 class="page-title">Source: commands/propath.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Updates the project with the dependencies defined in the project.json file.</div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Valentin Duricu (valentin@duricu.ro)</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_update.js.html">commands/update.js</a>, <a href="commands_update.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~CommandOmen"><span class="type-signature">(inner) </span>CommandOmen<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Attach the super class.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_update.js.html">commands/update.js</a>, <a href="commands_update.js.html#line28">line 28</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Displays the full propath to be used in the application.
+ *
+ * @package engine\commands
+ * @author Valentin Duricu (valentin@duricu.ro)
+ * @date 07.06.2015
+ * @module commands/propath
+ */
+/*jslint node: true */
+"use strict";
+
+var Project = require('./../project/project'),
+    Spark = require('./../base/spark'),
+    CommandOmen = require('./../base/command'),
+    OmenAPI = require('./../utils/omen_api');
+var PropathOmen;
+
+/**
+ * Propath command constructor.
+ *
+ * @class
+ */
+PropathOmen = function () {
+};
+
+/**
+ * Attach the super class.
+ *
+ * @var CommandOmen
+ */
+PropathOmen.prototype = new CommandOmen();
+
+/**
+ * Code that runs when a command is executed.
+ */
+PropathOmen.prototype.run = function () {
+    var lock = new Project('omen.lock'),
+        propathString = ' propath = "' + OmenAPI.propath(lock) + ';" + propath.';
+
+    this.cli().ok('====================================================');
+    this.cli().ok('    Omen (' + Spark.version() + ') - ProPath value:');
+    this.cli().ok('----------------------------------------------------');
+    this.cli().ok(propathString.replace(/;;/gi, ';'));
+    this.cli().ok('====================================================');
+};
+
+
+module.exports = PropathOmen;</code></pre>
+        </article>
+    </section>
 
 
 

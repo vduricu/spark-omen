@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: commands/update</title>
+    <title>JSDoc: Source: commands/template.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,206 +17,66 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: commands/update</h1>
+    <h1 class="page-title">Source: commands/template.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        
-            
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">Updates the project with the dependencies defined in the project.json file.</div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Valentin Duricu (valentin@duricu.ro)</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_update.js.html">commands/update.js</a>, <a href="commands_update.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Classes</h3>
-
-        <dl>
-            <dt><a href="module-commands_update-UpdateOmen.html">UpdateOmen</a></dt>
-            <dd></dd>
-        </dl>
-    
-
-     
-
-    
-
-    
-        <h3 class="subsection-title">Members</h3>
-
-        
-            
-<h4 class="name" id="~CommandOmen"><span class="type-signature">(inner) </span>CommandOmen<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    Attach the super class.
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_update.js.html">commands/update.js</a>, <a href="commands_update.js.html#line28">line 28</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Generates sample files based on template files stored in the templates folder.
+ *
+ * @package engine\commands
+ * @author Valentin Duricu (valentin@duricu.ro)
+ * @date 07.06.2015
+ * @module commands/template
+ */
+/*jslint node: true */
+"use strict";
+
+var CommandOmen = require('./../base/command'),
+    templates = require('./../../templates/templates');
+var TemplateOmen;
+
+/**
+ * Templates command constructor.
+ *
+ * @class
+ */
+TemplateOmen = function () {
+};
+
+/**
+ * Attach the super class.
+ *
+ * @var CommandOmen
+ */
+TemplateOmen.prototype = new CommandOmen();
+
+/**
+ * Code that runs when a command is executed.
+ */
+TemplateOmen.prototype.run = function () {
+    var args = GLOBAL.OMEN_CLI_ARGS,
+        filename = "sample";
+
+    for (var i in args) {
+        if (args[i] == "template") {
+            filename = args[i + 1];
+            if (filename === null || filename === undefined)
+                filename = "sample";
+        }
+    }
+
+    templates(filename, this.cli());
+};
+
+module.exports = TemplateOmen;</code></pre>
+        </article>
+    </section>
 
 
 
