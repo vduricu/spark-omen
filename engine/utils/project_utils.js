@@ -17,7 +17,6 @@ var unirest = require('unirest'),
     tar = require('tar'),
     zlib = require('zlib'),
     Download = require('download'),
-    Decompress = require("decompress"),
     Q = require("q");
 
 /**
