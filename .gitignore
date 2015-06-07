@@ -35,3 +35,5 @@ sandbox
 .settings/
 .tern-project
 .idea/
+windows.start.cmd
+bin/omen.cmd

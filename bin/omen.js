@@ -1,7 +1,7 @@
 /*jslint node: true */
 "use strict";
 
-require('engine/utils/string_utils');
+require('./../engine/utils/string_utils');
 
 var cli          = require('cli').enable('status'),
     commandUtils = require('./../engine/utils/command_utils');
@@ -14,7 +14,7 @@ cli.parse({
 });
 
 cli.main(function (args, options) {
-    try {
+    //try {
         var command = args[0],
             filename = "project.json";
         GLOBAL.OMEN_CLI_ARGS = args;
@@ -33,7 +33,7 @@ cli.main(function (args, options) {
             return commandUtils.CommandExecutor('version').run();
 
         return commandUtils.CommandExecutor(command).run(filename);
-    } catch (err) {
-        this.error(err.message);
-    }
+    //} catch (err) {
+    //    this.error(err.message);
+    //}
 });

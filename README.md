@@ -27,3 +27,8 @@ The following commands are available to the end user:
    * **omen check**
    * **omen version**
    * **omen about**
+
+## Windows Development
+
+If development is being done on an Windows Machine, please adjust the windows.start.sample file and bin/omen.sample.
+Rename them to have cmd extension and then run them.

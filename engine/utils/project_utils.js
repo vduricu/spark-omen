@@ -9,16 +9,16 @@
 /*jslint node: true */
 "use strict";
 
-var unirest    = require('unirest'),
-    OmenAPI    = require('./omen_api'),
-    fs         = require('fs'),
-    path       = require('path'),
-    fstream    = require('fstream'),
-    tar        = require('tar'),
-    zlib       = require('zlib'),
-    Download   = require('download'),
+var unirest = require('unirest'),
+    OmenAPI = require('./omen_api'),
+    fs = require('fs'),
+    path = require('path'),
+    fstream = require('fstream'),
+    tar = require('tar'),
+    zlib = require('zlib'),
+    Download = require('download'),
     Decompress = require("decompress"),
-    Q          = require("q");
+    Q = require("q");
 
 /**
  * Project manipulation utilities.
@@ -149,7 +149,7 @@ ProjectUtils.checkDependencies = function (dependencies, update) {
  * @return Promise
  */
 ProjectUtils.downloadDependencies = function (dependencies) {
-    var downloads = (new Download({mode: '755'})).dest('./vendors'),
+    var downloads = (new Download({mode: '755', extract: true})).dest('./vendors'),
         deferred = Q.defer();
 
     /* Build the download list. */
@@ -281,36 +281,18 @@ ProjectUtils.install = function (omenLock, cli, res) {
         cli.info("Downloading files");
 
         /* Download the dependencies. */
-        ProjectUtils.downloadDependencies(res.dependencies).then(function (files) {
-                throw new EvalError("Rewrite code");
-                //var fullPath = path.resolve('./vendors/');
-                //
-                ///* Store the received dependencies in the lock object. */
-                //for (var iPacks in res.packages) {
-                //    omenLock.packages[res.packages[iPacks].package] = res.packages[iPacks].version;
-                //}
-                //
-                ///* Store the lock object*/
-                //ProjectUtils.omenLockWrite(cli, omenLock);
-                //
-                ///* Decompress each of the received files. */
-                //for (var iFiles in files) {
-                //    (new Decompress({mode: '755'}))
-                //        .src(files[iFiles].path)
-                //        .dest(fullPath)
-                //        .use(Decompress.targz({strip: 1}))
-                //        .run(function (err, archFiles) {
-                //            var pack = res.packages[files[iFiles].path.substring(fullPath.length + 1)];
-                //
-                //            if (err) {
-                //                cli.error("Problems installing: " + pack.package + " (version: " + pack.version + ") - ");
-                //                cli.error(err);
-                //                return;
-                //            }
-                //
-                //            cli.ok("Package: " + pack.package + " (version: " + pack.version + ") - Installed");
-                //        });
-                //}
+        ProjectUtils.downloadDependencies(res.dependencies).then(function () {
+               /* Store the received dependencies in the lock object. */
+                for (var iPacks in res.packages) {
+                    var omenPackage = res.packages[iPacks];
+                    omenLock.packages[omenPackage.package] = omenPackage.version;
+                }
+
+                for(var i in omenLock.packages)
+                    cli.ok("Installed package: [" + i + "] version: [" + omenLock.packages[i] + "].");
+
+                /* Store the lock object*/
+                ProjectUtils.omenLockWrite(cli, omenLock);
             },
             function (err) {
                 /* In case an error is received, display it. */
