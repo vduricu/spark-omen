@@ -34,3 +34,4 @@ sandbox
 .project
 .settings/
 .tern-project
+.idea/

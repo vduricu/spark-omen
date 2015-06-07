@@ -83,6 +83,9 @@ ProjectExtras.contributors = function (value) {
 ProjectExtras.keywords = function (value) {
     var keywordPattern = new RegExp("^[a-z0-9 _\-]*$", "i");
 
+    if(value.constructor !== Array)
+        throw new Error("Invalid parameter sent!");
+
     for (var i in value) {
         if (value[i] === null || value[i] === undefined || value[i].length === 0)
             throw new Error("The contributor name must be filled!");
@@ -109,7 +112,7 @@ ProjectExtras.keywords = function (value) {
  * @return boolean
  */
 ProjectExtras.homepage = function (value) {
-    var homepagePattern = new RegExp("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$", "i");
+    var homepagePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi;
 
     if (!homepagePattern.test(value))
         throw new EvalError("The homepage '" + value + "' is not valid! (example: http://omen.cloud-studio.ro)");
@@ -124,7 +127,7 @@ ProjectExtras.homepage = function (value) {
  * @return boolean
  */
 ProjectExtras.license = function (value) {
-    var licensePattern = new RegExp("^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})(\/[\w\.-]*)*\/?$", "i"),
+    var licensePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi,
         licenseSPattern = new RegExp("^[a-z \.-]+[a-z0-9 \.-]*$", "i");
 
     if (!licensePattern.test(value))

@@ -204,6 +204,10 @@ module.exports = {
         },
         testInvalidParameters: function (test) {
             test.expect(1);
+            
+            test.throws(function(){
+                Extras.contributors("666");
+            }, Error);
 
             test.done();
         }
@@ -267,6 +271,10 @@ module.exports = {
         testInvalidParameters: function (test) {
             test.expect(1);
 
+            test.throws(function () {
+                Extras.keywords(12333);
+            }, Error);
+
             test.done();
         }
     },
@@ -300,7 +308,15 @@ module.exports = {
             test.done();
         },
         testInvalidParameters: function (test) {
-            test.expect(1);
+            test.expect(2);
+
+            test.throws(function () {
+                Extras.homepage([]);
+            }, Error);
+
+            test.throws(function () {
+                Extras.homepage({});
+            }, Error);
 
             test.done();
         }
@@ -320,7 +336,7 @@ module.exports = {
             test.expect(1);
 
             test.doesNotThrow(function () {
-                Extras.license("http://duricu.ro/license.txt");
+                Extras.license("http://duricu.ro/license.html");
             }, Error);
 
             test.done();
@@ -353,7 +369,15 @@ module.exports = {
             test.done();
         },
         testInvalidParameters: function (test) {
-            test.expect(1);
+            test.expect(2);
+
+            test.throws(function () {
+                Extras.homepage([]);
+            }, Error);
+
+            test.throws(function () {
+                Extras.homepage({});
+            }, Error);
 
             test.done();
         }
