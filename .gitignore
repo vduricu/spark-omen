@@ -30,3 +30,7 @@ vendors
 omenpackage.spk
 
 sandbox
+.jshintrc
+.project
+.settings/
+.tern-project
