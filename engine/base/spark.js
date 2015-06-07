@@ -32,13 +32,13 @@ var Spark = {
      *
      * @var {number}
      */
-    sprint: 1,
+    stage: 2,
     /**
      * The codename of the version.
      *
      * @var {string}
      */
-    codename: "Tristan Tzara",
+    codename: "Season 1",
 
     /**
      * Displays the full version of the application.
@@ -46,7 +46,7 @@ var Spark = {
      * @return String
      */
     version: function () {
-        return this.major + "." + this.minor + "." + this.sprint;
+        return this.major + "." + this.minor + "." + this.stage;
     }
 };
 

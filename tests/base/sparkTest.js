@@ -16,7 +16,7 @@ module.exports = {
         test.expect(3);
         test.equal(spark.major, 0);
         test.equal(spark.minor, 1);
-        test.equal(spark.sprint, 1);
+        test.equal(spark.stage, 2);
         test.done();
     }
 };
