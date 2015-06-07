@@ -29,6 +29,12 @@ OmenAPI.buildURL = function (url) {
     return GLOBAL.OMEN_ENV.url + ("/api/v1/" + url).replace("\/\/", "/");
 };
 
+/**
+ * Lists the subfolder structure of the given folder.
+ *
+ * @param {String} filename The path to the folder.
+ * @return {Object}
+ */
 OmenAPI.folderLister = function (filename) {
     var stats = fs.lstatSync(filename), info = {}, content = [];
 
@@ -53,8 +59,14 @@ OmenAPI.folderLister = function (filename) {
     return info;
 };
 
+/**
+ * Returns the propath to be used by the current defined application.
+ *
+ * @param {Project} lock The lock file reference.
+ * @return {String}
+ */
 OmenAPI.propath = function (lock) {
-    var propath = 'propath = "',
+    var propath = '',
         sourceFolder = ["src", "source"],
         vendors = OmenAPI.folderLister('./vendors/');
 
@@ -77,7 +89,7 @@ OmenAPI.propath = function (lock) {
         propath += folder + ";";
     }
 
-    propath += ';" + propath.';
+    propath += ';';
     return propath.replace(/;;/gi,';');
 };
 

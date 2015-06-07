@@ -15,6 +15,11 @@ var Spark = require('./../engine/base/spark'),
     fs = require('fs'),
     path = require('path');
 
+/**
+ * Holds a list of templates (filename and the extension of the endfile).
+ *
+ * @var Object
+ */
 var templates = {
     sample: {
         filename: "sample.hbs",
@@ -22,6 +27,11 @@ var templates = {
     }
 };
 
+/**
+ * Holds a list of variable that can be used in template files.
+ *
+ * @var Object
+ */
 var varsToCompile = {
     propath: OmenAPI.propath(),
     name: "",
@@ -29,6 +39,12 @@ var varsToCompile = {
     version: Spark.version()
 };
 
+/**
+ * Function to create the file based on the template.
+ *
+ * @param {String} filename The name of the template
+ * @param {Object} cli A reference to the CLI object
+ */
 var templateRun = function(filename, cli){
     var template = templates[filename];
     if(template === null || template === undefined)

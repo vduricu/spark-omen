@@ -34,12 +34,13 @@ PropathOmen.prototype = new CommandOmen();
  * Code that runs when a command is executed.
  */
 PropathOmen.prototype.run = function () {
-    var lock = new Project('omen.lock');
+    var lock = new Project('omen.lock'),
+        propathString = ' propath = "' + OmenAPI.propath(lock) + ';" + propath.';
 
     this.cli().ok('====================================================');
     this.cli().ok('    Omen (' + Spark.version() + ') - ProPath value:');
     this.cli().ok('----------------------------------------------------');
-    this.cli().ok(OmenAPI.propath(lock));
+    this.cli().ok(propathString.replace(/;;/gi, ';'));
     this.cli().ok('====================================================');
 };
 
