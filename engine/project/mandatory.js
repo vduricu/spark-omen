@@ -25,7 +25,7 @@ var ProjectMandatory = {};
  * @return boolean
  */
 ProjectMandatory.name = function (value) {
-    var namePattern = new RegExp("^[a-z0-9_]+\/[a-z0-9_]+$", "i");
+    var namePattern = new RegExp("^[a-z0-9_]+(\/[a-z0-9_]+)?$", "i");
 
     if (value === null || value === undefined || value.length === 0)
         throw new Error("The project name cannot be empty!");

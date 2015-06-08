@@ -14,10 +14,13 @@ var Mandatory = require('../../engine/project/mandatory');
 module.exports = {
     name: {
         testOk: function (test) {
-            test.expect(1);
+            test.expect(2);
 
             test.doesNotThrow(function () {
                 Mandatory.name("test/test");
+            }, Error);
+            test.doesNotThrow(function () {
+                Mandatory.name("test");
             }, Error);
 
             test.done();
@@ -35,7 +38,7 @@ module.exports = {
             test.expect(1);
 
             test.throws(function () {
-                Mandatory.name("test");
+                Mandatory.name("/test");
             }, EvalError);
 
             test.done();

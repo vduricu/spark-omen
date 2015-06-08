@@ -48,6 +48,17 @@ ProjectUtils.omenLockWrite = function (cli, omenLock) {
 };
 
 /**
+ * Writes the updated project file.
+ *
+ * @param {Object} cli The CLI object reference.
+ * @param {Project} project The project file.
+ */
+ProjectUtils.omenProjectUpdate = function (cli, project) {
+    cli.ok("Writing project.json file...");
+    fs.writeFile(path.resolve("./project.json"), JSON.stringify(project.all(), null, 4));
+};
+
+/**
  * Writes the omen project file - used for the create command.
  *
  * @param {Object} cli The CLI object reference.
@@ -272,6 +283,18 @@ ProjectUtils.install = function (omenLock, cli, res) {
         return;
     }
 
+    var installedPackages = Object.keys(omenLock.packages);
+    for (var packageName in res.packages) {
+        var packageDl = res.packages[packageName];
+
+        if (installedPackages.indexOf(packageDl.package) >= 0)
+            if (packageDl.version == omenLock.packages[packageDl.package]) {
+                delete res.dependencies[packageDl.package];
+                delete res.packages[packageName];
+            }
+
+    }
+
     /* Check the existence of the vendors folder and create if it doesn't.*/
     if (!fs.existsSync("./vendors"))
         fs.mkdirSync("./vendors");
@@ -281,17 +304,28 @@ ProjectUtils.install = function (omenLock, cli, res) {
 
         /* Download the dependencies. */
         ProjectUtils.downloadDependencies(res.dependencies).then(function () {
-               /* Store the received dependencies in the lock object. */
+                /* Store the received dependencies in the lock object. */
                 for (var iPacks in res.packages) {
                     var omenPackage = res.packages[iPacks];
                     omenLock.packages[omenPackage.package] = omenPackage.version;
-                }
 
-                for(var i in omenLock.packages)
-                    cli.ok("Installed package: [" + i + "] version: [" + omenLock.packages[i] + "].");
+                    cli.ok("Installed package: [" + omenPackage.package + "] version: [" + omenPackage.version + "].");
+                }
 
                 /* Store the lock object*/
                 ProjectUtils.omenLockWrite(cli, omenLock);
+
+                if (GLOBAL.OMEN_SAVE) {
+                    var deps = GLOBAL.OMEN_PROJECT.get('dependencies');
+
+                    for(var packageName in deps){
+                        if(deps[packageName] == GLOBAL.OMEN_PROJECT.MAX_VERSION)
+                            deps[packageName] = omenLock.packages[packageName];
+                    }
+
+                    GLOBAL.OMEN_PROJECT.setDependency(deps);
+                    ProjectUtils.omenProjectUpdate(cli, GLOBAL.OMEN_PROJECT);
+                }
             },
             function (err) {
                 /* In case an error is received, display it. */

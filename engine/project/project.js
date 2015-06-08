@@ -9,7 +9,8 @@
 /*jslint node: true */
 "use strict";
 
-var fs = require('fs');
+var fs = require('fs'),
+    extend = require('util')._extend;
 
 var Project;
 
@@ -52,6 +53,15 @@ Project = function (filename) {
          */
         _extras = require('./extras');
 
+
+    /**
+     * Holds the maximum version number.
+     *
+     * @property
+     * @var String
+     */
+    this.MAX_VERSION = "<=999.999.999";
+
     /**
      * Checks the project to be ok.
      *
@@ -86,6 +96,10 @@ Project = function (filename) {
      * @return Object|String|Object[]|String[]
      */
     this.get = function (key) {
+        var val = _information[key];
+
+        if(typeof val === "object" && val !== null)
+            return extend({},_information[key]);
         return _information[key];
     };
 
@@ -121,6 +135,26 @@ Project = function (filename) {
      */
     this.all = function () {
         return _information;
+    };
+
+    this.addDependency = function (omenPackage, omenVersion) {
+        if (!self.has('dependencies'))
+            _information.dependencies = {};
+
+        _information.dependencies[omenPackage] = omenVersion;
+    };
+
+    this.hasDependency = function (omenPackage) {
+        if (!self.has('dependencies'))
+            return false;
+
+        var dep = _information.dependencies[omenPackage];
+
+        return dep !== null && dep !== undefined && dep.length !== 0;
+    };
+
+    this.setDependency = function (omenPackages) {
+        _information.dependencies = omenPackages;
     };
 
     /**

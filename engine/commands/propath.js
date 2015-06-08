@@ -35,12 +35,33 @@ PropathOmen.prototype = new CommandOmen();
  */
 PropathOmen.prototype.run = function () {
     var lock = new Project('omen.lock'),
-        propathString = ' propath = "' + OmenAPI.propath(lock) + ';" + propath.';
+        propath = OmenAPI.propath(lock),
+        args = GLOBAL.OMEN_CLI_ARGS,
+        result = "full";
+
+    for (var i = 0; i < args.length; i++) {
+        if (args[i] == "propath") {
+            result = args[i + 1];
+            if (result === null || result === undefined)
+                result = "full";
+        }
+    }
 
     this.cli().ok('====================================================');
     this.cli().ok('    Omen (' + Spark.version() + ') - ProPath value:');
     this.cli().ok('----------------------------------------------------');
-    this.cli().ok(propathString.replace(/;;/gi, ';'));
+    switch (result) {
+        case 'shell':
+            this.cli().ok((propath + '$PROPATH').replace(/;/gi, ':'));
+            break;
+        case 'appserver':
+            this.cli().ok((propath + ';@{PROPATH}').replace(/;;/gi, ';'));
+            break;
+        default:
+        case 'full':
+            this.cli().ok(('propath = "' + propath + ';" + propath.').replace(/;;/gi, ';'));
+            break;
+    }
     this.cli().ok('====================================================');
 };
 

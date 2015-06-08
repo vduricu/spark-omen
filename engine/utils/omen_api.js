@@ -9,7 +9,8 @@
 /*jslint node: true */
 "use strict";
 
-var path = require('path'),
+var Project = require('./../project/project'),
+    path = require('path'),
     fs = require('fs');
 
 /**
@@ -72,18 +73,22 @@ OmenAPI.propath = function (lock) {
 
     propath += path.resolve('.') + ";";
 
-    for(var i in vendors.content){
-        var omenPackage = vendors.content[i];
+    for(var vendor in vendors.content){
+        var omenPackage = vendors.content[vendor];
         var folder = omenPackage.file;
 
         if(omenPackage.type !== "directory")
             continue;
 
-        for(var j in omenPackage.content){
-            if (omenPackage.content[j].type == "directory" &&
-                sourceFolder.indexOf(omenPackage.content[j].file) >= 0)
-                folder += "/src";
-        }
+        var project = new Project(path.resolve('./vendors/' + folder + '/project.json'));
+        if(project.has('src'))
+            folder += '/' + project.get('src');
+        else
+            for(var innerPackage in omenPackage.content){
+                if (omenPackage.content[innerPackage].type == "directory" &&
+                    sourceFolder.indexOf(omenPackage.content[innerPackage].file) >= 0)
+                    folder += "/src";
+            }
 
         folder = path.resolve('./vendors/' + folder);
         propath += folder + ";";
