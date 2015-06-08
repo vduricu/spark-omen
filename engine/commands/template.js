@@ -35,7 +35,7 @@ TemplateOmen.prototype.run = function () {
     var args = GLOBAL.OMEN_CLI_ARGS,
         filename = "sample";
 
-    for (var i in args) {
+    for (var i = 0; i < args.length; i++) {
         if (args[i] == "template") {
             filename = args[i + 1];
             if (filename === null || filename === undefined)

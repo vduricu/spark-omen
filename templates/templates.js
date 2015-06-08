@@ -24,6 +24,10 @@ var templates = {
     sample: {
         filename: "sample.hbs",
         extension: ".p"
+    },
+    startup: {
+        filename: "startup.hbs",
+        extension: ".p"
     }
 };
 

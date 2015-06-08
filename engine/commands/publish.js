@@ -49,7 +49,7 @@ PublishOmen.prototype.run = function (filename) {
     var args = GLOBAL.OMEN_CLI_ARGS;
     var whatToDo = "new";
 
-    for (var i in args) {
+    for (var i = 0; i < args.length; i++) {
         if (args[i] == "publish") {
             whatToDo = args[i + 1];
             if (whatToDo === null || whatToDo === undefined)

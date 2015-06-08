@@ -194,7 +194,7 @@ ProjectUtils.publish = function (project, promptResult) {
     /**
      * Create the package that will be sent to the repository.
      * We will create a .tar.gz2 file with .spk extension.
-     * */
+     */
     var writer = fstream.Writer({'path': 'omenpackage.spk'});
     fstream.Reader({
         'path': '.',
