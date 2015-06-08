@@ -21,6 +21,8 @@ An Omen project file is described by the following elements: *v0.1.1*
          * "2.\*" - Latest version of (latest sub version of, latest patch of)
          * "<=2.3.0" - First version available less or equal than given
          * "<2.3.0" - First version available less than given
+   * **src**: the location of the sources, relative to the project path
+      * example: "src" or "source" or "com"
 
 
 ```javascript
@@ -31,6 +33,7 @@ An Omen project file is described by the following elements: *v0.1.1*
     "keywords": [ "sample", "package", "omen" ],
     "homepage": "http://omen.duricu.ro",
     "license": "http://asd.omen.duricu.ro",
+    "src": "sources",
     "author": {
         "name": "Gigel Frone",
         "email": "gigel@duricu.ro"

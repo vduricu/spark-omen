@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
- * @module commands/about
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -15,7 +15,7 @@ var Project = require('./../project/project'),
 var AboutOmen;
 
 /**
- * About command constructor.
+ * Displays information about the current package.
  *
  * @class
  */

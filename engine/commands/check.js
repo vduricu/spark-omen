@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
- * @module commands/check
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -64,7 +64,7 @@ _checks.information = function (project, cli) {
 };
 
 /**
- * Check command constructor.
+ * Checks the given project.json file.
  *
  * @class
  */

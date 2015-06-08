@@ -4,7 +4,7 @@
  * @package engine\utils
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
- * @module utils/project_utils
+ * @module utils
  */
 /*jslint node: true */
 "use strict";
@@ -20,7 +20,7 @@ var unirest = require('unirest'),
     Q = require("q");
 
 /**
- * Project manipulation utilities.
+ * Project manipulation utilities. Installs the dependencies defined in the project.json file.
  *
  * @class
  */

@@ -4,7 +4,7 @@
  * @package engine\utils
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 17.04.2015
- * @module utils/command_utils
+ * @module utils
  */
 /*jslint node: true */
 "use strict";

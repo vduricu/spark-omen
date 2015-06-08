@@ -1,10 +1,10 @@
 /**
- * Omen API calls.
+ * Omen API calls and tools.
  *
  * @package engine\utils
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
- * @module utils/omen_api
+ * @module utils
  */
 /*jslint node: true */
 "use strict";
@@ -13,7 +13,7 @@ var path = require('path'),
     fs = require('fs');
 
 /**
- * API Calls Class
+ * Omen API calls and tools.
  *
  * @class
  */

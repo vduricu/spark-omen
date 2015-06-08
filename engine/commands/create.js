@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 17.05.2015
- * @module commands/create
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -18,7 +18,7 @@ var Project      = require('./../project/project'),
 var CreateOmen;
 
 /**
- * Create command constructor.
+ * Creates a new project in the current directory.
  *
  * @class
  */

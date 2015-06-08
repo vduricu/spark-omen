@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 28.04.2015
- * @module commands/update
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -18,7 +18,7 @@ var Project = require('./../project/project'),
 var UpdateOmen;
 
 /**
- * Update command constructor.
+ * Updates the project with the dependencies defined in the project.json file.
  *
  * @class
  */

@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 07.06.2015
- * @module commands/template
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -14,7 +14,7 @@ var CommandOmen = require('./../base/command'),
 var TemplateOmen;
 
 /**
- * Templates command constructor.
+ * Generates sample files based on template files stored in the templates folder.
  *
  * @class
  */

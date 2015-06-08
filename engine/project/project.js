@@ -14,7 +14,7 @@ var fs = require('fs');
 var Project;
 
 /**
- * Project information.
+ * Loads a project description file and returns several information from it.
  *
  * @class
  * @param {String} filename The name of the file to be parsed.

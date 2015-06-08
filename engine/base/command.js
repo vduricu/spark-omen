@@ -4,7 +4,7 @@
  * @package engine\base
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 17.04.2015
- * @module base/command
+ * @module base
  */
 /*jslint node: true */
 "use strict";
@@ -12,7 +12,7 @@
 var CommandOmen;
 
 /**
- * The base command class.
+ * The base command on which all other commands are created.
  *
  * @class
  * @return CommandOmen

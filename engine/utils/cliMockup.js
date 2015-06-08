@@ -4,7 +4,7 @@
  * @package engine/utils
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 18.05.2015
- * @module engine/utils/cliMockup
+ * @module utils
  */
 
 /*jslint node: true */

@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 07.06.2015
- * @module commands/propath
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -16,7 +16,7 @@ var Project = require('./../project/project'),
 var PropathOmen;
 
 /**
- * Propath command constructor.
+ * Displays the full propath to be used in the application.
  *
  * @class
  */

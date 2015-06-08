@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
- * @module commands/version
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -14,7 +14,7 @@ var Spark = require('./../base/spark'),
 var VersionOmen;
 
 /**
- * Version command constructor.
+ * Display information about current version.
  *
  * @class
  */

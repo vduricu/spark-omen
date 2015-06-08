@@ -1,5 +1,5 @@
 /**
- * Mandatory checks unit testing
+ * Extra fields checks unit testing
  *
  * @package test/project
  * @author Valentin Duricu (valentin@duricu.ro)
@@ -204,8 +204,8 @@ module.exports = {
         },
         testInvalidParameters: function (test) {
             test.expect(1);
-            
-            test.throws(function(){
+
+            test.throws(function () {
                 Extras.contributors("666");
             }, Error);
 
@@ -378,6 +378,89 @@ module.exports = {
             test.throws(function () {
                 Extras.homepage({});
             }, Error);
+
+            test.done();
+        }
+    },
+
+    src: {
+        testOkSource: function (test) {
+            test.expect(5);
+
+            test.doesNotThrow(function(){
+                Extras.src("source");
+            }, EvalError);
+
+            test.doesNotThrow(function(){
+                Extras.src("src/adm2");
+            }, EvalError);
+
+            test.doesNotThrow(function(){
+                Extras.src("src.32_qq/adm.32");
+            }, EvalError);
+
+            test.doesNotThrow(function(){
+                Extras.src("_qq/adm.32");
+            }, EvalError);
+
+            test.doesNotThrow(function(){
+                Extras.src(".pq");
+            }, EvalError);
+
+            test.done();
+        },
+        testEmpty: function (test) {
+            test.expect(1);
+
+            test.throws(function(){
+                Extras.src("");
+            }, EvalError);
+
+            test.done();
+        },
+        testInvalid: function (test) {
+            test.expect(6);
+
+            test.throws(function(){
+                Extras.src("32-aaqqq");
+            }, EvalError);
+
+            test.throws(function(){
+                Extras.src("#ana#");
+            }, EvalError);
+
+            test.throws(function(){
+                Extras.src(".correct/a#3");
+            }, EvalError);
+
+            test.throws(function(){
+                Extras.src("{.correct/a#3}");
+            }, EvalError);
+
+            test.throws(function(){
+                Extras.src("$122");
+            }, EvalError);
+
+            test.throws(function(){
+                Extras.src({} + 123);
+            }, EvalError);
+
+            test.done();
+        },
+        testInvalidParameters: function (test) {
+            test.expect(3);
+
+            test.throws(function(){
+                Extras.src();
+            }, Error);
+
+            test.throws(function(){
+                Extras.src([]);
+            }, EvalError);
+
+            test.throws(function(){
+                Extras.src({});
+            }, EvalError);
 
             test.done();
         }

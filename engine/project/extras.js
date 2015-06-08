@@ -1,10 +1,10 @@
 /**
  * Exports the extra checks for the project.
  *
- * @package engine\models
+ * @package engine\project
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
- * @module project/extras
+ * @module project
  */
 /*jslint node: true */
 "use strict";
@@ -66,10 +66,12 @@ ProjectExtras.contributors = function (value) {
 
             if (value[checkValue].email == value[mainValue].email)
                 throw new Error("Contributor '" + value[mainValue].name + "' " +
-                "and '" + value[checkValue].email + "' have the same email '" + value[mainValue].email + "'.");
+                    "and '" + value[checkValue].email + "' have the same email '" + value[mainValue].email + "'.");
 
         }
     }
+
+    return true;
 };
 
 /**
@@ -83,7 +85,7 @@ ProjectExtras.contributors = function (value) {
 ProjectExtras.keywords = function (value) {
     var keywordPattern = new RegExp("^[a-z0-9 _\-]*$", "i");
 
-    if(value.constructor !== Array)
+    if (value.constructor !== Array)
         throw new Error("Invalid parameter sent!");
 
     for (var i in value) {
@@ -101,6 +103,8 @@ ProjectExtras.keywords = function (value) {
                 throw new Error("The keyword '" + value[i] + "' is already defined.");
         }
     }
+
+    return true;
 };
 
 /**
@@ -114,8 +118,13 @@ ProjectExtras.keywords = function (value) {
 ProjectExtras.homepage = function (value) {
     var homepagePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi;
 
+    if (value === null || value === undefined)
+        throw new Error("Cannot check the empty value agains pattern.");
+
     if (!homepagePattern.test(value))
         throw new EvalError("The homepage '" + value + "' is not valid! (example: http://omen.cloud-studio.ro)");
+
+    return true;
 };
 
 /**
@@ -130,9 +139,34 @@ ProjectExtras.license = function (value) {
     var licensePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi,
         licenseSPattern = new RegExp("^[a-z \.-]+[a-z0-9 \.-]*$", "i");
 
+    if (value === null || value === undefined)
+        throw new Error("Cannot check the empty value agains pattern.");
+
     if (!licensePattern.test(value))
         if (!licenseSPattern.test(value))
             throw new EvalError("The license '" + value + "' is not valid! (example: GPL, MIT, or URL to CC)");
+
+    return true;
+};
+
+/**
+ * Checks the name of the source folder to be valid.
+ *
+ * @protected
+ * @param {string|number} value The value to be checked.
+ * @throws Error|EvalError
+ * @return boolean
+ */
+ProjectExtras.src = function (value) {
+    var sourceFolderPattern = new RegExp("^([a-z0-9 \._][a-z0-9 \.\-_]*\/?)+$", "i");
+
+    if (value === null || value === undefined)
+        throw new Error("Cannot check the empty value agains pattern.");
+
+    if (!sourceFolderPattern.test(value))
+        throw new EvalError("The source folder '" + value + "' is not valid!");
+
+    return true;
 };
 
 module.exports = ProjectExtras;

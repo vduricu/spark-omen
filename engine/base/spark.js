@@ -4,7 +4,7 @@
  * @package engine\base
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
- * @module base/spark
+ * @module base
  */
 /*jslint node: true */
 "use strict";
@@ -32,7 +32,7 @@ var Spark = {
      *
      * @var {number}
      */
-    stage: 2,
+    stage: 3,
     /**
      * The codename of the version.
      *

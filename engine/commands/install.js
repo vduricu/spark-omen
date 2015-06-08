@@ -4,7 +4,7 @@
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 16.04.2015
- * @module commands/install
+ * @module commands
  */
 /*jslint node: true */
 "use strict";
@@ -18,7 +18,7 @@ var Project = require('./../project/project'),
 var InstallOmen;
 
 /**
- * Install command constructor.
+ * Installs the dependencies defined in the project.json file.
  *
  * @class
  */

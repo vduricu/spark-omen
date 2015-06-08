@@ -4,7 +4,7 @@
  * @package engine\models
  * @author Valentin Duricu (valentin@duricu.ro)
  * @date 20.04.2015
- * @module project/mandatory
+ * @module project
  */
 /*jslint node: true */
 "use strict";
