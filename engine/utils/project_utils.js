@@ -181,32 +181,28 @@ ProjectUtils.downloadDependencies = function (dependencies) {
 };
 
 /**
- * Publishes the local package to the system defined repository.
+ * Creates the archive containing the project.
  *
- * @param {Project} project The information about the current package.
- * @param {Object} promptResult The password and other questions asked by the application.
- * @return Promise
+ * @param {String} archiveName The name of the final archive.
+ * @param {String} fullPath The fullPath to the folder to be archived.
+ * @param {String[]} lines The lines from the .omenignore file.
+ * @return Writer
  */
-ProjectUtils.publish = function (project, promptResult) {
-    var deferred, lines, data, fullPath;
-
-    deferred = Q.defer();
-    lines = [];
-    fullPath = path.resolve('.');
-
-    /* Try to read the file with ignore elements. */
-    try {
-        data = fs.readFileSync('.omenignore', "utf-8");
-        lines = data.split(/\n/);
-    } catch (err) {
-
-    }
-
+ProjectUtils.packageWriter = function (archiveName, fullPath, lines) {
     /**
      * Create the package that will be sent to the repository.
      * We will create a .tar.gz2 file with .spk extension.
      */
     var writer = fstream.Writer({'path': 'omenpackage.spk'});
+    for (var iLine in lines) {
+        var line = lines[iLine].trim();
+
+        if (line.startsWith("#") || line.length === 0)
+            delete lines[iLine];
+        else
+            lines[iLine] = line;
+    }
+
     fstream.Reader({
         'path': '.',
         'type': 'Directory',
@@ -216,6 +212,7 @@ ProjectUtils.publish = function (project, promptResult) {
             /* Filter some standard files to not be included in the package. */
             if (this.basename.match(/^\.git/) ||
                 this.basename.match(/^vendors/) ||
+                this.basename.match(new RegExp("^" + archiveName)) ||
                 this.basename.match(/^omenpackage.spk/) ||
                 this.basename.match(/^node_modules/))
                 return false;
@@ -223,6 +220,9 @@ ProjectUtils.publish = function (project, promptResult) {
             /* Filter the files specified in .omenignore file. */
             for (var iLine in lines) {
                 var line = lines[iLine].trim();
+
+                if (!_isValid(line) || line.startsWith("#") || line.length === 0)
+                    continue;
 
                 if (this.basename.match(new RegExp(line)))
                     return false;
@@ -238,6 +238,34 @@ ProjectUtils.publish = function (project, promptResult) {
         .pipe(zlib.Gzip())/* Compress the .tar file */
         .pipe(writer);
 
+    return writer;
+};
+
+/**
+ * Publishes the local package to the system defined repository.
+ *
+ * @param {String} whatToDo An action regarding the package.
+ * @param {Project} project The information about the current package.
+ * @param {Object} promptResult The password and other questions asked by the application.
+ * @return Promise
+ */
+ProjectUtils.publish = function (whatToDo, project, promptResult) {
+    var deferred, lines, data, fullPath;
+
+    deferred = Q.defer();
+    lines = [];
+    fullPath = path.resolve('.');
+
+    /* Try to read the file with ignore elements. */
+    try {
+        data = fs.readFileSync('.omenignore', "utf-8");
+        lines = data.split(/\n/);
+    } catch (err) {
+
+    }
+
+    var writer = ProjectUtils.packageWriter('omenpackage.spk', fullPath, lines);
+
     /* When the archive has been written to the fs, send it to the repository. */
     writer.on("close", function () {
         unirest.post(OmenAPI.buildURL('/publish/project'))
@@ -249,6 +277,8 @@ ProjectUtils.publish = function (project, promptResult) {
             .field("pass", promptResult.Password)
             .end(function (response) {
                 //console.log(response.body);
+                fs.unlinkSync(path.resolve('./omenpackage.spk'));
+
                 if (response.statusType == 4 || response.statusType == 5)
                     deferred.reject(new Error({status: response.status, body: response.body}));
                 else
@@ -256,6 +286,37 @@ ProjectUtils.publish = function (project, promptResult) {
             });
     });
 
+    return deferred.promise;
+};
+
+/**
+ * Packages the current project.
+ *
+ * @param {Project} project The information about the current package.
+ * @return Promise
+ */
+ProjectUtils.pack = function (project) {
+    var deferred, lines, data, fullPath;
+
+    deferred = Q.defer();
+    lines = [];
+    fullPath = path.resolve('.');
+
+    /* Try to read the file with ignore elements. */
+    try {
+        data = fs.readFileSync('.omenignore', "utf-8");
+        lines = data.split(/\n/);
+    } catch (err) {
+
+    }
+    var archiveName = project.get('name').replace(/[\/\/-]/gi, '_') + ".tar.gz";
+    var writer = ProjectUtils.packageWriter(archiveName, fullPath, lines);
+
+    /* When the archive has been written to the fs, send it to the repository. */
+    writer.on("close", function () {
+        fs.renameSync(path.resolve('./omenpackage.spk'), path.resolve('./' + archiveName));
+        deferred.resolve(archiveName);
+    });
 
     return deferred.promise;
 };
@@ -318,8 +379,8 @@ ProjectUtils.install = function (omenLock, cli, res) {
                 if (GLOBAL.OMEN_SAVE) {
                     var deps = GLOBAL.OMEN_PROJECT.get('dependencies');
 
-                    for(var packageName in deps){
-                        if(deps[packageName] == GLOBAL.OMEN_PROJECT.MAX_VERSION)
+                    for (var packageName in deps) {
+                        if (deps[packageName] == GLOBAL.OMEN_PROJECT.MAX_VERSION)
                             deps[packageName] = omenLock.packages[packageName];
                     }
 

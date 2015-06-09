@@ -1,5 +1,5 @@
 /**
- * Installs the dependencies defined in the project.json file.
+ * Publishes the current project to the configured omen repository.
  *
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
@@ -19,7 +19,7 @@ var Project = require('./../project/project'),
 var PublishOmen;
 
 /**
- * Installs the dependencies defined in the project.json file.
+ * Publishes the current project to the configured omen repository.
  *
  * @class
  */
@@ -60,7 +60,7 @@ PublishOmen.prototype.run = function (filename) {
     prompt.start();
 
     this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project installation:');
+    this.cli().ok('    Omen (' + Spark.version() + ') - Project publication:');
     this.cli().ok('----------------------------------------------------');
     this.cli().info("Reading project information");
 
@@ -94,7 +94,7 @@ PublishOmen.prototype.run = function (filename) {
                 throw new Error(err);
             }
 
-            ProjectUtils.publish(project, result).then(function (result) {
+            ProjectUtils.publish(whatToDo, project, result).then(function (result) {
                 if (result.status == "update")
                     self.cli().ok("Package updated!");
                 else
