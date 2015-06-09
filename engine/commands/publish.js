@@ -102,12 +102,11 @@ PublishOmen.prototype.run = function (filename) {
 
                 self.cli().ok('====================================================');
             }, function (err) {
-                self.cli().error(err);
-                if (err.message.body !== null) {
-                    if (err.message.body.error !== null && err.message.body.error !== undefined)
-                        self.cli().error(err.message.body.error.message);
+                if (err.body !== null) {
+                    if (err.body.error !== null && err.body.error !== undefined)
+                        self.cli().error(err.body.error.message);
                     else
-                        self.cli().error(err.message.body.message);
+                        self.cli().error(err.body.message);
                 }
                 self.cli().error('====================================================');
             });

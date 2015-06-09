@@ -280,7 +280,7 @@ ProjectUtils.publish = function (whatToDo, project, promptResult) {
                 fs.unlinkSync(path.resolve('./omenpackage.spk'));
 
                 if (response.statusType == 4 || response.statusType == 5)
-                    deferred.reject(new Error({status: response.status, body: response.body}));
+                    deferred.reject({status: response.status, body: response.body});
                 else
                     deferred.resolve(response.body);
             });
