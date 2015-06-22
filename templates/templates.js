@@ -44,12 +44,26 @@ var varsToCompile = {
 };
 
 /**
+ * Lists the available templates on the screen.
+ *
+ * @param {Object} cli A reference to the CLI object
+ */
+var listTemplates = function(cli){
+    for(var i in templates){
+        cli.ok('Template: ' + i + '\t\tExtension: ' + templates[i].extension);
+    }
+};
+
+/**
  * Function to create the file based on the template.
  *
  * @param {String} filename The name of the template
  * @param {Object} cli A reference to the CLI object
  */
 var templateRun = function(filename, cli){
+    if (filename == "list")
+        return listTemplates(cli);
+
     var template = templates[filename];
     if(template === null || template === undefined)
         return cli.error("The required template [" + filename + "} doesn't exists!");

@@ -52,6 +52,9 @@ CreateOmen.prototype.run = function () {
         }
     }
 
+    if (projectName === null || projectName === undefined || projectName.length === 0)
+        throw new Error("No name specified!");
+
     projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
 
     this.cli().info("Creating project '" + projectName + "'");

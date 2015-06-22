@@ -37,6 +37,9 @@ OmenAPI.buildURL = function (url) {
  * @return {Object}
  */
 OmenAPI.folderLister = function (filename) {
+    if(!fs.existsSync(filename))
+        return [];
+
     var stats = fs.lstatSync(filename), info = {}, content = [];
 
     info = {

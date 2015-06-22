@@ -43,7 +43,7 @@ cli.main(function (args, options) {
 
         return commandUtils.CommandExecutor(command).run(filename);
     } catch (err) {
-        throw err;
         this.error(err.message);
+        throw err;
     }
 });
