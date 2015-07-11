@@ -1,12 +1,12 @@
 {
   "name": "spark-omen",
   "description": "Dependency manager for OpenEdge applications.",
-  "version": "0.1.1",
+  "version": "0.1.4",
   "license": "CC-BY-SA-4.0",
   "homepage": "http://omen.cloud-studio.ro",
   "author": {
     "name": "Valentin Duricu",
-    "email": "valentin@duricu.ro"
+    "email": "valentin.duricu@gmail.com"
   },
   "keywords": [],
   "repository": {
@@ -16,6 +16,9 @@
   "main": "bin/omen",
   "engines": {
     "node": ">=0.10.0"
+  },
+  "bin":{
+    "omen": "omen.js"
   },
   "dependencies": {
     "cli": "^0.6.6",

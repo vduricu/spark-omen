@@ -45,11 +45,12 @@ The following commands are available to the end user:
    * **[omen template](#omen-template)**
    * **[omen update](#omen-update)**
    * **[omen version](#omen-version)**
+
 ---
 ### <a name="omen-about"></a>omen about
 Displays information about the current package.
 
-** Command: **
+**Command:**
 ```
 omen about
 ```
@@ -57,60 +58,60 @@ omen about
 ### <a name="omen-check"></a>omen check
 Checks the current project.json to be valid.
 
-** Command: **
+**Command:**
 ```
 omen check [<type>]
 ```
 
-** Arguments: **
-*  ***&lt;type&gt;***
- * **description**: Specifies the type of check to be done.
- * **mandatory**: No
- * **default value**: *information*
- * **posible values**:
-    * *information* - Validates the project.json information.
-    * *dependencies* - Checks the dependencies against the repository.
-    * *all* - Checks both the filled information and the dependencies.
+**Arguments:**
+   *  ***&lt;type&gt;***
+      * **description**: Specifies the type of check to be done.
+      * **mandatory**: No
+      * **default value**: *information*
+      * **posible values**:
+         * *information* - Validates the project.json information.
+         * *dependencies* - Checks the dependencies against the repository.
+         * *all* - Checks both the filled information and the dependencies.
 
 ### <a name="omen-create"></a>omen create
 Displays information about the current package.
 
-** Command: **
+**Command:**
 ```
 omen create <project-name>
 ```
 
-** Arguments: **
-*  **&lt;project-name&gt;**
- * **description**: Specifies the name of the project.
- * **mandatory**: Yes
- * **default value**: none
+**Arguments:**
+   * **&lt;project-name&gt;**
+      * **description**: Specifies the name of the project.
+      * **mandatory**: Yes
+      * **default value**: none
 
 ### <a name="omen-install"></a>omen install
 Installs the dependencies defined in the project.json file. If a package is
 specified then it will install the given package alongside the existing ones.
 
-** Command: **
+**Command:**
 ```
 omen install [(--save) <package-name> <package-name> ...]
 ```
 
-** Arguments: **
-*  ***&lt;package-name&gt;***
- * **description**: Specifies the name of the package to be installed.
+**Arguments:**
+   * ***&lt;package-name&gt;***
+      * **description**: Specifies the name of the package to be installed.
 Can be repeated.
- * **mandatory**: No
- * **default value**: none
+      * **mandatory**: No
+      * **default value**: none
 
-** Options: **
-*  ***--save/-s***
- * **description**: Stores the new packages into the project.json file.
- * **mandatory**: No
+**Options:**
+   * ***--save/-s***
+      * **description**: Stores the new packages into the project.json file.
+      * **mandatory**: No
 
 ### <a name="omen-pack"></a>omen pack
 Packs the current project into a tar.gz archive.
 
-** Command: **
+**Command:**
 ```
 omen pack
 ```
@@ -119,25 +120,25 @@ omen pack
 Builds a correct PROPATH string to be used either in a .p file or in
 appserver configuration.
 
-** Command: **
+**Command:**
 ```
 omen propath [<type>]
 ```
 
-** Arguments: **
-*  ***&lt;type&gt;***
- * **description**: Specifies the type of result to be displayed.
- * **mandatory**: No
- * **default value**: *full*
- * **posible values**:
-    * *shell* - Builds the PROPATH string to be used in a SHELL script.
-    * *appserver* - Builds the PROPATH string to be used in an AppServer configuration.
-    * *full* - Builds the PROPATH string to be used in a .p file.
+**Arguments:**
+   *  ***&lt;type&gt;***
+      * **description**: Specifies the type of result to be displayed.
+      * **mandatory**: No
+      * **default value**: *full*
+      * **posible values**:
+         * *shell* - Builds the PROPATH string to be used in a SHELL script.
+         * *appserver* - Builds the PROPATH string to be used in an AppServer configuration.
+         * *full* - Builds the PROPATH string to be used in a .p file.
 
 ### <a name="omen-publish"></a>omen publish
 Publishes the current project to the defined repository.
 
-** Command: **
+**Command:**
 ```
 omen publish
 ```
@@ -147,26 +148,26 @@ Generates a file based on the given template. If no template is given then
 it uses a default sample template. To see all the available templates use
 the "list" argument.
 
-** Command: **
+**Command:**
 ```
 omen template [list | <template-name>]
 ```
 
-** Arguments: **
-*  ***list***
- * **description**: Display a list with all the available templates.
- * **mandatory**: No
-*  ***&lt;template-name&gt;***
- * **description**: The name of the template to be generated.
- * **mandatory**: No
- * **default value**: sample
+**Arguments:**
+   *  ***list***
+      * **description**: Display a list with all the available templates.
+      * **mandatory**: No
+   *  ***&lt;template-name&gt;***
+      * **description**: The name of the template to be generated.
+      * **mandatory**: No
+      * **default value**: sample
 
 ### <a name="omen-update"></a>omen update
 Updates the installed dependencies based on the project.json and omen.lock
 files. Works only if the omen.lock file has been created (dependencies
 were installed).
 
-** Command: **
+**Command:**
 ```
 omen update
 ```
@@ -174,7 +175,7 @@ omen update
 ### <a name="omen-version"></a>omen version
 Displays information about the version of Omen.
 
-** Command: **
+**Command:**
 ```
 omen version
 ```
