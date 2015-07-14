@@ -112,8 +112,13 @@ PublishOmen.prototype.run = function (filename) {
             });
         });
     }, function(err){
-        console.log(err);
-        this.cli().info("AAA")
+        if (err.body !== null) {
+            if (err.body.error !== null && err.body.error !== undefined)
+                self.cli().error(err.body.error.message);
+            else
+                self.cli().error(err.body.message);
+        }
+        self.cli().error('====================================================');
     });
 };
 
