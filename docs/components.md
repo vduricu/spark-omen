@@ -27,7 +27,7 @@ An Omen project file is described by the following elements: *v0.1.1*
 
 ```javascript
 {
-    "name": "spark/omen",
+    "name": "spark-omen",
     "version": "1.0.3",
     "description": "Sample package",
     "keywords": [ "sample", "package", "omen" ],

@@ -1,5 +1,5 @@
 {
-  "name": "test/noDeps",
+  "name": "test-noDeps",
   "version": "0.1.1",
   "description": "Testing package. No Deps.",
   "keywords": [

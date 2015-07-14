@@ -17,7 +17,7 @@ module.exports = {
             test.expect(2);
 
             test.doesNotThrow(function () {
-                Mandatory.name("test/test");
+                Mandatory.name("test-test");
             }, Error);
             test.doesNotThrow(function () {
                 Mandatory.name("test");
@@ -57,6 +57,15 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.name("test#test");
+            }, EvalError);
+
+            test.done();
+        },
+        testInvalid4: function (test) {
+            test.expect(1);
+
+            test.throws(function () {
+                Mandatory.name("test/test");
             }, EvalError);
 
             test.done();

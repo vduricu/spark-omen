@@ -44,6 +44,6 @@ cli.main(function (args, options) {
         return commandUtils.CommandExecutor(command).run(filename);
     } catch (err) {
         this.error(err.message);
-        throw err;
+        //throw err;
     }
 });

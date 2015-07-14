@@ -42,7 +42,7 @@ module.exports = {
             test.equal(cliLines[i].type, "ok");
         }
 
-        test.equal(cliLines[3].message, "Name:\t\ttest/simple");
+        test.equal(cliLines[3].message, "Name:\t\ttest-simple");
         test.equal(cliLines[4].message, "Version:\t\t0.1.2");
 
         test.done();
@@ -65,7 +65,7 @@ module.exports = {
             test.equal(cliLines[i].type, "ok");
         }
 
-        test.equal(cliLines[3].message, "Name:\t\ttest/noDeps");
+        test.equal(cliLines[3].message, "Name:\t\ttest-noDeps");
         test.equal(cliLines[4].message, "Version:\t\t0.1.1");
 
         test.done();
@@ -88,7 +88,7 @@ module.exports = {
             test.equal(cliLines[i].type, "ok");
         }
 
-        test.equal(cliLines[3].message, "Name:\t\ttest/deps");
+        test.equal(cliLines[3].message, "Name:\t\ttest-deps");
         test.equal(cliLines[4].message, "Version:\t\t1.1.1");
 
         test.done();

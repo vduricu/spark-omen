@@ -111,6 +111,9 @@ PublishOmen.prototype.run = function (filename) {
                 self.cli().error('====================================================');
             });
         });
+    }, function(err){
+        console.log(err);
+        this.cli().info("AAA")
     });
 };
 
