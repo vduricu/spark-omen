@@ -1,14 +1,18 @@
 {
   "name": "spark-omen",
   "description": "Dependency manager for OpenEdge applications.",
-  "version": "0.1.5",
+  "version": "0.2.1",
   "license": "CC-BY-SA-4.0",
   "homepage": "http://omen.cloud-studio.ro",
+  "keywords": [
+    "omen", "spark", "openedge", "dependency manager",
+    "progress", "progress openedge", "openedge dependency manager",
+    "openedge project"
+  ],
   "author": {
     "name": "Valentin Duricu",
     "email": "valentin.duricu@gmail.com"
   },
-  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git://github.com/thg2oo6/spark-omen.git"

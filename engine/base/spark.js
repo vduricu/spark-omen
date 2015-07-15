@@ -26,19 +26,19 @@ var Spark = {
      *
      * @var {number}
      */
-    minor: 1,
+    minor: 2,
     /**
      * Holds the sprint number.
      *
      * @var {number}
      */
-    stage: 5,
+    stage: 1,
     /**
      * The codename of the version.
      *
      * @var {string}
      */
-    codename: "Season 1",
+    codename: "Season 2",
 
     /**
      * Displays the full version of the application.

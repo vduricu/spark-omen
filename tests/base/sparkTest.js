@@ -15,8 +15,8 @@ module.exports = {
     version: function (test) {
         test.expect(3);
         test.equal(spark.major, 0);
-        test.equal(spark.minor, 1);
-        test.equal(spark.stage, 5);
+        test.equal(spark.minor, 2);
+        test.equal(spark.stage, 1);
         test.done();
     }
 };

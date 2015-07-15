@@ -3,6 +3,10 @@
 
 Dependency manager for OpenEdge applications.
 
+**Stable Version**: 0.1.5
+
+**Unstable Version**: 0.2.1
+
 ## About
 
 Omen is a Dependency manager for OpenEdge applications. Based on the configuration attached to it,
@@ -38,6 +42,8 @@ The following commands are available to the end user:
    * **[omen about](#omen-about)**
    * **[omen check](#omen-check)**
    * **[omen create](#omen-create)**
+   * **[omen eclipse](#omen-eclipse)**
+   * **[omen init](#omen-init)**
    * **[omen install](#omen-install)**
    * **[omen pack](#omen-pack)**
    * **[omen propath](#omen-propath)**
@@ -74,18 +80,60 @@ omen check [<type>]
          * *all* - Checks both the filled information and the dependencies.
 
 ### <a name="omen-create"></a>omen create
-Displays information about the current package.
+Creates a new project with the given name
 
 **Command:**
 ```
-omen create <project-name>
+omen create <project-name> [--eclipse]
 ```
 
 **Arguments:**
    * **&lt;project-name&gt;**
       * **description**: Specifies the name of the project.
       * **mandatory**: Yes
-      * **default value**: none
+      * **default value**: none   
+      
+**Options:**
+   * ***--eclipse/-e***
+      * **description**: Triggers the eclipse components creation.
+      * **mandatory**: No
+      
+### <a name="omen-eclipse"></a>omen eclipse
+Initializes or updates eclipse components for the current project
+
+**Command:**
+```
+omen eclipse init|update
+```
+
+**Arguments:**
+  * **init**
+     * **description**: Initializes the eclipse project components for the project, such that it could
+be imported into Developer Studio.
+     * **mandatory**: Yes    
+  * **update**
+     * **description**: Updates the eclipse project components for the project, such that it could
+be imported into Developer Studio.
+     * **mandatory**: Yes
+     
+### <a name="omen-init"></a>omen init
+Init a project.json file in an existing location.
+
+**Command:**
+```
+omen init <project-name> [--eclipse]
+```
+
+**Arguments:**
+  * **&lt;project-name&gt;**
+     * **description**: Specifies the name of the project.
+     * **mandatory**: Yes
+     * **default value**: none
+     
+**Options:**
+   * ***--eclipse/-e***
+      * **description**: Triggers the eclipse components creation.
+      * **mandatory**: No
 
 ### <a name="omen-install"></a>omen install
 Installs the dependencies defined in the project.json file. If a package is

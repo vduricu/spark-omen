@@ -55,7 +55,7 @@ ProjectUtils.omenLockWrite = function (cli, omenLock) {
  */
 ProjectUtils.omenProjectUpdate = function (cli, project) {
     cli.ok("Writing project.json file...");
-    fs.writeFile(path.resolve("./project.json"), JSON.stringify(project.all(), null, 4));
+    fs.writeFileSync(path.resolve("./project.json"), JSON.stringify(project.all(), null, 4));
 };
 
 /**
@@ -66,7 +66,18 @@ ProjectUtils.omenProjectUpdate = function (cli, project) {
  */
 ProjectUtils.omenJsonWrite = function (cli, omenJson) {
     cli.ok("Writing project.json file...");
-    fs.writeFile(path.resolve("./" + omenJson.name + "/project.json"), JSON.stringify(omenJson, null, 4));
+    fs.writeFileSync(path.resolve("./" + omenJson.name + "/project.json"), JSON.stringify(omenJson, null, 4));
+};
+
+/**
+ * Writes the omen project file - used for the init command.
+ *
+ * @param {Object} cli The CLI object reference.
+ * @param {Object} omenJson The properties to be written in the project file.
+ */
+ProjectUtils.omenJsonInit = function (cli, omenJson) {
+    cli.ok("Writing project.json file...");
+    fs.writeFileSync(path.resolve("./project.json"), JSON.stringify(omenJson, null, 4));
 };
 
 /**

@@ -67,9 +67,10 @@ OmenAPI.folderLister = function (filename) {
  * Returns the propath to be used by the current defined application.
  *
  * @param {Project} lock The lock file reference.
+ * @param {String[]} listing The propath in array format
  * @return {String}
  */
-OmenAPI.propath = function (lock) {
+OmenAPI.propath = function (lock, listing) {
     var propath = '',
         sourceFolder = ["src", "source"],
         vendors = OmenAPI.folderLister('./vendors/');
@@ -93,6 +94,7 @@ OmenAPI.propath = function (lock) {
                     folder += "/src";
             }
 
+        listing.push(folder);
         folder = path.resolve('./vendors/' + folder);
         propath += folder + ";";
     }

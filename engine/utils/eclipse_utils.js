@@ -1,0 +1,79 @@
+/**
+ * Eclipse manipulation utilities.
+ *
+ * @package engine/utils
+ * @author valentin.duricu
+ * @date 15.07.2015
+ * @module utils
+ */
+/*jslint node: true */
+"use strict";
+
+var fs = require('fs'),
+    path = require('path'),
+    Handlebars = require('handlebars'),
+    OmenAPI = require('./omen_api');
+
+var basePath = "./";
+
+var fileCreator = function (project) {
+    var dotProject = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/project.hbs'), "utf-8"),
+        dotProjectHbs = Handlebars.compile(dotProject, {noEscape: true});
+
+    var name = project.name;
+    if (name === null || name === undefined)
+        name = project.get('name');
+
+    var output = dotProjectHbs({
+        name: name
+    });
+    fs.writeFileSync(path.resolve(basePath + ".project"), output, "utf-8");
+
+    var dotPropath = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/propath.hbs'), "utf-8"),
+        dotPropathHbs = Handlebars.compile(dotPropath, {noEscape: true});
+
+    var extraEntries = [];
+    OmenAPI.propath(project, extraEntries);
+    output = dotPropathHbs({
+        extraEntries: extraEntries
+    });
+    fs.writeFileSync(path.resolve(basePath + ".propath"), output, "utf-8");
+
+    var dotFacet = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/facet.hbs'), "utf-8"),
+        dotFacetHbs = Handlebars.compile(dotFacet, {noEscape: true});
+
+    if (!fs.existsSync(path.resolve(basePath + '.settings')))
+        fs.mkdirSync(path.resolve(basePath + '.settings'));
+
+    output = dotFacetHbs();
+    fs.writeFileSync(path.resolve(basePath + ".settings/org.eclipse.wst.common.project.facet.core.xml"), output, "utf-8");
+
+    if (!fs.existsSync(path.resolve(basePath + 'bin')))
+        fs.mkdirSync(path.resolve(basePath + 'bin'));
+    if (!fs.existsSync(path.resolve(basePath + 'src')))
+        fs.mkdirSync(path.resolve(basePath + 'src'));
+};
+
+/**
+ * Eclipse manipulation utilities.
+ *
+ * @class
+ */
+var EclipseUtils = {};
+
+EclipseUtils.initProject = function (project) {
+    if (fs.existsSync(path.resolve('.project')))
+        throw new Error("Project already exists! Please use update command");
+
+    fileCreator(project);
+};
+
+EclipseUtils.updateProject = function (project) {
+    fileCreator(project);
+};
+
+EclipseUtils.setBasePath = function (newBasePath) {
+    basePath = newBasePath;
+};
+
+module.exports = EclipseUtils;

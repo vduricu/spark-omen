@@ -100,9 +100,6 @@ InstallOmen.prototype.run = function (filename) {
         ProjectUtils.installError(self.cli(), err);
     });
 
-
-}
-;
-
+};
 
 module.exports = InstallOmen;

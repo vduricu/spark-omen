@@ -10,7 +10,8 @@ GLOBAL.OMEN_CONFIG = require('./../config/app.json');
 
 cli.parse({
     //file: ['f', 'Selects the file to work with.'],
-    save: ['s', 'Save the package'],
+    save: ['s', 'Save the package.'],
+    eclipse: ['e', 'Creates the eclipse project files. (Used only with omen create and init)'],
     version: ['v', "Displays the application version information."]
 });
 
@@ -31,11 +32,9 @@ cli.main(function (args, options) {
         //    command = args[1];
         //}
 
-        if (options.save)
-            GLOBAL.OMEN_SAVE = true;
-        else
-            GLOBAL.OMEN_SAVE = false;
-
+        GLOBAL.OMEN_SAVE = options.save ? true : false;
+        GLOBAL.OMEN_ECLIPSE = options.eclipse ? true : false;
+        
         commandUtils.SetInit(this, filename);
 
         if (options.version)
