@@ -103,7 +103,7 @@ Initializes or updates eclipse components for the current project
 
 **Command:**
 ```
-omen eclipse init|update
+omen eclipse (init | update)
 ```
 
 **Arguments:**
@@ -209,6 +209,29 @@ omen template [list | <template-name>]
       * **description**: The name of the template to be generated.
       * **mandatory**: No
       * **default value**: sample
+      
+### <a name="omen-unpublish"></a>omen unpublish
+Generates a file based on the given template. If no template is given then
+it uses a default sample template. To see all the available templates use
+the "list" argument.
+
+**Command:**
+```
+omen unpublish (project | version [<version-name>])
+```
+
+**Arguments:**
+   *  **project**
+      * **description**: Unpublish the current project from the repository.
+      * **mandatory**: Yes
+   *  **version**
+      * **description**: Unpublish the version from the repository.
+      * **mandatory**: Yes
+      * **options**:
+         * ***&lt;version-name&gt;***
+         * **description**: The version to unpublish
+         * **mandatory**: No
+         * **default-value**: The version specified in the project.json file
 
 ### <a name="omen-update"></a>omen update
 Updates the installed dependencies based on the project.json and omen.lock

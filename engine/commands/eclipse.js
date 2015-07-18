@@ -33,8 +33,10 @@ EclipseOmen.prototype = new CommandOmen();
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {String} filename The name of the file to be installed.
  */
-EclipseOmen.prototype.run = function () {
+EclipseOmen.prototype.run = function (filename) {
     this.cli().ok('====================================================');
     this.cli().ok('    Omen (' + Spark.version() + ') - Eclipse toolkit:');
     this.cli().ok('----------------------------------------------------');
@@ -42,7 +44,7 @@ EclipseOmen.prototype.run = function () {
     var self = this;
     var args = GLOBAL.OMEN_CLI_ARGS;
     var eclipseCommand = "";
-    var project = new Project("project.json");
+    var project = new Project(filename);
 
     for (var i = 0; i < args.length; i++) {
         if (args[i] == "eclipse") {

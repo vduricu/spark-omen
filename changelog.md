@@ -13,6 +13,7 @@ Changes performed to the current version:
    * updated create command to support the creation of eclipse project
    * eclipse command - inits or updates an project with eclipse components
    * various bugfixes
+   * unpublish command - unpublishes the project/version from the repository
 
 --- 
 

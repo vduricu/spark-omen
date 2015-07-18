@@ -16,6 +16,11 @@ var fs = require('fs'),
 
 var basePath = "./";
 
+/**
+ * Creates the project files to be used in eclipse.
+ *
+ * @param {Project} project The project information.
+ */
 var fileCreator = function (project) {
     var dotProject = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/project.hbs'), "utf-8"),
         dotProjectHbs = Handlebars.compile(dotProject, {noEscape: true});
@@ -61,6 +66,11 @@ var fileCreator = function (project) {
  */
 var EclipseUtils = {};
 
+/**
+ * Initializes a new project into an existing folder.
+ *
+ * @param {Project} project The project to initialize.
+ */
 EclipseUtils.initProject = function (project) {
     if (fs.existsSync(path.resolve('.project')))
         throw new Error("Project already exists! Please use update command");
@@ -68,10 +78,20 @@ EclipseUtils.initProject = function (project) {
     fileCreator(project);
 };
 
+/**
+ * Updates an existing eclipse project.
+ *
+ * @param {Project} project The project to be updated.
+ */
 EclipseUtils.updateProject = function (project) {
     fileCreator(project);
 };
 
+/**
+ * Sets the base path of the eclipse project.
+ *
+ * @param {String} newBasePath The path to be used.
+ */
 EclipseUtils.setBasePath = function (newBasePath) {
     basePath = newBasePath;
 };

@@ -36,8 +36,10 @@ InitOmen.prototype = new CommandOmen();
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {String} filename The name of the file to be installed.
  */
-InitOmen.prototype.run = function () {
+InitOmen.prototype.run = function (filename) {
     this.cli().ok('====================================================');
     this.cli().ok('    Omen (' + Spark.version() + ') - Project init:');
     this.cli().ok('----------------------------------------------------');
@@ -54,7 +56,7 @@ InitOmen.prototype.run = function () {
         }
     }
 
-    if (fs.existsSync(path.resolve('project.json')))
+    if (fs.existsSync(path.resolve(filename)))
         throw new Error("Project already initialized!");
 
     if (projectName === null || projectName === undefined || projectName.length === 0)
