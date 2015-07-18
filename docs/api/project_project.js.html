@@ -37,7 +37,9 @@
 /*jslint node: true */
 "use strict";
 
-var fs = require('fs');
+var fs = require('fs'),
+    extend = require('util')._extend,
+    Hookup = require('./../base/hookup');
 
 var Project;
 
@@ -78,7 +80,21 @@ Project = function (filename) {
          *
          * @var ProjectExtras
          */
-        _extras = require('./extras');
+        _extras = require('./extras'),
+        /**
+         * Holds the hookups for the scripts to be executed.
+         *
+         * @var HookupOmen
+         */
+        _hookups = new Hookup();
+
+
+    /**
+     * Holds the maximum version number.
+     *
+     * @property {String}
+     */
+    this.MAX_VERSION = "&lt;=999.999.999";
 
     /**
      * Checks the project to be ok.
@@ -114,6 +130,10 @@ Project = function (filename) {
      * @return Object|String|Object[]|String[]
      */
     this.get = function (key) {
+        var val = _information[key];
+
+        if (typeof val === "object" &amp;&amp; val !== null)
+            return extend({}, _information[key]);
         return _information[key];
     };
 
@@ -152,6 +172,61 @@ Project = function (filename) {
     };
 
     /**
+     * Adds the given dependency with the given version to the dependencies list.
+     *
+     * @param {String} omenPacakge The dependency project name.
+     * @param {String} omenVersion The dependency project version.
+     */
+    this.addDependency = function (omenPackage, omenVersion) {
+        if (!self.has('dependencies'))
+            _information.dependencies = {};
+
+        _information.dependencies[omenPackage] = omenVersion;
+    };
+
+    /**
+     * Checks the existence of a given dependency of the current project.
+     *
+     * @param {String} omenPackage The project to check after.
+     * @return boolean
+     */
+    this.hasDependency = function (omenPackage) {
+        if (!self.has('dependencies'))
+            return false;
+
+        var dep = _information.dependencies[omenPackage];
+
+        return dep !== null &amp;&amp; dep !== undefined &amp;&amp; dep.length !== 0;
+    };
+
+    /**
+     * Sets the dependencies for the current project.
+     *
+     * @param {Object} omenPackages Dictionary with packages and versions.
+     */
+    this.setDependency = function (omenPackages) {
+        _information.dependencies = omenPackages;
+    };
+
+    /**
+     * Executes the pre command commands.
+     *
+     * @param {String} command The command for which we execute the pre commands.
+     */
+    this.executePre = function(command){
+        _hookups.pre(command);
+    };
+
+    /**
+     * Executes the post command commands.
+     *
+     * @param {String} command The command for which we execute the post commands.
+     */
+    this.executePost = function(command){
+        _hookups.post(command);
+    };
+
+    /**
      * The main block of the application.
      */
     var mainBlock = function () {
@@ -163,6 +238,9 @@ Project = function (filename) {
 
         if (!self.has('name') || !self.has('version'))
             throw new Error("The project must have a name and a version!");
+
+        if (self.has('scripts'))
+            _hookups.parse(self.get('scripts'));
     };
 
     mainBlock();
@@ -180,13 +258,13 @@ module.exports = Project;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Jun 08 2015 20:47:20 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

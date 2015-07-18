@@ -244,7 +244,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line67">line 67</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line89">line 89</a>
     </li></ul></dd>
     
 
@@ -428,7 +428,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line116">line 116</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line138">line 138</a>
     </li></ul></dd>
     
 
@@ -569,7 +569,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line150">line 150</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line172">line 172</a>
     </li></ul></dd>
     
 
@@ -756,7 +756,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line259">line 259</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line342">line 342</a>
     </li></ul></dd>
     
 
@@ -910,7 +910,161 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line313">line 313</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line419">line 419</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".omenJsonInit"><span class="type-signature">(static) </span>omenJsonInit<span class="signature">(cli, omenJson)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Writes the omen project file - used for the init command.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cli</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The CLI object reference.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>omenJson</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The properties to be written in the project file.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line78">line 78</a>
     </li></ul></dd>
     
 
@@ -1064,7 +1218,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line56">line 56</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line67">line 67</a>
     </li></ul></dd>
     
 
@@ -1249,7 +1403,489 @@
 
     
 
-    <h4 class="name" id=".publish"><span class="type-signature">(static) </span>publish<span class="signature">(project, promptResult)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".omenProjectUpdate"><span class="type-signature">(static) </span>omenProjectUpdate<span class="signature">(cli, project)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Writes the updated project file.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cli</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The CLI object reference.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>project</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Project</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The project file.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line56">line 56</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".pack"><span class="type-signature">(static) </span>pack<span class="signature">(project)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Packages the current project.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>project</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Project</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The information about the current package.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line309">line 309</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".packageWriter"><span class="type-signature">(static) </span>packageWriter<span class="signature">(archiveName, fullPath, lines)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Creates the archive containing the project.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>archiveName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The name of the final archive.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fullPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The fullPath to the folder to be archived.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lines</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;String></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The lines from the .omenignore file.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line202">line 202</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Writer
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".publish"><span class="type-signature">(static) </span>publish<span class="signature">(whatToDo, project, promptResult)</span><span class="type-signature"></span></h4>
 
     
 
@@ -1288,6 +1924,29 @@
     </thead>
 
     <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>whatToDo</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An action regarding the package.</td>
+        </tr>
+
     
 
         <tr>
@@ -1372,7 +2031,358 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line179">line 179</a>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line263">line 263</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".unpublishProject"><span class="type-signature">(static) </span>unpublishProject<span class="signature">(project, promptResult)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Unpublishes a project from the repository.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>project</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Project</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The project to be unpublished.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>promptResult</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The password and other questions asked by the application.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line433">line 433</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    Promise
+</div>
+
+
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".unpublishVersion"><span class="type-signature">(static) </span>unpublishVersion<span class="signature">(project, version, promptResult)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    Performs a check of the dependencies on the server.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>project</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Project</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The project to be unpublished.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>version</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The version to be unpublished.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>promptResult</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The password and other questions asked by the application.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="utils_project_utils.js.html">utils/project_utils.js</a>, <a href="utils_project_utils.js.html#line464">line 464</a>
     </li></ul></dd>
     
 
@@ -1424,13 +2434,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Jun 08 2015 20:47:21 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

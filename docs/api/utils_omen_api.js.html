@@ -37,7 +37,8 @@
 /*jslint node: true */
 "use strict";
 
-var path = require('path'),
+var Project = require('./../project/project'),
+    path = require('path'),
     fs = require('fs');
 
 /**
@@ -64,6 +65,9 @@ OmenAPI.buildURL = function (url) {
  * @return {Object}
  */
 OmenAPI.folderLister = function (filename) {
+    if(!fs.existsSync(filename))
+        return [];
+
     var stats = fs.lstatSync(filename), info = {}, content = [];
 
     info = {
@@ -91,28 +95,34 @@ OmenAPI.folderLister = function (filename) {
  * Returns the propath to be used by the current defined application.
  *
  * @param {Project} lock The lock file reference.
+ * @param {String[]} listing The propath in array format
  * @return {String}
  */
-OmenAPI.propath = function (lock) {
+OmenAPI.propath = function (lock, listing) {
     var propath = '',
         sourceFolder = ["src", "source"],
         vendors = OmenAPI.folderLister('./vendors/');
 
     propath += path.resolve('.') + ";";
 
-    for(var i in vendors.content){
-        var omenPackage = vendors.content[i];
+    for(var vendor in vendors.content){
+        var omenPackage = vendors.content[vendor];
         var folder = omenPackage.file;
 
         if(omenPackage.type !== "directory")
             continue;
 
-        for(var j in omenPackage.content){
-            if (omenPackage.content[j].type == "directory" &amp;&amp;
-                sourceFolder.indexOf(omenPackage.content[j].file) >= 0)
-                folder += "/src";
-        }
+        var project = new Project(path.resolve('./vendors/' + folder + '/project.json'));
+        if(project.has('src'))
+            folder += '/' + project.get('src');
+        else
+            for(var innerPackage in omenPackage.content){
+                if (omenPackage.content[innerPackage].type == "directory" &amp;&amp;
+                    sourceFolder.indexOf(omenPackage.content[innerPackage].file) >= 0)
+                    folder += "/src";
+            }
 
+        listing.push(folder);
         folder = path.resolve('./vendors/' + folder);
         propath += folder + ";";
     }
@@ -131,13 +141,13 @@ module.exports = OmenAPI;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Jun 08 2015 20:47:20 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

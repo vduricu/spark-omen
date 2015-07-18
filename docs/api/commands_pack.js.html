@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: VersionOmen</title>
+    <title>JSDoc: Source: commands/pack.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,219 +17,96 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: VersionOmen</h1>
+    <h1 class="page-title">Source: commands/pack.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="module-commands.html">commands</a>~</span>
-        
-        VersionOmen
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    <h4 class="name" id="VersionOmen"><span class="type-signature"></span>new VersionOmen<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Display information about current version.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_version.js.html">commands/version.js</a>, <a href="commands_version.js.html#line21">line 21</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="run"><span class="type-signature"></span>run<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Code that runs when a command is executed.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_version.js.html">commands/version.js</a>, <a href="commands_version.js.html#line34">line 34</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Creates a package with the current project.
+ *
+ * @package engine\commands
+ * @author Valentin Duricu (valentin@duricu.ro)
+ * @date 09.06.2015
+ * @module commands
+ */
+/*jslint node: true */
+"use strict";
+
+var Project = require('./../project/project'),
+    ProjectUtils = require('./../utils/project_utils'),
+    Spark = require('./../base/spark'),
+    CommandOmen = require('./../base/command'),
+    fs = require("fs");
+
+var PackOmen;
+
+/**
+ * Creates a package with the current project.
+ *
+ * @class
+ */
+PackOmen = function () {
+};
+
+/**
+ * Attach the super class.
+ *
+ * @var CommandOmen
+ */
+PackOmen.prototype = new CommandOmen();
+
+/**
+ * Code that runs when a command is executed.
+ *
+ * @param {String} filename The name of the file to be published.
+ */
+PackOmen.prototype.run = function (filename) {
+    this.cli().ok('====================================================');
+    this.cli().ok('    Omen (' + Spark.version() + ') - Project packing:');
+    this.cli().ok('----------------------------------------------------');
+    this.cli().info("Reading project information");
+
+    var project = new Project(filename),
+        self = this;
+
+    this.cli().info("Checking project file");
+    project.check();
+
+    this.cli().info("Building dependencies");
+    var dependencies = ProjectUtils.buildDependencies(project);
+
+    this.cli().info("Checking dependencies");
+
+    ProjectUtils.checkDependencies(dependencies).then(function (res) {
+        if (res.status == "error") {
+            self.cli().error("There were some errors:");
+            for (var errorLine in res.errors) {
+                var line = res.errors[errorLine];
+                if (line.available !== null &amp;&amp; line.available !== undefined)
+                    self.cli().error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
+                else
+                    self.cli().error("   - " + errorLine + ": " + line.message);
+            }
+
+            return;
+        }
+
+        ProjectUtils.pack(project).then(function (archiveName) {
+            self.cli().ok("Package [" + archiveName + "] created");
+            self.cli().ok('====================================================');
+        });
+    });
+};
+
+
+module.exports = PackOmen;</code></pre>
+        </article>
+    </section>
 
 
 

@@ -41,7 +41,8 @@ var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/project_utils'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
-    fs = require("fs");
+    fs = require("fs"),
+    path = require("path");
 
 var InstallOmen;
 
@@ -72,35 +73,67 @@ InstallOmen.prototype.run = function (filename) {
     this.cli().info("Reading project information");
 
     var project = new Project(filename),
-        self = this;
+        projectCopy = new Project(filename),
+        self = this,
+        args = GLOBAL.OMEN_CLI_ARGS,
+        omenLock = {};
 
-    this.cli().info("Checking project file");
-    project.check();
-
-    this.cli().info("Building dependencies");
-    var deps = ProjectUtils.buildDependencies(project);
-
-    this.cli().info("Checking dependencies");
-
-    var omenLock = {};
     omenLock.file = project.getFilename();
     omenLock.name = project.get('name');
     omenLock.version = project.get('version');
     omenLock.packages = {};
 
+    if (fs.existsSync(path.resolve('omen.lock'))) {
+        var locks = new Project('omen.lock');
+
+        omenLock.packages = locks.get('packages');
+    }
+
+    for (var i = 0; i &lt; args.length; i++) {
+        if (args[i] == "install")
+            continue;
+
+        if(!project.hasDependency(args[i]))
+            project.addDependency(args[i], project.MAX_VERSION);
+    }
+
+    project.executePre('install');
+
+    var proDeps = project.get('dependencies');
+    for (var iDeps in proDeps) {
+        if (omenLock.packages[iDeps] !== undefined &amp;&amp;
+            omenLock.packages[iDeps] !== null &amp;&amp;
+            omenLock.packages[iDeps].length !== 0)
+            delete proDeps[iDeps];
+    }
+
+    projectCopy.setDependency(proDeps);
+
+    this.cli().info("Checking project file");
+    project.check();
+
+    this.cli().info("Building dependencies");
+    var deps = ProjectUtils.buildDependencies(projectCopy);
+
     if (deps.length === 0) {
+        project.executePost('install');
         return ProjectUtils.omenLockWrite(self.cli(), omenLock);
     }
 
+    if(GLOBAL.OMEN_SAVE)
+        GLOBAL.OMEN_PROJECT = project;
+
+    this.cli().info("Checking dependencies");
+
     ProjectUtils.checkDependencies(deps).then(function (res) {
         ProjectUtils.install(omenLock, self.cli(), res);
+
+        project.executePost('install');
     }, function (err) {
         ProjectUtils.installError(self.cli(), err);
     });
 
-
 };
-
 
 module.exports = InstallOmen;</code></pre>
         </article>
@@ -112,13 +145,13 @@ module.exports = InstallOmen;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Jun 08 2015 20:47:20 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

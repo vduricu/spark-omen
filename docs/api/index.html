@@ -43,24 +43,203 @@
 
 
     <section>
-        <article><h1>Omen | Spark</h1><p><a href="https://travis-ci.org/thg2oo6/spark-omen"><img src="https://travis-ci.org/thg2oo6/spark-omen.svg?branch=master" alt="Build Status"></a>
-Dependency manager for OpenEdge applications.</p>
-<h2>About</h2><p>Omen is a Dependency manager for OpenEdge applications. Based on the configuration attached to it
+        <article><h1>Omen | Spark</h1><p><a href="https://travis-ci.org/thg2oo6/spark-omen"><img src="https://travis-ci.org/thg2oo6/spark-omen.svg?branch=master" alt="Build Status"></a></p>
+<p>Dependency manager for OpenEdge applications.</p>
+<p><strong>Stable Version</strong>: 0.1.5</p>
+<p><strong>Unstable Version</strong>: 0.2.1</p>
+<h2>About</h2><p>Omen is a Dependency manager for OpenEdge applications. Based on the configuration attached to it,
 Omen can work with either public or private dependency repositories.</p>
-<p>To use a private Omen Repository, have a look on <a href="http://github.com/thg2oo6/spark-omenrepo">Omen Repo</a>.</p>
+<p>To use a private Omen Repository, have a look at <a href="http://github.com/thg2oo6/spark-omenrepo">Omen Repo</a>.</p>
+<h3>What does Omen want to achieve?</h3><p>Omen was designed as a solution to help developers install and manage packages/components inside an OpenEdge project.
+Reusing components that have been proven to work will help the development teams achieve the desired result faster
+and with less bugs. Also, if bugs are found in one of the packages, the maintainer can be notified and the bug fixed
+not for just one project, but for every project that uses it.</p>
+<h2>Windows Development</h2><p>If development is being done on an Windows Machine, please adjust the windows.start.sample file and bin/omen.sample.
+Rename them to have cmd extension and then run them.</p>
 <h2>Install</h2><p>To install Omen just simply type into a console:</p>
-<pre class="prettyprint source"><code>npm -g install spark-omen</code></pre><p>this way, you will be able to access Omen from anywhere.</p>
+<pre class="prettyprint source"><code>npm -g install spark-omen</code></pre><p>Omen will be installed globally, such that whenever you need it, you can use it.</p>
 <h2>Usage</h2><p>The following commands are available to the end user:</p>
 <ul>
-<li><strong>omen install</strong></li>
-<li><strong>omen update</strong></li>
-<li><strong>omen publish</strong></li>
-<li><strong>omen check</strong></li>
-<li><strong>omen version</strong></li>
-<li><strong>omen about</strong></li>
+<li><strong><a href="#omen-about">omen about</a></strong></li>
+<li><strong><a href="#omen-check">omen check</a></strong></li>
+<li><strong><a href="#omen-create">omen create</a></strong></li>
+<li><strong><a href="#omen-eclipse">omen eclipse</a></strong></li>
+<li><strong><a href="#omen-init">omen init</a></strong></li>
+<li><strong><a href="#omen-install">omen install</a></strong></li>
+<li><strong><a href="#omen-pack">omen pack</a></strong></li>
+<li><strong><a href="#omen-propath">omen propath</a></strong></li>
+<li><strong><a href="#omen-publish">omen publish</a></strong></li>
+<li><strong><a href="#omen-template">omen template</a></strong></li>
+<li><strong><a href="#omen-update">omen update</a></strong></li>
+<li><strong><a href="#omen-version">omen version</a></strong></li>
 </ul>
-<h2>Windows Development</h2><p>If development is being done on an Windows Machine, please adjust the windows.start.sample file and bin/omen.sample.
-Rename them to have cmd extension and then run them.</p></article>
+<hr>
+<h3><a name="omen-about"></a>omen about</h3><p>Displays information about the current package.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen about</code></pre><h3><a name="omen-check"></a>omen check</h3><p>Checks the current project.json to be valid.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen check [&lt;type>]</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong><em>&lt;type&gt;</em></strong><ul>
+<li><strong>description</strong>: Specifies the type of check to be done.</li>
+<li><strong>mandatory</strong>: No</li>
+<li><strong>default value</strong>: <em>information</em></li>
+<li><strong>posible values</strong>:<ul>
+<li><em>information</em> - Validates the project.json information.</li>
+<li><em>dependencies</em> - Checks the dependencies against the repository.</li>
+<li><em>all</em> - Checks both the filled information and the dependencies.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-create"></a>omen create</h3><p>Creates a new project with the given name</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen create &lt;project-name> [--eclipse]</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>&lt;project-name&gt;</strong><ul>
+<li><strong>description</strong>: Specifies the name of the project.</li>
+<li><strong>mandatory</strong>: Yes</li>
+<li><strong>default value</strong>: none   </li>
+</ul>
+</li>
+</ul>
+<p><strong>Options:</strong></p>
+<ul>
+<li><strong><em>--eclipse/-e</em></strong><ul>
+<li><strong>description</strong>: Triggers the eclipse components creation.</li>
+<li><strong>mandatory</strong>: No</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-eclipse"></a>omen eclipse</h3><p>Initializes or updates eclipse components for the current project</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen eclipse (init | update)</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>init</strong><ul>
+<li><strong>description</strong>: Initializes the eclipse project components for the project, such that it could
+be imported into Developer Studio.</li>
+<li><strong>mandatory</strong>: Yes    </li>
+</ul>
+</li>
+<li><strong>update</strong><ul>
+<li><strong>description</strong>: Updates the eclipse project components for the project, such that it could
+be imported into Developer Studio.</li>
+<li><strong>mandatory</strong>: Yes</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-init"></a>omen init</h3><p>Init a project.json file in an existing location.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen init &lt;project-name> [--eclipse]</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>&lt;project-name&gt;</strong><ul>
+<li><strong>description</strong>: Specifies the name of the project.</li>
+<li><strong>mandatory</strong>: Yes</li>
+<li><strong>default value</strong>: none</li>
+</ul>
+</li>
+</ul>
+<p><strong>Options:</strong></p>
+<ul>
+<li><strong><em>--eclipse/-e</em></strong><ul>
+<li><strong>description</strong>: Triggers the eclipse components creation.</li>
+<li><strong>mandatory</strong>: No</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-install"></a>omen install</h3><p>Installs the dependencies defined in the project.json file. If a package is
+specified then it will install the given package alongside the existing ones.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen install [(--save) &lt;package-name> &lt;package-name> ...]</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong><em>&lt;package-name&gt;</em></strong><ul>
+<li><strong>description</strong>: Specifies the name of the package to be installed.
+Can be repeated.</li>
+<li><strong>mandatory</strong>: No</li>
+<li><strong>default value</strong>: none</li>
+</ul>
+</li>
+</ul>
+<p><strong>Options:</strong></p>
+<ul>
+<li><strong><em>--save/-s</em></strong><ul>
+<li><strong>description</strong>: Stores the new packages into the project.json file.</li>
+<li><strong>mandatory</strong>: No</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-pack"></a>omen pack</h3><p>Packs the current project into a tar.gz archive.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen pack</code></pre><h3><a name="omen-propath"></a>omen propath</h3><p>Builds a correct PROPATH string to be used either in a .p file or in
+appserver configuration.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen propath [&lt;type>]</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong><em>&lt;type&gt;</em></strong><ul>
+<li><strong>description</strong>: Specifies the type of result to be displayed.</li>
+<li><strong>mandatory</strong>: No</li>
+<li><strong>default value</strong>: <em>full</em></li>
+<li><strong>posible values</strong>:<ul>
+<li><em>shell</em> - Builds the PROPATH string to be used in a SHELL script.</li>
+<li><em>appserver</em> - Builds the PROPATH string to be used in an AppServer configuration.</li>
+<li><em>full</em> - Builds the PROPATH string to be used in a .p file.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-publish"></a>omen publish</h3><p>Publishes the current project to the defined repository.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen publish</code></pre><h3><a name="omen-template"></a>omen template</h3><p>Generates a file based on the given template. If no template is given then
+it uses a default sample template. To see all the available templates use
+the &quot;list&quot; argument.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen template [list | &lt;template-name>]</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong><em>list</em></strong><ul>
+<li><strong>description</strong>: Display a list with all the available templates.</li>
+<li><strong>mandatory</strong>: No</li>
+</ul>
+</li>
+<li><strong><em>&lt;template-name&gt;</em></strong><ul>
+<li><strong>description</strong>: The name of the template to be generated.</li>
+<li><strong>mandatory</strong>: No</li>
+<li><strong>default value</strong>: sample</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-unpublish"></a>omen unpublish</h3><p>Generates a file based on the given template. If no template is given then
+it uses a default sample template. To see all the available templates use
+the &quot;list&quot; argument.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen unpublish (project | version [&lt;version-name>])</code></pre><p><strong>Arguments:</strong></p>
+<ul>
+<li><strong>project</strong><ul>
+<li><strong>description</strong>: Unpublish the current project from the repository.</li>
+<li><strong>mandatory</strong>: Yes</li>
+</ul>
+</li>
+<li><strong>version</strong><ul>
+<li><strong>description</strong>: Unpublish the version from the repository.</li>
+<li><strong>mandatory</strong>: Yes</li>
+<li><strong>options</strong>:<ul>
+<li><strong><em>&lt;version-name&gt;</em></strong></li>
+<li><strong>description</strong>: The version to unpublish</li>
+<li><strong>mandatory</strong>: No</li>
+<li><strong>default-value</strong>: The version specified in the project.json file</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3><a name="omen-update"></a>omen update</h3><p>Updates the installed dependencies based on the project.json and omen.lock
+files. Works only if the omen.lock file has been created (dependencies
+were installed).</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen update</code></pre><h3><a name="omen-version"></a>omen version</h3><p>Displays information about the version of Omen.</p>
+<p><strong>Command:</strong></p>
+<pre class="prettyprint source"><code>omen version</code></pre></article>
     </section>
 
 
@@ -71,13 +250,13 @@ Rename them to have cmd extension and then run them.</p></article>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Jun 08 2015 20:47:20 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: commands/create.js</title>
+    <title>JSDoc: Source: commands/unpublish.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: commands/create.js</h1>
+    <h1 class="page-title">Source: commands/unpublish.js</h1>
 
     
 
@@ -27,31 +27,32 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Creates a new project in the current directory.
+ * Unpublish a package/version from the repository.
  *
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
- * @date 17.05.2015
+ * @date 16.07.2015
  * @module commands
  */
 /*jslint node: true */
 "use strict";
 
-var Project      = require('./../project/project'),
+var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/project_utils'),
-    Spark        = require('./../base/spark'),
-    CommandOmen  = require('./../base/command'),
-    EclipseUtils = require('./../utils/eclipse_utils'),
-    fs           = require("fs");
+    Spark = require('./../base/spark'),
+    CommandOmen = require('./../base/command'),
+    fs = require("fs"),
+    path = require("path"),
+    prompt = require('prompt');
 
-var CreateOmen;
+var UnpublishOmen;
 
 /**
- * Creates a new project in the current directory.
+ * Unpublish a package/version from the repository.
  *
  * @class
  */
-CreateOmen = function () {
+UnpublishOmen = function () {
 };
 
 /**
@@ -59,60 +60,92 @@ CreateOmen = function () {
  *
  * @var CommandOmen
  */
-CreateOmen.prototype = new CommandOmen();
+UnpublishOmen.prototype = new CommandOmen();
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {String} filename The name of the file to be installed.
  */
-CreateOmen.prototype.run = function () {
+UnpublishOmen.prototype.run = function (filename) {
+    var properties = [
+        {
+            name: 'Password',
+            hidden: true
+        }
+    ];
+
+    prompt.start();
+
     this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project creation:');
+    this.cli().ok('    Omen (' + Spark.version() + ') - Project unpublishing:');
     this.cli().ok('----------------------------------------------------');
+    this.cli().info("Reading project information");
 
     var self = this;
     var args = GLOBAL.OMEN_CLI_ARGS;
-    var projectName = "";
+    var unpublishCommand = "";
+    var versionUnpublish = "";
+    var project = new Project(filename);
 
-    for (var i = 0; i &lt; args.length; i++) {
-        if (args[i] == "create") {
-            projectName = args[i + 1];
-            if (projectName === null || projectName === undefined || projectName.length === 0)
-                throw new Error("No name specified!");
+    for (var iArgs = 0; iArgs &lt; args.length; iArgs++) {
+        if (args[iArgs] == "unpublish") {
+            unpublishCommand = args[iArgs + 1];
+            if (unpublishCommand === null || unpublishCommand === undefined || unpublishCommand.length === 0)
+                throw new Error("What do you want to unpublish? (Version, Project)");
         }
     }
 
-    if (projectName === null || projectName === undefined || projectName.length === 0)
-        throw new Error("No name specified!");
+    switch (unpublishCommand) {
+        case "project":
+            this.cli().ok("Checking and unpublishing project");
+            prompt.get(properties, function (err, result) {
+                if (err) {
+                    throw new Error(err);
+                }
 
-    projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
+                ProjectUtils.unpublishProject(project, result).then(function (res) {
+                    self.cli().ok("The project has been unpublished.");
+                    self.cli().ok('====================================================');
+                }, function (err) {
+                    ProjectUtils.installError(self.cli(), err);
+                });
+            });
 
-    this.cli().info("Creating project '" + projectName + "'");
+            break;
 
-    /* Check the existence of the vendors folder and create if it doesn't.*/
-    if (fs.existsSync("./" + projectName))
-        throw new Error("Project already exists!");
+        case "version":
+            for (var iVersion = 0; iVersion &lt; args.length; iVersion++) {
+                if (args[iVersion] == "version") {
+                    versionUnpublish = args[iVersion + 1];
+                    if (versionUnpublish === null || versionUnpublish === undefined || versionUnpublish.length === 0)
+                        versionUnpublish = project.get('version');
+                }
+            }
 
-    fs.mkdirSync("./" + projectName);
+            this.cli().ok("Checking and unpublishing version");
 
-    var omenFile = {};
-    omenFile.name = projectName;
-    omenFile.version = "0.1.1";
-    omenFile.author = {
-        name: "Author",
-        email: "author@email.domain"
-    };
+            prompt.get(properties, function (err, result) {
+                if (err) {
+                    throw new Error(err);
+                }
 
-    ProjectUtils.omenJsonWrite(self.cli(), omenFile);
+                ProjectUtils.unpublishVersion(project, versionUnpublish, result).then(function (res) {
+                    self.cli().ok("The version (" + versionUnpublish + ") has been unpublished.");
+                    self.cli().ok('====================================================');
+                }, function (err) {
+                    ProjectUtils.installError(self.cli(), err);
+                });
+            });
 
-    if(GLOBAL.OMEN_ECLIPSE){
-        EclipseUtils.setBasePath("./" + projectName + "/");
-        EclipseUtils.initProject(omenFile);
+            break;
+        default:
+            this.cli().info('Command not available');
     }
 
 };
 
-
-module.exports = CreateOmen;</code></pre>
+module.exports = UnpublishOmen;</code></pre>
         </article>
     </section>
 

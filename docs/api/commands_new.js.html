@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: VersionOmen</title>
+    <title>JSDoc: Source: commands/new.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,219 +17,57 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: VersionOmen</h1>
+    <h1 class="page-title">Source: commands/new.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2>
-            <span class="ancestors"><a href="module-commands.html">commands</a>~</span>
-        
-        VersionOmen
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-
-    <h4 class="name" id="VersionOmen"><span class="type-signature"></span>new VersionOmen<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Display information about current version.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_version.js.html">commands/version.js</a>, <a href="commands_version.js.html#line21">line 21</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="run"><span class="type-signature"></span>run<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    Code that runs when a command is executed.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="commands_version.js.html">commands/version.js</a>, <a href="commands_version.js.html#line34">line 34</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Creates a new object
+ *
+ * @package
+ * @author valentin.duricu
+ * @date 18.07.2015
+ * @module
+ */
+/*jslint node: true */
+"use strict";
+
+var CommandOmen = require('./../base/command');
+
+var NewOmen;
+
+/**
+ * Generic command to create a new object
+ *
+ * @class
+ */
+NewOmen = function () {
+};
+
+/**
+ * Attach the super class.
+ *
+ * @var CommandOmen
+ */
+NewOmen.prototype = new CommandOmen();
+
+/**
+ * Code that runs when a command is executed.
+ *
+ * @param {String} [filename] The name of the file to be imported
+ */
+NewOmen.prototype.run = function (filename) {
+
+};
+
+module.exports = NewOmen;</code></pre>
+        </article>
+    </section>
 
 
 

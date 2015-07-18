@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: commands/create.js</title>
+    <title>JSDoc: Source: utils/eclipse_utils.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: commands/create.js</h1>
+    <h1 class="page-title">Source: utils/eclipse_utils.js</h1>
 
     
 
@@ -27,92 +27,104 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Creates a new project in the current directory.
+ * Eclipse manipulation utilities.
  *
- * @package engine\commands
- * @author Valentin Duricu (valentin@duricu.ro)
- * @date 17.05.2015
- * @module commands
+ * @package engine/utils
+ * @author valentin.duricu
+ * @date 15.07.2015
+ * @module utils
  */
 /*jslint node: true */
 "use strict";
 
-var Project      = require('./../project/project'),
-    ProjectUtils = require('./../utils/project_utils'),
-    Spark        = require('./../base/spark'),
-    CommandOmen  = require('./../base/command'),
-    EclipseUtils = require('./../utils/eclipse_utils'),
-    fs           = require("fs");
+var fs = require('fs'),
+    path = require('path'),
+    Handlebars = require('handlebars'),
+    OmenAPI = require('./omen_api');
 
-var CreateOmen;
+var basePath = "./";
 
 /**
- * Creates a new project in the current directory.
+ * Creates the project files to be used in eclipse.
+ *
+ * @param {Project} project The project information.
+ */
+var fileCreator = function (project) {
+    var dotProject = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/project.hbs'), "utf-8"),
+        dotProjectHbs = Handlebars.compile(dotProject, {noEscape: true});
+
+    var name = project.name;
+    if (name === null || name === undefined)
+        name = project.get('name');
+
+    var output = dotProjectHbs({
+        name: name
+    });
+    fs.writeFileSync(path.resolve(basePath + ".project"), output, "utf-8");
+
+    var dotPropath = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/propath.hbs'), "utf-8"),
+        dotPropathHbs = Handlebars.compile(dotPropath, {noEscape: true});
+
+    var extraEntries = [];
+    OmenAPI.propath(project, extraEntries);
+    output = dotPropathHbs({
+        extraEntries: extraEntries
+    });
+    fs.writeFileSync(path.resolve(basePath + ".propath"), output, "utf-8");
+
+    var dotFacet = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/facet.hbs'), "utf-8"),
+        dotFacetHbs = Handlebars.compile(dotFacet, {noEscape: true});
+
+    if (!fs.existsSync(path.resolve(basePath + '.settings')))
+        fs.mkdirSync(path.resolve(basePath + '.settings'));
+
+    output = dotFacetHbs();
+    fs.writeFileSync(path.resolve(basePath + ".settings/org.eclipse.wst.common.project.facet.core.xml"), output, "utf-8");
+
+    if (!fs.existsSync(path.resolve(basePath + 'bin')))
+        fs.mkdirSync(path.resolve(basePath + 'bin'));
+    if (!fs.existsSync(path.resolve(basePath + 'src')))
+        fs.mkdirSync(path.resolve(basePath + 'src'));
+};
+
+/**
+ * Eclipse manipulation utilities.
  *
  * @class
  */
-CreateOmen = function () {
-};
+var EclipseUtils = {};
 
 /**
- * Attach the super class.
+ * Initializes a new project into an existing folder.
  *
- * @var CommandOmen
+ * @param {Project} project The project to initialize.
  */
-CreateOmen.prototype = new CommandOmen();
+EclipseUtils.initProject = function (project) {
+    if (fs.existsSync(path.resolve('.project')))
+        throw new Error("Project already exists! Please use update command");
 
-/**
- * Code that runs when a command is executed.
- */
-CreateOmen.prototype.run = function () {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project creation:');
-    this.cli().ok('----------------------------------------------------');
-
-    var self = this;
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var projectName = "";
-
-    for (var i = 0; i &lt; args.length; i++) {
-        if (args[i] == "create") {
-            projectName = args[i + 1];
-            if (projectName === null || projectName === undefined || projectName.length === 0)
-                throw new Error("No name specified!");
-        }
-    }
-
-    if (projectName === null || projectName === undefined || projectName.length === 0)
-        throw new Error("No name specified!");
-
-    projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
-
-    this.cli().info("Creating project '" + projectName + "'");
-
-    /* Check the existence of the vendors folder and create if it doesn't.*/
-    if (fs.existsSync("./" + projectName))
-        throw new Error("Project already exists!");
-
-    fs.mkdirSync("./" + projectName);
-
-    var omenFile = {};
-    omenFile.name = projectName;
-    omenFile.version = "0.1.1";
-    omenFile.author = {
-        name: "Author",
-        email: "author@email.domain"
-    };
-
-    ProjectUtils.omenJsonWrite(self.cli(), omenFile);
-
-    if(GLOBAL.OMEN_ECLIPSE){
-        EclipseUtils.setBasePath("./" + projectName + "/");
-        EclipseUtils.initProject(omenFile);
-    }
-
+    fileCreator(project);
 };
 
+/**
+ * Updates an existing eclipse project.
+ *
+ * @param {Project} project The project to be updated.
+ */
+EclipseUtils.updateProject = function (project) {
+    fileCreator(project);
+};
 
-module.exports = CreateOmen;</code></pre>
+/**
+ * Sets the base path of the eclipse project.
+ *
+ * @param {String} newBasePath The path to be used.
+ */
+EclipseUtils.setBasePath = function (newBasePath) {
+    basePath = newBasePath;
+};
+
+module.exports = EclipseUtils;</code></pre>
         </article>
     </section>
 

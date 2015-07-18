@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: base/hookup.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: base/hookup.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Hookups to run commands before/after executing a given command.
+ *
+ * @package engine/base
+ * @author valentin.duricu
+ * @date 18.07.2015
+ * @module base
+ */
+/*jslint node: true */
+"use strict";
+
+var exec = require('child_process').exec;
+
+var HookupOmen;
+
+/**
+ * Hookups to run commands before/after executing a given command.
+ *
+ * @class
+ */
+HookupOmen = function () {
+    var preCommands = {},
+        postCommands = {};
+    var self = this,
+        /**
+         * Helper function used to print messages to the standard output.
+         *
+         * @param {String} data The data sent by the executed command.
+         */
+        stdoutMessage = function (data) {
+            console.log("INFO:" + data.trim());
+        },
+        /**
+         * Helper function used to print messages to the standard error output.
+         *
+         * @param {String} data The data sent by the executed command.
+         */
+        stderrMessage = function (data) {
+            console.log("ERROR:" + data.trim());
+        };
+
+    /**
+     * Executes the given list of commands.
+     *
+     * @param {String[]} commandList The data sent by the executed command.
+     */
+    var executeCommand = function (commandList) {
+        if (commandList === null || commandList === undefined)
+            return;
+
+        for (var iCommand in commandList) {
+            var child = exec(commandList[iCommand]);
+            child.stdout.on('data', stdoutMessage);
+            child.stderr.on('data', stderrMessage);
+        }
+    };
+
+    /**
+     * Parses the given scripts list and adds the commands to be execute to
+     * the desired command in the desired zone (pre/post execution).
+     *
+     * @param {Object} scripts A dictionary with commands and zones.
+     */
+    this.parse = function (scripts) {
+        for (var cScript in scripts) {
+            var result = /^(post|pre)-([a-z]+)-cmd$/gi.exec(cScript);
+            var zone = result[1].charAt(0).toUpperCase() + result[1].substring(1),
+                command = result[2];
+
+            for (var iScript in scripts[cScript]) {
+                self["push" + zone](command, scripts[cScript][iScript]);
+            }
+        }
+    };
+
+    /**
+     * Executes the post command execution commands for the given command.
+     *
+     * @param {String} command The command for which the commands are executed.
+     */
+    this.post = function (command) {
+        executeCommand(postCommands[command]);
+    };
+
+    /**
+     * Executes the pre command execution commands for the given command.
+     *
+     * @param {String} command The command for which the commands are executed.
+     */
+    this.pre = function (command) {
+        executeCommand(preCommands[command]);
+    };
+
+    /**
+     * Adds commands to be executed after the command execution.
+     *
+     * @param {String} command The name of the command.
+     * @param {String} execute The command line to be executed.
+     */
+    this.pushPost = function (command, execute) {
+        if (postCommands[command] === null || postCommands[command] === undefined)
+            postCommands[command] = [];
+
+        postCommands[command].push(execute);
+    };
+
+    /**
+     * Adds commands to be executed before the command execution.
+     *
+     * @param {String} command The name of the command.
+     * @param {String} execute The command line to be executed.
+     */
+    this.pushPre = function (command, execute) {
+        if (preCommands[command] === null || preCommands[command] === undefined)
+            preCommands[command] = [];
+
+        preCommands[command].push(execute);
+    };
+
+    return this;
+};
+
+module.exports = HookupOmen;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

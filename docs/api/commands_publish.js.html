@@ -27,7 +27,7 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Installs the dependencies defined in the project.json file.
+ * Publishes the current project to the configured omen repository.
  *
  * @package engine\commands
  * @author Valentin Duricu (valentin@duricu.ro)
@@ -47,7 +47,7 @@ var Project = require('./../project/project'),
 var PublishOmen;
 
 /**
- * Installs the dependencies defined in the project.json file.
+ * Publishes the current project to the configured omen repository.
  *
  * @class
  */
@@ -88,7 +88,7 @@ PublishOmen.prototype.run = function (filename) {
     prompt.start();
 
     this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project installation:');
+    this.cli().ok('    Omen (' + Spark.version() + ') - Project publication:');
     this.cli().ok('----------------------------------------------------');
     this.cli().info("Reading project information");
 
@@ -122,7 +122,7 @@ PublishOmen.prototype.run = function (filename) {
                 throw new Error(err);
             }
 
-            ProjectUtils.publish(project, result).then(function (result) {
+            ProjectUtils.publish(whatToDo, project, result).then(function (result) {
                 if (result.status == "update")
                     self.cli().ok("Package updated!");
                 else
@@ -130,16 +130,23 @@ PublishOmen.prototype.run = function (filename) {
 
                 self.cli().ok('====================================================');
             }, function (err) {
-                self.cli().error(err);
-                if (err.message.body !== null) {
-                    if (err.message.body.error !== null &amp;&amp; err.message.body.error !== undefined)
-                        self.cli().error(err.message.body.error.message);
+                if (err.body !== null) {
+                    if (err.body.error !== null &amp;&amp; err.body.error !== undefined)
+                        self.cli().error(err.body.error.message);
                     else
-                        self.cli().error(err.message.body.message);
+                        self.cli().error(err.body.message);
                 }
                 self.cli().error('====================================================');
             });
         });
+    }, function(err){
+        if (err.body !== null) {
+            if (err.body.error !== null &amp;&amp; err.body.error !== undefined)
+                self.cli().error(err.body.error.message);
+            else
+                self.cli().error(err.body.message);
+        }
+        self.cli().error('====================================================');
     });
 };
 
@@ -154,13 +161,13 @@ module.exports = PublishOmen;</code></pre>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-base.html">base</a></li><li><a href="module-commands.html">commands</a></li><li><a href="module-commands_new.html">commands/new</a></li><li><a href="module-project.html">project</a></li><li><a href="module-utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="module-base-CommandOmen.html">CommandOmen</a></li><li><a href="module-base-HookupOmen.html">HookupOmen</a></li><li><a href="module-base-Spark.html">Spark</a></li><li><a href="module-commands_new-NewOmen.html">NewOmen</a></li><li><a href="module-commands-AboutOmen.html">AboutOmen</a></li><li><a href="module-commands-CheckOmen.html">CheckOmen</a></li><li><a href="module-commands-CreateOmen.html">CreateOmen</a></li><li><a href="module-commands-EclipseOmen.html">EclipseOmen</a></li><li><a href="module-commands-InitOmen.html">InitOmen</a></li><li><a href="module-commands-InstallOmen.html">InstallOmen</a></li><li><a href="module-commands-PackOmen.html">PackOmen</a></li><li><a href="module-commands-PropathOmen.html">PropathOmen</a></li><li><a href="module-commands-PublishOmen.html">PublishOmen</a></li><li><a href="module-commands-TemplateOmen.html">TemplateOmen</a></li><li><a href="module-commands-UnpublishOmen.html">UnpublishOmen</a></li><li><a href="module-commands-UpdateOmen.html">UpdateOmen</a></li><li><a href="module-commands-VersionOmen.html">VersionOmen</a></li><li><a href="module-project.html#~Project">Project</a></li><li><a href="module-project.html#~ProjectExtras">ProjectExtras</a></li><li><a href="module-project.html#~ProjectMandatory">ProjectMandatory</a></li><li><a href="module-utils-CliMockup.html">CliMockup</a></li><li><a href="module-utils-CommandUtils.html">CommandUtils</a></li><li><a href="module-utils-EclipseUtils.html">EclipseUtils</a></li><li><a href="module-utils-OmenAPI.html">OmenAPI</a></li><li><a href="module-utils-ProjectUtils.html">ProjectUtils</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Mon Jun 08 2015 20:47:20 GMT+0300 (EEST)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.3.0-beta3</a> on Sun Jul 19 2015 00:02:15 GMT+0300 (EEST)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -64,8 +64,7 @@ Project = function (filename) {
     /**
      * Holds the maximum version number.
      *
-     * @property
-     * @var String
+     * @property {String}
      */
     this.MAX_VERSION = "<=999.999.999";
 
