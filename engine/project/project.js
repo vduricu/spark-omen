@@ -10,7 +10,8 @@
 "use strict";
 
 var fs = require('fs'),
-    extend = require('util')._extend;
+    extend = require('util')._extend,
+    Hookup = require('./../base/hookup');
 
 var Project;
 
@@ -51,7 +52,13 @@ Project = function (filename) {
          *
          * @var ProjectExtras
          */
-        _extras = require('./extras');
+        _extras = require('./extras'),
+        /**
+         * Holds the hookups for the scripts to be executed.
+         *
+         * @var HookupOmen
+         */
+        _hookups = new Hookup();
 
 
     /**
@@ -98,8 +105,8 @@ Project = function (filename) {
     this.get = function (key) {
         var val = _information[key];
 
-        if(typeof val === "object" && val !== null)
-            return extend({},_information[key]);
+        if (typeof val === "object" && val !== null)
+            return extend({}, _information[key]);
         return _information[key];
     };
 
@@ -137,6 +144,12 @@ Project = function (filename) {
         return _information;
     };
 
+    /**
+     * Adds the given dependency with the given version to the dependencies list.
+     *
+     * @param {String} omenPacakge The dependency project name.
+     * @param {String} omenVersion The dependency project version.
+     */
     this.addDependency = function (omenPackage, omenVersion) {
         if (!self.has('dependencies'))
             _information.dependencies = {};
@@ -144,6 +157,12 @@ Project = function (filename) {
         _information.dependencies[omenPackage] = omenVersion;
     };
 
+    /**
+     * Checks the existence of a given dependency of the current project.
+     *
+     * @param {String} omenPackage The project to check after.
+     * @return boolean
+     */
     this.hasDependency = function (omenPackage) {
         if (!self.has('dependencies'))
             return false;
@@ -153,8 +172,31 @@ Project = function (filename) {
         return dep !== null && dep !== undefined && dep.length !== 0;
     };
 
+    /**
+     * Sets the dependencies for the current project.
+     *
+     * @param {Object} omenPackages Dictionary with packages and versions.
+     */
     this.setDependency = function (omenPackages) {
         _information.dependencies = omenPackages;
+    };
+
+    /**
+     * Executes the pre command commands.
+     *
+     * @param {String} command The command for which we execute the pre commands.
+     */
+    this.executePre = function(command){
+        _hookups.pre(command);
+    };
+
+    /**
+     * Executes the post command commands.
+     *
+     * @param {String} command The command for which we execute the post commands.
+     */
+    this.executePost = function(command){
+        _hookups.post(command);
     };
 
     /**
@@ -169,6 +211,9 @@ Project = function (filename) {
 
         if (!self.has('name') || !self.has('version'))
             throw new Error("The project must have a name and a version!");
+
+        if (self.has('scripts'))
+            _hookups.parse(self.get('scripts'));
     };
 
     mainBlock();

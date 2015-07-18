@@ -69,6 +69,8 @@ InstallOmen.prototype.run = function (filename) {
             project.addDependency(args[i], project.MAX_VERSION);
     }
 
+    project.executePre('install');
+
     var proDeps = project.get('dependencies');
     for (var iDeps in proDeps) {
         if (omenLock.packages[iDeps] !== undefined &&
@@ -86,6 +88,7 @@ InstallOmen.prototype.run = function (filename) {
     var deps = ProjectUtils.buildDependencies(projectCopy);
 
     if (deps.length === 0) {
+        project.executePost('install');
         return ProjectUtils.omenLockWrite(self.cli(), omenLock);
     }
 
@@ -96,6 +99,8 @@ InstallOmen.prototype.run = function (filename) {
 
     ProjectUtils.checkDependencies(deps).then(function (res) {
         ProjectUtils.install(omenLock, self.cli(), res);
+
+        project.executePost('install');
     }, function (err) {
         ProjectUtils.installError(self.cli(), err);
     });

@@ -11,12 +11,26 @@
 "use strict";
 
 if (typeof String.prototype.startsWith != 'function') {
+    /**
+     * Checks if a string starts with the given string.
+     *
+     * @param {String} str The string against which the checks are performed.
+     *
+     * @return boolean
+     */
     String.prototype.startsWith = function (str) {
         return this.slice(0, str.length) == str;
     };
 }
 
 if (typeof String.prototype.endsWith != 'function') {
+    /**
+     * Checks if a string ends with the given string.
+     *
+     * @param {String} str The string against which the checks are performed.
+     *
+     * @return boolean
+     */
     String.prototype.endsWith = function (str) {
         return this.slice(-str.length) == str;
     };

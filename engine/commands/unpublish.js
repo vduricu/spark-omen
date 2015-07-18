@@ -60,9 +60,9 @@ UnpublishOmen.prototype.run = function (filename) {
     var versionUnpublish = "";
     var project = new Project(filename);
 
-    for (var i = 0; i < args.length; i++) {
-        if (args[i] == "unpublish") {
-            unpublishCommand = args[i + 1];
+    for (var iArgs = 0; iArgs < args.length; iArgs++) {
+        if (args[iArgs] == "unpublish") {
+            unpublishCommand = args[iArgs + 1];
             if (unpublishCommand === null || unpublishCommand === undefined || unpublishCommand.length === 0)
                 throw new Error("What do you want to unpublish? (Version, Project)");
         }
@@ -87,9 +87,9 @@ UnpublishOmen.prototype.run = function (filename) {
             break;
 
         case "version":
-            for (var i = 0; i < args.length; i++) {
-                if (args[i] == "version") {
-                    versionUnpublish = args[i + 1];
+            for (var iVersion = 0; iVersion < args.length; iVersion++) {
+                if (args[iVersion] == "version") {
+                    versionUnpublish = args[iVersion + 1];
                     if (versionUnpublish === null || versionUnpublish === undefined || versionUnpublish.length === 0)
                         versionUnpublish = project.get('version');
                 }

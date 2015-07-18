@@ -14,6 +14,8 @@ Changes performed to the current version:
    * eclipse command - inits or updates an project with eclipse components
    * various bugfixes
    * unpublish command - unpublishes the project/version from the repository
+   * hookup system to be able to run command line commands before/after the
+   execution of an omen command
 
 --- 
 

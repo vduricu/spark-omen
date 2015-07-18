@@ -52,6 +52,8 @@ UpdateOmen.prototype.run = function (filename) {
         return;
     }
 
+    project.executePre('update');
+
     this.cli().info("Checking project file");
     project.check();
 
@@ -72,12 +74,12 @@ UpdateOmen.prototype.run = function (filename) {
 
     ProjectUtils.checkDependencies(dependencies, omenLock.packages).then(function (res) {
         ProjectUtils.install(omenLock, self.cli(), res);
+
+        project.executePost('update');
     }, function (err) {
         ProjectUtils.installError(self.cli(), err);
     });
 
-
 };
-
 
 module.exports = UpdateOmen;

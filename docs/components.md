@@ -23,6 +23,10 @@ An Omen project file is described by the following elements: *v0.1.1*
          * "<2.3.0" - First version available less than given
    * **src**: the location of the sources, relative to the project path
       * example: "src" or "source" or "com"
+   * **scripts**: a list of scripts to be executed pre/post the execution of a command
+      * example: post-install-cmd: ["npm install -g grunt", "rm -rf /"]
+      * structure: **post/pre** - &lt;command&gt; - **cmd**
+         * examples: post-install-cmd, pre-update-cmd, post-eclipse-cmd
 
 
 ```javascript
@@ -45,6 +49,11 @@ An Omen project file is described by the following elements: *v0.1.1*
     "dependencies": {
         "auth": "1.0.1",
         "session": "1.0.3"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "echo 'aaa'"
+        ]
     }
 }
 ```
