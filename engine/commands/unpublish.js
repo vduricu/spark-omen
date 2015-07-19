@@ -43,7 +43,8 @@ UnpublishOmen.prototype.run = function (filename) {
     var properties = [
         {
             name: 'Password',
-            hidden: true
+            hidden: true,
+            required: true
         }
     ];
 

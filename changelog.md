@@ -16,6 +16,7 @@ Changes performed to the current version:
    * unpublish command - unpublishes the project/version from the repository
    * hookup system to be able to run command line commands before/after the
    execution of an omen command
+   * appserver command - creates the configuration elements for appserver usage
 
 --- 
 

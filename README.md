@@ -40,6 +40,7 @@ Omen will be installed globally, such that whenever you need it, you can use it.
 The following commands are available to the end user:
 
    * **[omen about](#omen-about)**
+   * **[omen appserver](#omen-appserver)**
    * **[omen check](#omen-check)**
    * **[omen create](#omen-create)**
    * **[omen eclipse](#omen-eclipse)**
@@ -49,6 +50,7 @@ The following commands are available to the end user:
    * **[omen propath](#omen-propath)**
    * **[omen publish](#omen-publish)**
    * **[omen template](#omen-template)**
+   * **[omen unpublish](#omen-unpublish)**
    * **[omen update](#omen-update)**
    * **[omen version](#omen-version)**
 
@@ -60,6 +62,25 @@ Displays information about the current package.
 ```
 omen about
 ```
+
+### <a name="omen-appserver"></a>omen appserver
+Creates the appserver configuration for the current project. It will ask the user to fill a port
+and an operating mode (Stateless, state-free, state-reset, state-aware)
+
+**Command:**
+```
+omen appserver (create|template)
+```
+
+**Arguments:**
+   *  **template**
+      * **description**: Generates the appserver folder and appserver ubroker.properties configuration.
+      * **mandatory**: Yes
+   *  **create**
+      * **description**: Generates the appserver folder, appserver ubroker.properties configuration
+      and tries to update the ubroker.properties file.
+      * **mandatory**: Yes
+      
 
 ### <a name="omen-check"></a>omen check
 Checks the current project.json to be valid.

@@ -22,7 +22,7 @@ var basePath = "./";
  * @param {Project} project The project information.
  */
 var fileCreator = function (project) {
-    var dotProject = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/project.hbs'), "utf-8"),
+    var dotProject = fs.readFileSync(path.resolve(__dirname + '/utilsTemplates/project.hbs'), "utf-8"),
         dotProjectHbs = Handlebars.compile(dotProject, {noEscape: true});
 
     var name = project.name;
@@ -34,7 +34,7 @@ var fileCreator = function (project) {
     });
     fs.writeFileSync(path.resolve(basePath + ".project"), output, "utf-8");
 
-    var dotPropath = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/propath.hbs'), "utf-8"),
+    var dotPropath = fs.readFileSync(path.resolve(__dirname + '/utilsTemplates/propath.hbs'), "utf-8"),
         dotPropathHbs = Handlebars.compile(dotPropath, {noEscape: true});
 
     var extraEntries = [];
@@ -44,7 +44,7 @@ var fileCreator = function (project) {
     });
     fs.writeFileSync(path.resolve(basePath + ".propath"), output, "utf-8");
 
-    var dotFacet = fs.readFileSync(path.resolve(__dirname + '/eclipseTemplates/facet.hbs'), "utf-8"),
+    var dotFacet = fs.readFileSync(path.resolve(__dirname + '/utilsTemplates/facet.hbs'), "utf-8"),
         dotFacetHbs = Handlebars.compile(dotFacet, {noEscape: true});
 
     if (!fs.existsSync(path.resolve(basePath + '.settings')))
