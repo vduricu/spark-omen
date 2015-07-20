@@ -4,9 +4,10 @@
 require('./../engine/utils/general');
 
 var cli = require('cli').enable('status'),
-    commandUtils = require('./../engine/utils/commandUtils');
+    commandUtils = require('./../engine/utils/commandUtils'),
+    CliListenerOmen = require('./../engine/ui/cliListener');
 
-GLOBAL.OMEN_CONFIG = require('./../config/app.json');
+global.OMEN_CONFIG = require('./../config/app.json');
 
 cli.parse({
     //file: ['f', 'Selects the file to work with.'],
@@ -18,7 +19,8 @@ cli.parse({
 cli.main(function (args, options) {
     try {
         var command = args[0],
-            filename = "project.json";
+            filename = "project.json",
+            cliListener = new CliListenerOmen(this);
         global.OMEN_CLI_ARGS = args;
 
         global.OMEN_ENV = global.OMEN_CONFIG[global.OMEN_CONFIG.env];
@@ -34,13 +36,13 @@ cli.main(function (args, options) {
 
         global.OMEN_SAVE = options.save ? true : false;
         global.OMEN_ECLIPSE = options.eclipse ? true : false;
-        
-        commandUtils.SetInit(this, filename);
+
+        commandUtils.SetInit(cliListener, filename);
 
         if (options.version)
-            return commandUtils.CommandExecutor('version').run();
+            return commandUtils.CommandExecutor('version').run(args);
 
-        return commandUtils.CommandExecutor(command).run(global.OMEN_CLI_ARGS);
+        return commandUtils.CommandExecutor(command).run(args);
     } catch (err) {
         this.error(err.message);
         //throw err;

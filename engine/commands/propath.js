@@ -12,7 +12,7 @@
 var Project = require('./../project/project'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
-    OmenAPI = require('./../utils/omen_api');
+    OmenAPI = require('./../utils/omenApi');
 var PropathOmen;
 
 /**
@@ -44,14 +44,12 @@ PropathOmen.prototype.run = function (args) {
     for (var i = 0; i < args.length; i++) {
         if (args[i] == self.commandName) {
             result = args[i + 1];
-            if (!GeneralOmen.isValid(result))
+            if (!Object.isValid(result))
                 result = "full";
         }
     }
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - ProPath value:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('ProPath value');
     switch (result) {
         case 'shell':
             self.cli.ok((propath + '$PROPATH').replace(/;/gi, ':'));
@@ -64,7 +62,7 @@ PropathOmen.prototype.run = function (args) {
             self.cli.ok(('propath = "' + propath + ';" + propath.').replace(/;;/gi, ';'));
             break;
     }
-    self.cli.ok('====================================================');
+    self.cli.end();
 };
 
 

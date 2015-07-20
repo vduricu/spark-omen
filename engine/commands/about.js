@@ -38,9 +38,7 @@ AboutOmen.prototype.run = function (args) {
     var self = this,
         project = new Project(self.filename);
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project information:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header("Project information");
     self.cli.ok('Name:\t\t' + project.get('name'));
     self.cli.ok('Version:\t\t' + project.get('version'));
     self.cli.ok('Description:\t' + project.getWithDefault('description'));
@@ -50,13 +48,13 @@ AboutOmen.prototype.run = function (args) {
 
     if (project.has('author')) {
         var author = project.get('author');
-        self.cli.ok('----------------------------------------------------');
+        self.cli.separator();
         self.cli.ok('Author:\n\t- Name:\t\t' + author.name + "\n\t- Email:\t" + author.email);
     }
 
     if (project.has('contributors')) {
         var contributors = project.get('contributors');
-        self.cli.ok('----------------------------------------------------');
+        self.cli.separator();
         self.cli.ok('Contributors:');
         for (var contributorId in contributors) {
             var contributor = contributors[contributorId];
@@ -66,14 +64,14 @@ AboutOmen.prototype.run = function (args) {
 
     if (project.has('dependencies')) {
         var deps = project.get('dependencies');
-        self.cli.ok('----------------------------------------------------');
+        self.cli.separator();
         self.cli.ok('Dependencies:');
         for (var depsKey in deps) {
             self.cli.ok('\t- Package:\t' + depsKey + "\n\t- Version:\t" + deps[depsKey]);
         }
     }
 
-    self.cli.ok('====================================================');
+    self.cli.end();
 };
 
 

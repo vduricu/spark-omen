@@ -35,13 +35,10 @@ VersionOmen.prototype = new CommandOmen("version");
  */
 VersionOmen.prototype.run = function (args) {
     var self = this;
-
-    self.cli.ok('====================================================');
-    self.cli.ok('          Omen (' + Spark.version() + ')');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Version');
     self.cli.ok('\tCodename: ' + Spark.codename);
     self.cli.ok('\tVersion:  ' + Spark.version());
-    self.cli.ok('====================================================');
+    self.cli.end();
 
 };
 

@@ -35,7 +35,7 @@ _checks.dependencies = function (project, cli) {
             cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (GeneralOmen.isValid(line.available))
+                if (Object.isValid(line.available))
                     cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     cli.error("   - " + errorLine + ": " + line.message);
@@ -88,9 +88,7 @@ CheckOmen.prototype.run = function (args) {
     var self = this,
         project = new Project(self.filename);
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project checking:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header("Project checking");
 
     try {
         var checks = [];

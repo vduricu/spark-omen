@@ -42,9 +42,7 @@ UpdateOmen.prototype.run = function (args) {
         project = new Project(self.filename),
         lock = new Project('omen.lock');
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project update:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Project update');
     self.cli.info("Reading project information");
 
     if (self.filename != lock.get('file')) {

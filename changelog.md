@@ -15,6 +15,7 @@ Changes performed to the current version:
    * converted filename and cli to be properties instead of methods
    * code refactoring
    * extracted general functionality into general purpose module
+   * Ui display using events - can be easily extended for testing framework
 
 ### Version 0.2.1
 

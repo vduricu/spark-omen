@@ -10,7 +10,7 @@
 "use strict";
 
 var Command   = require('../../engine/base/command'),
-    CliMockup = require('../../engine/utils/cliMockup');
+    CliMockup = require('../../engine/testing/cliMockup');
 
 module.exports = {
     testEmpty: function (test) {
@@ -19,7 +19,7 @@ module.exports = {
         var cmd = new Command("cmd");
 
         test.equal(cmd.cli, null);
-        test.equal(cmd.filename, "project.json");
+        test.equal(cmd.filename, null);
         test.throws(cmd.run, "Command not implemented");
 
         test.done();
@@ -31,7 +31,7 @@ module.exports = {
         cmd.init(null, "");
 
         test.equal(cmd.cli, null);
-        test.equal(cmd.filename, "project.json");
+        test.equal(cmd.filename, null);
         test.throws(cmd.run, "Command not implemented");
 
         test.done();

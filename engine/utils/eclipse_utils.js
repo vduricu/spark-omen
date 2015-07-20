@@ -12,7 +12,7 @@
 var fs = require('fs'),
     path = require('path'),
     Handlebars = require('handlebars'),
-    OmenAPI = require('./omen_api');
+    OmenAPI = require('./omenApi');
 
 var basePath = "./";
 

@@ -43,7 +43,7 @@ CommandUtils.CommandExecutor = function (command) {
 /**
  * Initializes some variables used by the CommandExecutor function.
  *
- * @param {cli} cli The reference to cli library.
+ * @param {CliListenerOmen} cli The reference to cli library.
  * @param {String} filename The filename.
  */
 CommandUtils.SetInit = function (cli, filename) {

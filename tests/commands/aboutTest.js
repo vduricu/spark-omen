@@ -10,7 +10,7 @@
 "use strict";
 
 var Command   = require('../../engine/commands/about'),
-    CliMockup = require('../../engine/utils/cliMockup');
+    CliMockup = require('../../engine/testing/cliMockup');
 
 var cli    = new CliMockup(),
     simple = "./tests/packages/simple.json",
@@ -28,8 +28,8 @@ module.exports = {
         cli.clearAll();
         cmd.init(cli, simple);
 
-        test.equal(cmd.cli(), cli);
-        test.equal(cmd.filename(), simple);
+        test.equal(cmd.cli, cli);
+        test.equal(cmd.filename, simple);
 
         test.doesNotThrow(function () {
             cmd.run(simple);
@@ -51,8 +51,8 @@ module.exports = {
         cli.clearAll();
         cmd.init(cli, noDeps);
 
-        test.equal(cmd.cli(), cli);
-        test.equal(cmd.filename(), noDeps);
+        test.equal(cmd.cli, cli);
+        test.equal(cmd.filename, noDeps);
 
         test.doesNotThrow(function () {
             cmd.run(noDeps);
@@ -74,8 +74,8 @@ module.exports = {
         cli.clearAll();
         cmd.init(cli, deps);
 
-        test.equal(cmd.cli(), cli);
-        test.equal(cmd.filename(), deps);
+        test.equal(cmd.cli, cli);
+        test.equal(cmd.filename, deps);
 
         test.doesNotThrow(function () {
             cmd.run(deps);

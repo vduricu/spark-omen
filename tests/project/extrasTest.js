@@ -15,7 +15,6 @@ module.exports = {
     contributors: {
         testOk1: function (test) {
             test.expect(1);
-
             test.doesNotThrow(function () {
                 Extras.contributors([{
                     "name": "Tester Unu",

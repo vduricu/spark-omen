@@ -52,9 +52,7 @@ PublishOmen.prototype.run = function (args) {
 
     prompt.start();
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project publication:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header("Project publication");
 
     self.cli.info("Reading project information");
 
@@ -71,7 +69,7 @@ PublishOmen.prototype.run = function (args) {
             self.cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (GeneralOmen.isValid(line.available))
+                if (Object.isValid(line.available))
                     self.cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     self.cli.error("   - " + errorLine + ": " + line.message);
@@ -91,25 +89,25 @@ PublishOmen.prototype.run = function (args) {
                 else
                     self.cli.ok("Packages published");
 
-                self.cli.ok('====================================================');
+                self.cli.end();
             }, function (err) {
-                if (GeneralOmen.isValid(err.body)) {
-                    if (GeneralOmen.isValid(err.body.error !== null && err.body.error !== undefined))
+                if (Object.isValid(err.body)) {
+                    if (Object.isValid(err.body.error !== null && err.body.error !== undefined))
                         self.cli.error(err.body.error.message);
                     else
                         self.cli.error(err.body.message);
                 }
-                self.cli.error('====================================================');
+                self.cli.end();
             });
         });
     }, function (err) {
-        if (GeneralOmen.isValid(err.body)) {
-            if (GeneralOmen.isValid(err.body.error !== null && err.body.error !== undefined))
+        if (Object.isValid(err.body)) {
+            if (Object.isValid(err.body.error !== null && err.body.error !== undefined))
                 self.cli.error(err.body.error.message);
             else
                 self.cli.error(err.body.message);
         }
-        self.cli.error('====================================================');
+        self.cli.end();
     });
 };
 

@@ -43,13 +43,13 @@ CommandOmen = function (commandName) {
      */
     self.commandName = commandName;
 
-    if(!GeneralOmen.isValid(commandName))
+    if(!Object.isValid(commandName))
         self.commandName = "";
 
     /**
      * Private properties initialisation.
      *
-     * @param {Object} cli The console module reference.
+     * @param {CliListenerOmen} cli The console module reference.
      * @param {String} [filename] The name of the file to parse.
      */
     self.init = function (cli, filename) {

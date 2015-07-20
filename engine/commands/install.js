@@ -44,9 +44,7 @@ InstallOmen.prototype.run = function (args) {
         projectCopy = new Project(self.filename),
         omenLock = {};
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project installation:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Project installation');
     self.cli.info("Reading project information");
 
     omenLock.file = project.getFilename();

@@ -36,15 +36,7 @@ if (typeof String.prototype.endsWith != 'function') {
     };
 }
 
-/**
- * Object to hold general methods/functions.
- *
- * @class
- * @return GeneralOmen
- */
-var GeneralOmen = function () {
-    var self = this;
-
+if (typeof Object.prototype.isValid != 'function') {
     /**
      * Tests to see if a given object is valid or not.
      *
@@ -52,11 +44,20 @@ var GeneralOmen = function () {
      *
      * @return boolean
      */
-    self.isValid = function (object) {
+    Object.prototype.isValid = function (object) {
         return object !== null && object !== undefined;
     };
+}
 
-    return this;
-};
-
-global.GeneralOmen = GeneralOmen;
+if (typeof String.prototype.isValid != 'function') {
+    /**
+     * Tests to see if a given object is valid or not.
+     *
+     * @param {String} str The object to be checked.
+     *
+     * @return boolean
+     */
+    String.prototype.isValid = function (str) {
+        return str !== null && str !== undefined && str.length !== 0;
+    };
+}

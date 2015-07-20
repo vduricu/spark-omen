@@ -41,14 +41,12 @@ EclipseOmen.prototype.run = function (args) {
         eclipseCommand = "",
         project = new Project(self.filename);
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Eclipse toolkit:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Eclipse toolkit');
 
     for (var i = 0; i < args.length; i++) {
         if (args[i] == self.commandName) {
             eclipseCommand = args[i + 1];
-            if (!GeneralOmen.isValid(eclipseCommand) || eclipseCommand.length === 0)
+            if (!Object.isValid(eclipseCommand) || eclipseCommand.length === 0)
                 throw new Error("No tool specified!");
         }
     }

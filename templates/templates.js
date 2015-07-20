@@ -10,7 +10,7 @@
 "use strict";
 
 var Spark = require('./../engine/base/spark'),
-    OmenAPI = require('./../engine/utils/omen_api'),
+    OmenAPI = require('./../engine/utils/omenApi'),
     Handlebars = require('handlebars'),
     fs = require('fs'),
     path = require('path');

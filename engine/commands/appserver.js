@@ -66,14 +66,12 @@ AppserverOmen.prototype.run = function (args) {
 
     prompt.start();
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - AppServer creation:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header("AppServer creation");
 
     for (var i = 0; i < args.length; i++) {
         if (args[i] == self.commandName) {
             appsrvCommand = args[i + 1];
-            if (!GeneralOmen.isValid(appsrvCommand) || appsrvCommand.length === 0)
+            if (!Object.isValid(appsrvCommand) || appsrvCommand.length === 0)
                 throw new Error("No tool specified!");
         }
     }
@@ -97,7 +95,7 @@ AppserverOmen.prototype.run = function (args) {
                 ProjectUtils.ubrokerTemplate(project, result);
 
                 var dlc = process.env.DLC;
-                if (GeneralOmen.isValid(dlc)) {
+                if (Object.isValid(dlc)) {
                     self.cli.ok("Updating the ubroker.properties");
 
                     var dlcBroker = path.resolve(dlc + "/properties/ubroker.properties");

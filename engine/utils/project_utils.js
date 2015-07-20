@@ -10,7 +10,7 @@
 "use strict";
 
 var unirest = require('unirest'),
-    OmenAPI = require('./omen_api'),
+    OmenAPI = require('./omenApi'),
     fs = require('fs'),
     path = require('path'),
     fstream = require('fstream'),
@@ -83,7 +83,7 @@ ProjectUtils.buildDependencies = function (project) {
         dependencies = project.get('dependencies'),
         i = 0;
 
-    if (!GeneralOmen.isValid(dependencies))
+    if (!Object.isValid(dependencies))
         return returnDependencies;
 
     for (var iElem in dependencies) {
@@ -92,19 +92,19 @@ ProjectUtils.buildDependencies = function (project) {
             version = {};
 
         version.operator = verArr[1];
-        if (!GeneralOmen.isValid(version.operator))
+        if (!Object.isValid(version.operator))
             version.operator = "=";
 
         version.major = verArr[2];
         version.minor = verArr[4];
         version.patch = verArr[6];
 
-        if (!GeneralOmen.isValid(version.minor))
+        if (!Object.isValid(version.minor))
             version.minor = "0";
         else if (version.minor == "*")
             version.like = true;
 
-        if (!GeneralOmen.isValid(version.patch))
+        if (!Object.isValid(version.patch))
             version.patch = "0";
         else if (version.patch == "*")
             version.like = true;
@@ -134,7 +134,7 @@ ProjectUtils.checkDependencies = function (dependencies, update) {
      * In case the update command is run, we must attach the
      * installed dependencies.
      */
-    if (GeneralOmen.isValid(update)) {
+    if (Object.isValid(update)) {
         data.installed = update;
         url = '/dependency/update';
     }
@@ -170,7 +170,7 @@ ProjectUtils.downloadDependencies = function (dependencies) {
 
     /* Downloads the files. */
     downloads.run(function (err, files) {
-        if (GeneralOmen.isValid(err)) {
+        if (Object.isValid(err)) {
             deferred.reject(new Error(err));
             return;
         }
@@ -223,7 +223,7 @@ ProjectUtils.packageWriter = function (archiveName, fullPath, lines) {
             for (var iLine in lines) {
                 var line = lines[iLine].trim();
 
-                if (!GeneralOmen.isValid(line) || line.startsWith("#") || line.length === 0)
+                if (!Object.isValid(line) || line.startsWith("#") || line.length === 0)
                     continue;
 
                 if (this.basename.match(new RegExp(line)))
@@ -336,7 +336,7 @@ ProjectUtils.install = function (omenLock, cli, res) {
         cli.error("There were some errors:");
         for (var errorLine in res.errors) {
             var line = res.errors[errorLine];
-            if (GeneralOmen.isValid(line.available))
+            if (Object.isValid(line.available))
                 cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
             else
                 cli.error("   - " + errorLine + ": " + line.message);
@@ -361,7 +361,7 @@ ProjectUtils.install = function (omenLock, cli, res) {
     if (!fs.existsSync("./vendors"))
         fs.mkdirSync("./vendors");
 
-    if (GeneralOmen.isValid(res.dependencies)) {
+    if (Object.isValid(res.dependencies)) {
         cli.info("Downloading files");
 
         /* Download the dependencies. */

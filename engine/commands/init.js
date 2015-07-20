@@ -43,14 +43,12 @@ InitOmen.prototype.run = function (args) {
     var self = this,
         projectName = "";
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project init:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Project init');
 
     for (var i = 0; i < args.length; i++) {
         if (args[i] == self.commandName) {
             projectName = args[i + 1];
-            if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
+            if (!Object.isValid(projectName) || projectName.length === 0)
                 projectName = 'omen-sample';
         }
     }
@@ -58,7 +56,7 @@ InitOmen.prototype.run = function (args) {
     if (fs.existsSync(path.resolve(self.filename)))
         throw new Error("Project already initialized!");
 
-    if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
+    if (!Object.isValid(projectName) || projectName.length === 0)
         throw new Error("No name specified!");
 
     projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");

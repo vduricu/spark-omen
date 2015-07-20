@@ -40,7 +40,7 @@ TemplateOmen.prototype.run = function (args) {
     for (var i = 0; i < args.length; i++) {
         if (args[i] == self.commandName) {
             filename = args[i + 1];
-            if (!GeneralOmen.isValid(filename) || filename.length === 0)
+            if (!Object.isValid(filename) || filename.length === 0)
                 filename = "sample";
         }
     }

@@ -41,9 +41,7 @@ PackOmen.prototype.run = function (args) {
     var self = this,
         project = new Project(self.filename);
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project packing:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Project packing');
     self.cli.info("Reading project information");
 
     self.cli.info("Checking project file");
@@ -59,7 +57,7 @@ PackOmen.prototype.run = function (args) {
             self.cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (GeneralOmen.isValid(line.available))
+                if (Object.isValid(line.available))
                     self.cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     self.cli.error("   - " + errorLine + ": " + line.message);
@@ -70,7 +68,7 @@ PackOmen.prototype.run = function (args) {
 
         ProjectUtils.pack(project).then(function (archiveName) {
             self.cli.ok("Package [" + archiveName + "] created");
-            self.cli.ok('====================================================');
+            self.cli.end();
         });
     });
 };

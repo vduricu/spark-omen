@@ -42,19 +42,17 @@ CreateOmen.prototype.run = function (args) {
     var self = this,
         projectName = "";
 
-    self.cli.ok('====================================================');
-    self.cli.ok('    Omen (' + Spark.version() + ') - Project creation:');
-    self.cli.ok('----------------------------------------------------');
+    self.cli.header('Project creation');
 
     for (var i = 0; i < args.length; i++) {
         if (args[i] == self.commandName) {
             projectName = args[i + 1];
-            if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
+            if (!Object.isValid(projectName) || projectName.length === 0)
                 throw new Error("No name specified!");
         }
     }
 
-    if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
+    if (!Object.isValid(projectName) || projectName.length === 0)
         throw new Error("No name specified!");
 
     projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
