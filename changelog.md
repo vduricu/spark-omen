@@ -3,7 +3,18 @@
 
 Dependency manager for OpenEdge applications.
 
-## Version 0.2.x (Latest: 0.2.1)
+## Version 0.2.x (Latest: 0.2.2)
+
+### Version 0.2.2
+
+Changes performed to the current version:
+   * added the commandName property to the CommandOmen base class
+   * changed the argument received by the commands to be the list of
+   arguments passed in the shell
+   * use the filename stored in the base CommandOmen class
+   * converted filename and cli to be properties instead of methods
+   * code refactoring
+   * extracted general functionality into general purpose module
 
 ### Version 0.2.1
 

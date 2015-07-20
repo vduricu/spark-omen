@@ -1,7 +1,7 @@
 /*jslint node: true */
 "use strict";
 
-require('./engine/utils/string_utils');
+require('./engine/utils/general');
 
 module.exports = function (grunt) {
 
@@ -15,7 +15,8 @@ module.exports = function (grunt) {
                     jQuery: true,
                     console: true,
                     module: true,
-                    document: true
+                    document: true,
+                    GeneralOmen: true
                 }
             }
         },
@@ -25,10 +26,11 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-nodeunit');
+    /* To move to Mocha */
+    //grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-    grunt.registerTask('test', ['jshint', 'nodeunit']);
+    grunt.registerTask('test', ['jshint']);
 
-    grunt.registerTask('default', ['jshint', 'nodeunit']);
+    grunt.registerTask('default', ['jshint']);
 
 };

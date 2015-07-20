@@ -17,6 +17,7 @@ var HookupOmen;
  * Hookups to run commands before/after executing a given command.
  *
  * @class
+ * @return HookupOmen
  */
 HookupOmen = function () {
     var preCommands = {},
@@ -61,7 +62,7 @@ HookupOmen = function () {
      *
      * @param {Object} scripts A dictionary with commands and zones.
      */
-    this.parse = function (scripts) {
+    self.parse = function (scripts) {
         for (var cScript in scripts) {
             var result = /^(post|pre)-([a-z]+)-cmd$/gi.exec(cScript);
             var zone = result[1].charAt(0).toUpperCase() + result[1].substring(1),
@@ -78,7 +79,7 @@ HookupOmen = function () {
      *
      * @param {String} command The command for which the commands are executed.
      */
-    this.post = function (command) {
+    self.post = function (command) {
         executeCommand(postCommands[command]);
     };
 
@@ -87,7 +88,7 @@ HookupOmen = function () {
      *
      * @param {String} command The command for which the commands are executed.
      */
-    this.pre = function (command) {
+    self.pre = function (command) {
         executeCommand(preCommands[command]);
     };
 
@@ -97,7 +98,7 @@ HookupOmen = function () {
      * @param {String} command The name of the command.
      * @param {String} execute The command line to be executed.
      */
-    this.pushPost = function (command, execute) {
+    self.pushPost = function (command, execute) {
         if (postCommands[command] === null || postCommands[command] === undefined)
             postCommands[command] = [];
 
@@ -110,7 +111,7 @@ HookupOmen = function () {
      * @param {String} command The name of the command.
      * @param {String} execute The command line to be executed.
      */
-    this.pushPre = function (command, execute) {
+    self.pushPre = function (command, execute) {
         if (preCommands[command] === null || preCommands[command] === undefined)
             preCommands[command] = [];
 

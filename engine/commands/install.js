@@ -31,24 +31,23 @@ InstallOmen = function () {
  *
  * @var CommandOmen
  */
-InstallOmen.prototype = new CommandOmen();
+InstallOmen.prototype = new CommandOmen("install");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be installed.
+ * @param {Object[]} args The arguments passed to the command
  */
-InstallOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project installation:');
-    this.cli().ok('----------------------------------------------------');
-    this.cli().info("Reading project information");
-
-    var project = new Project(filename),
-        projectCopy = new Project(filename),
-        self = this,
-        args = GLOBAL.OMEN_CLI_ARGS,
+InstallOmen.prototype.run = function (args) {
+    var self = this,
+        project = new Project(self.filename),
+        projectCopy = new Project(self.filename),
         omenLock = {};
+
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project installation:');
+    self.cli.ok('----------------------------------------------------');
+    self.cli.info("Reading project information");
 
     omenLock.file = project.getFilename();
     omenLock.name = project.get('name');
@@ -62,14 +61,14 @@ InstallOmen.prototype.run = function (filename) {
     }
 
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "install")
+        if (args[i] == self.commandName)
             continue;
 
-        if(!project.hasDependency(args[i]))
+        if (!project.hasDependency(args[i]))
             project.addDependency(args[i], project.MAX_VERSION);
     }
 
-    project.executePre('install');
+    project.executePre(self.commandName);
 
     var proDeps = project.get('dependencies');
     for (var iDeps in proDeps) {
@@ -81,28 +80,28 @@ InstallOmen.prototype.run = function (filename) {
 
     projectCopy.setDependency(proDeps);
 
-    this.cli().info("Checking project file");
+    self.cli.info("Checking project file");
     project.check();
 
-    this.cli().info("Building dependencies");
+    self.cli.info("Building dependencies");
     var deps = ProjectUtils.buildDependencies(projectCopy);
 
     if (deps.length === 0) {
-        project.executePost('install');
-        return ProjectUtils.omenLockWrite(self.cli(), omenLock);
+        project.executePost(self.commandName);
+        return ProjectUtils.omenLockWrite(self.cli, omenLock);
     }
 
-    if(GLOBAL.OMEN_SAVE)
-        GLOBAL.OMEN_PROJECT = project;
+    if (global.OMEN_SAVE)
+        global.OMEN_PROJECT = project;
 
-    this.cli().info("Checking dependencies");
+    self.cli.info("Checking dependencies");
 
     ProjectUtils.checkDependencies(deps).then(function (res) {
-        ProjectUtils.install(omenLock, self.cli(), res);
+        ProjectUtils.install(omenLock, self.cli, res);
 
-        project.executePost('install');
+        project.executePost(self.commandName);
     }, function (err) {
-        ProjectUtils.installError(self.cli(), err);
+        ProjectUtils.installError(self.cli, err);
     });
 
 };

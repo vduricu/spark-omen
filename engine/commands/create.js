@@ -31,34 +31,35 @@ CreateOmen = function () {
  *
  * @var CommandOmen
  */
-CreateOmen.prototype = new CommandOmen();
+CreateOmen.prototype = new CommandOmen("create");
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {Object[]} args The arguments passed to the command
  */
-CreateOmen.prototype.run = function () {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project creation:');
-    this.cli().ok('----------------------------------------------------');
+CreateOmen.prototype.run = function (args) {
+    var self = this,
+        projectName = "";
 
-    var self = this;
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var projectName = "";
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project creation:');
+    self.cli.ok('----------------------------------------------------');
 
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "create") {
+        if (args[i] == self.commandName) {
             projectName = args[i + 1];
-            if (projectName === null || projectName === undefined || projectName.length === 0)
+            if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
                 throw new Error("No name specified!");
         }
     }
 
-    if (projectName === null || projectName === undefined || projectName.length === 0)
+    if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
         throw new Error("No name specified!");
 
     projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
 
-    this.cli().info("Creating project '" + projectName + "'");
+    self.cli.info("Creating project '" + projectName + "'");
 
     /* Check the existence of the vendors folder and create if it doesn't.*/
     if (fs.existsSync("./" + projectName))
@@ -74,9 +75,9 @@ CreateOmen.prototype.run = function () {
         email: "author@email.domain"
     };
 
-    ProjectUtils.omenJsonWrite(self.cli(), omenFile);
+    ProjectUtils.omenJsonWrite(self.cli, omenFile);
 
-    if(GLOBAL.OMEN_ECLIPSE){
+    if(global.OMEN_ECLIPSE){
         EclipseUtils.setBasePath("./" + projectName + "/");
         EclipseUtils.initProject(omenFile);
     }

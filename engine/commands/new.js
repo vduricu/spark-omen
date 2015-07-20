@@ -26,14 +26,14 @@ NewOmen = function () {
  *
  * @var CommandOmen
  */
-NewOmen.prototype = new CommandOmen();
+NewOmen.prototype = new CommandOmen("new");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} [filename] The name of the file to be imported
+ * @param {Object[]} args The arguments passed to the command
  */
-NewOmen.prototype.run = function (filename) {
+NewOmen.prototype.run = function (args) {
 
 };
 

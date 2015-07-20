@@ -5,7 +5,7 @@ Dependency manager for OpenEdge applications.
 
 **Stable Version**: 0.1.5
 
-**Unstable Version**: 0.2.1
+**Unstable Version**: 0.2.2
 
 ## About
 

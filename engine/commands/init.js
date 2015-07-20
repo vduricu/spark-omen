@@ -32,39 +32,38 @@ InitOmen = function () {
  *
  * @var CommandOmen
  */
-InitOmen.prototype = new CommandOmen();
+InitOmen.prototype = new CommandOmen("init");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be installed.
+ * @param {Object[]} args The arguments passed to the command
  */
-InitOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project init:');
-    this.cli().ok('----------------------------------------------------');
+InitOmen.prototype.run = function (args) {
+    var self = this,
+        projectName = "";
 
-    var self = this;
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var projectName = "";
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project init:');
+    self.cli.ok('----------------------------------------------------');
 
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "init") {
+        if (args[i] == self.commandName) {
             projectName = args[i + 1];
-            if (projectName === null || projectName === undefined || projectName.length === 0)
+            if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
                 projectName = 'omen-sample';
         }
     }
 
-    if (fs.existsSync(path.resolve(filename)))
+    if (fs.existsSync(path.resolve(self.filename)))
         throw new Error("Project already initialized!");
 
-    if (projectName === null || projectName === undefined || projectName.length === 0)
+    if (!GeneralOmen.isValid(projectName) || projectName.length === 0)
         throw new Error("No name specified!");
 
     projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
 
-    this.cli().info("Creating project '" + projectName + "'");
+    self.cli.info("Creating project '" + projectName + "'");
 
     var omenFile = {};
     omenFile.name = projectName;
@@ -74,9 +73,9 @@ InitOmen.prototype.run = function (filename) {
         email: "author@email.domain"
     };
 
-    ProjectUtils.omenJsonInit(self.cli(), omenFile);
+    ProjectUtils.omenJsonInit(self.cli, omenFile);
 
-    if(GLOBAL.OMEN_ECLIPSE){
+    if(global.OMEN_ECLIPSE){
         EclipseUtils.initProject(omenFile);
     }
 };

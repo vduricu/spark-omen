@@ -35,7 +35,7 @@ _checks.dependencies = function (project, cli) {
             cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (line.available !== null && line.available !== undefined)
+                if (GeneralOmen.isValid(line.available))
                     cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
                     cli.error("   - " + errorLine + ": " + line.message);
@@ -76,22 +76,26 @@ CheckOmen = function () {
  *
  * @var CommandOmen
  */
-CheckOmen.prototype = new CommandOmen();
+CheckOmen.prototype = new CommandOmen("check");
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {Object[]} args The arguments passed to the command.
  */
-CheckOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project checking:');
-    this.cli().ok('----------------------------------------------------');
+CheckOmen.prototype.run = function (args) {
 
-    var project = new Project(filename);
+    var self = this,
+        project = new Project(self.filename);
+
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project checking:');
+    self.cli.ok('----------------------------------------------------');
 
     try {
         var checks = [];
-        for (var iArg in GLOBAL.OMEN_CLI_ARGS) {
-            var argument = GLOBAL.OMEN_CLI_ARGS[iArg].trim();
+        for (var iArg in args) {
+            var argument = args[iArg].trim();
 
             if (argument == "dependencies" || argument == "all")
                 checks.push("dependencies");
@@ -104,12 +108,12 @@ CheckOmen.prototype.run = function (filename) {
             checks.push("information");
 
         for (var iCheck in checks) {
-            _checks[checks[iCheck]](project, this.cli());
+            _checks[checks[iCheck]](project, self.cli);
         }
 
     } catch (err) {
-        this.cli().error("The following error has been triggered:");
-        this.cli().error("    - " + err.message);
+        self.cli.error("The following error has been triggered:");
+        self.cli.error("    - " + err.message);
     }
 
 };

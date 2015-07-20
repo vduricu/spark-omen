@@ -16,10 +16,10 @@ module.exports = {
     testEmpty: function (test) {
         test.expect(3);
 
-        var cmd = new Command();
+        var cmd = new Command("cmd");
 
-        test.equal(cmd.cli(), null);
-        test.equal(cmd.filename(), "project.json");
+        test.equal(cmd.cli, null);
+        test.equal(cmd.filename, "project.json");
         test.throws(cmd.run, "Command not implemented");
 
         test.done();
@@ -27,11 +27,11 @@ module.exports = {
     testEmptyInit: function (test) {
         test.expect(3);
 
-        var cmd = new Command();
+        var cmd = new Command("cmd");
         cmd.init(null, "");
 
-        test.equal(cmd.cli(), null);
-        test.equal(cmd.filename(), "project.json");
+        test.equal(cmd.cli, null);
+        test.equal(cmd.filename, "project.json");
         test.throws(cmd.run, "Command not implemented");
 
         test.done();
@@ -39,14 +39,14 @@ module.exports = {
     testInit: function (test) {
         test.expect(5);
 
-        var cmd = new Command();
+        var cmd = new Command("cmd");
         var cli = new CliMockup();
         cmd.init(cli, "../packages/simple.json");
 
-        test.notEqual(cmd.cli(), null);
-        test.equal(cmd.cli(), cli);
-        test.notEqual(cmd.filename(), "project.json");
-        test.equal(cmd.filename(), "../packages/simple.json");
+        test.notEqual(cmd.cli, null);
+        test.equal(cmd.cli, cli);
+        test.notEqual(cmd.filename, "project.json");
+        test.equal(cmd.filename, "../packages/simple.json");
         test.throws(cmd.run, "Command not implemented");
 
         test.done();

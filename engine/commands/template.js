@@ -26,24 +26,26 @@ TemplateOmen = function () {
  *
  * @var CommandOmen
  */
-TemplateOmen.prototype = new CommandOmen();
+TemplateOmen.prototype = new CommandOmen("template");
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {Object[]} args The arguments passed to the command
  */
-TemplateOmen.prototype.run = function () {
-    var args = GLOBAL.OMEN_CLI_ARGS,
+TemplateOmen.prototype.run = function (args) {
+    var self = this,
         filename = "sample";
 
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "template") {
+        if (args[i] == self.commandName) {
             filename = args[i + 1];
-            if (filename === null || filename === undefined)
+            if (!GeneralOmen.isValid(filename) || filename.length === 0)
                 filename = "sample";
         }
     }
 
-    templates(filename, this.cli());
+    templates(filename, self.cli);
 };
 
 module.exports = TemplateOmen;

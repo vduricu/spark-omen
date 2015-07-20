@@ -28,16 +28,6 @@ var unirest = require('unirest'),
 var ProjectUtils = {};
 
 /**
- * Checks if the given variable is valid or not.
- *
- * @param {Object} value The variable to be checked.
- * @return Boolean
- */
-var _isValid = function (value) {
-    return value !== undefined && value !== null;
-};
-
-/**
  * Writes the omen lock file - used for the update command.
  *
  * @param {Object} cli The CLI object reference.
@@ -93,9 +83,8 @@ ProjectUtils.buildDependencies = function (project) {
         dependencies = project.get('dependencies'),
         i = 0;
 
-    if (!_isValid(dependencies))
+    if (!GeneralOmen.isValid(dependencies))
         return returnDependencies;
-
 
     for (var iElem in dependencies) {
         var app = iElem,
@@ -103,19 +92,19 @@ ProjectUtils.buildDependencies = function (project) {
             version = {};
 
         version.operator = verArr[1];
-        if (!_isValid(version.operator))
+        if (!GeneralOmen.isValid(version.operator))
             version.operator = "=";
 
         version.major = verArr[2];
         version.minor = verArr[4];
         version.patch = verArr[6];
 
-        if (!_isValid(version.minor))
+        if (!GeneralOmen.isValid(version.minor))
             version.minor = "0";
         else if (version.minor == "*")
             version.like = true;
 
-        if (!_isValid(version.patch))
+        if (!GeneralOmen.isValid(version.patch))
             version.patch = "0";
         else if (version.patch == "*")
             version.like = true;
@@ -145,7 +134,7 @@ ProjectUtils.checkDependencies = function (dependencies, update) {
      * In case the update command is run, we must attach the
      * installed dependencies.
      */
-    if (_isValid(update)) {
+    if (GeneralOmen.isValid(update)) {
         data.installed = update;
         url = '/dependency/update';
     }
@@ -181,7 +170,7 @@ ProjectUtils.downloadDependencies = function (dependencies) {
 
     /* Downloads the files. */
     downloads.run(function (err, files) {
-        if (err !== null && err !== undefined) {
+        if (GeneralOmen.isValid(err)) {
             deferred.reject(new Error(err));
             return;
         }
@@ -226,6 +215,7 @@ ProjectUtils.packageWriter = function (archiveName, fullPath, lines) {
                 this.basename.match(/^vendors/) ||
                 this.basename.match(new RegExp("^" + archiveName)) ||
                 this.basename.match(/^omenpackage.spk/) ||
+                this.basename.match(/^appserver/) ||
                 this.basename.match(/^node_modules/))
                 return false;
 
@@ -233,7 +223,7 @@ ProjectUtils.packageWriter = function (archiveName, fullPath, lines) {
             for (var iLine in lines) {
                 var line = lines[iLine].trim();
 
-                if (!_isValid(line) || line.startsWith("#") || line.length === 0)
+                if (!GeneralOmen.isValid(line) || line.startsWith("#") || line.length === 0)
                     continue;
 
                 if (this.basename.match(new RegExp(line)))
@@ -256,12 +246,11 @@ ProjectUtils.packageWriter = function (archiveName, fullPath, lines) {
 /**
  * Publishes the local package to the system defined repository.
  *
- * @param {String} whatToDo An action regarding the package.
  * @param {Project} project The information about the current package.
  * @param {Object} promptResult The password and other questions asked by the application.
  * @return Promise
  */
-ProjectUtils.publish = function (whatToDo, project, promptResult) {
+ProjectUtils.publish = function (project, promptResult) {
     var deferred, lines, data, fullPath;
 
     deferred = Q.defer();
@@ -347,7 +336,7 @@ ProjectUtils.install = function (omenLock, cli, res) {
         cli.error("There were some errors:");
         for (var errorLine in res.errors) {
             var line = res.errors[errorLine];
-            if (line.available !== null && line.available !== undefined)
+            if (GeneralOmen.isValid(line.available))
                 cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
             else
                 cli.error("   - " + errorLine + ": " + line.message);
@@ -372,7 +361,7 @@ ProjectUtils.install = function (omenLock, cli, res) {
     if (!fs.existsSync("./vendors"))
         fs.mkdirSync("./vendors");
 
-    if (res.dependencies !== null && res.dependencies !== undefined) {
+    if (GeneralOmen.isValid(res.dependencies)) {
         cli.info("Downloading files");
 
         /* Download the dependencies. */

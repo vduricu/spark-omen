@@ -30,47 +30,47 @@ PackOmen = function () {
  *
  * @var CommandOmen
  */
-PackOmen.prototype = new CommandOmen();
+PackOmen.prototype = new CommandOmen("pack");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be published.
+ * @param {Object[]} args The arguments passed to the command
  */
-PackOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project packing:');
-    this.cli().ok('----------------------------------------------------');
-    this.cli().info("Reading project information");
+PackOmen.prototype.run = function (args) {
+    var self = this,
+        project = new Project(self.filename);
 
-    var project = new Project(filename),
-        self = this;
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project packing:');
+    self.cli.ok('----------------------------------------------------');
+    self.cli.info("Reading project information");
 
-    this.cli().info("Checking project file");
+    self.cli.info("Checking project file");
     project.check();
 
-    this.cli().info("Building dependencies");
+    self.cli.info("Building dependencies");
     var dependencies = ProjectUtils.buildDependencies(project);
 
-    this.cli().info("Checking dependencies");
+    self.cli.info("Checking dependencies");
 
     ProjectUtils.checkDependencies(dependencies).then(function (res) {
         if (res.status == "error") {
-            self.cli().error("There were some errors:");
+            self.cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (line.available !== null && line.available !== undefined)
-                    self.cli().error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
+                if (GeneralOmen.isValid(line.available))
+                    self.cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
-                    self.cli().error("   - " + errorLine + ": " + line.message);
+                    self.cli.error("   - " + errorLine + ": " + line.message);
             }
 
             return;
         }
 
         ProjectUtils.pack(project).then(function (archiveName) {
-            self.cli().ok("Package [" + archiveName + "] created");
-            self.cli().ok('====================================================');
+            self.cli.ok("Package [" + archiveName + "] created");
+            self.cli.ok('====================================================');
         });
     });
 };

@@ -31,14 +31,17 @@ PublishOmen = function () {
  *
  * @var CommandOmen
  */
-PublishOmen.prototype = new CommandOmen();
+PublishOmen.prototype = new CommandOmen("publish");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be published.
+ * @param {Object[]} args The arguments passed to the command
  */
-PublishOmen.prototype.run = function (filename) {
+PublishOmen.prototype.run = function (args) {
+    var self = this,
+        project = new Project(self.filename);
+
     var properties = [
         {
             name: 'Password',
@@ -47,44 +50,31 @@ PublishOmen.prototype.run = function (filename) {
         }
     ];
 
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var whatToDo = "new";
-
-    for (var i = 0; i < args.length; i++) {
-        if (args[i] == "publish") {
-            whatToDo = args[i + 1];
-            if (whatToDo === null || whatToDo === undefined)
-                whatToDo = "new";
-        }
-    }
-
     prompt.start();
 
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project publication:');
-    this.cli().ok('----------------------------------------------------');
-    this.cli().info("Reading project information");
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project publication:');
+    self.cli.ok('----------------------------------------------------');
 
-    var project = new Project(filename),
-        self = this;
+    self.cli.info("Reading project information");
 
-    this.cli().info("Checking project file");
+    self.cli.info("Checking project file");
     project.check();
 
-    this.cli().info("Building dependencies");
+    self.cli.info("Building dependencies");
     var dependencies = ProjectUtils.buildDependencies(project);
 
-    this.cli().info("Checking dependencies");
+    self.cli.info("Checking dependencies");
 
     ProjectUtils.checkDependencies(dependencies).then(function (res) {
         if (res.status == "error") {
-            self.cli().error("There were some errors:");
+            self.cli.error("There were some errors:");
             for (var errorLine in res.errors) {
                 var line = res.errors[errorLine];
-                if (line.available !== null && line.available !== undefined)
-                    self.cli().error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
+                if (GeneralOmen.isValid(line.available))
+                    self.cli.error("   - " + errorLine + ": " + line.message + " (Available: " + line.available + ")");
                 else
-                    self.cli().error("   - " + errorLine + ": " + line.message);
+                    self.cli.error("   - " + errorLine + ": " + line.message);
             }
 
             return;
@@ -95,31 +85,31 @@ PublishOmen.prototype.run = function (filename) {
                 throw new Error(err);
             }
 
-            ProjectUtils.publish(whatToDo, project, result).then(function (result) {
+            ProjectUtils.publish(project, result).then(function (result) {
                 if (result.status == "update")
-                    self.cli().ok("Package updated!");
+                    self.cli.ok("Package updated!");
                 else
-                    self.cli().ok("Packages published");
+                    self.cli.ok("Packages published");
 
-                self.cli().ok('====================================================');
+                self.cli.ok('====================================================');
             }, function (err) {
-                if (err.body !== null) {
-                    if (err.body.error !== null && err.body.error !== undefined)
-                        self.cli().error(err.body.error.message);
+                if (GeneralOmen.isValid(err.body)) {
+                    if (GeneralOmen.isValid(err.body.error !== null && err.body.error !== undefined))
+                        self.cli.error(err.body.error.message);
                     else
-                        self.cli().error(err.body.message);
+                        self.cli.error(err.body.message);
                 }
-                self.cli().error('====================================================');
+                self.cli.error('====================================================');
             });
         });
-    }, function(err){
-        if (err.body !== null) {
-            if (err.body.error !== null && err.body.error !== undefined)
-                self.cli().error(err.body.error.message);
+    }, function (err) {
+        if (GeneralOmen.isValid(err.body)) {
+            if (GeneralOmen.isValid(err.body.error !== null && err.body.error !== undefined))
+                self.cli.error(err.body.error.message);
             else
-                self.cli().error(err.body.message);
+                self.cli.error(err.body.message);
         }
-        self.cli().error('====================================================');
+        self.cli.error('====================================================');
     });
 };
 

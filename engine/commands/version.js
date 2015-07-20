@@ -26,18 +26,22 @@ VersionOmen = function () {
  *
  * @var CommandOmen
  */
-VersionOmen.prototype = new CommandOmen();
+VersionOmen.prototype = new CommandOmen("version");
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {Object[]} args The arguments passed to the command
  */
-VersionOmen.prototype.run = function () {
-    this.cli().ok('====================================================');
-    this.cli().ok('          Omen (' + Spark.version() + ')');
-    this.cli().ok('----------------------------------------------------');
-    this.cli().ok('\tCodename: ' + Spark.codename);
-    this.cli().ok('\tVersion:  ' + Spark.version());
-    this.cli().ok('====================================================');
+VersionOmen.prototype.run = function (args) {
+    var self = this;
+
+    self.cli.ok('====================================================');
+    self.cli.ok('          Omen (' + Spark.version() + ')');
+    self.cli.ok('----------------------------------------------------');
+    self.cli.ok('\tCodename: ' + Spark.codename);
+    self.cli.ok('\tVersion:  ' + Spark.version());
+    self.cli.ok('====================================================');
 
 };
 

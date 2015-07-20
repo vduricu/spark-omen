@@ -32,14 +32,19 @@ UnpublishOmen = function () {
  *
  * @var CommandOmen
  */
-UnpublishOmen.prototype = new CommandOmen();
+UnpublishOmen.prototype = new CommandOmen("unpublish");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be installed.
+ * @param {Object[]} args The arguments passed to the command
  */
-UnpublishOmen.prototype.run = function (filename) {
+UnpublishOmen.prototype.run = function (args) {
+    var self = this,
+        unpublishCommand = "",
+        versionUnpublish = "",
+        project = new Project(self.filename);
+
     var properties = [
         {
             name: 'Password',
@@ -50,38 +55,32 @@ UnpublishOmen.prototype.run = function (filename) {
 
     prompt.start();
 
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project unpublishing:');
-    this.cli().ok('----------------------------------------------------');
-    this.cli().info("Reading project information");
-
-    var self = this;
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var unpublishCommand = "";
-    var versionUnpublish = "";
-    var project = new Project(filename);
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project unpublishing:');
+    self.cli.ok('----------------------------------------------------');
+    self.cli.info("Reading project information");
 
     for (var iArgs = 0; iArgs < args.length; iArgs++) {
-        if (args[iArgs] == "unpublish") {
+        if (args[iArgs] == self.commandName) {
             unpublishCommand = args[iArgs + 1];
-            if (unpublishCommand === null || unpublishCommand === undefined || unpublishCommand.length === 0)
+            if (!GeneralOmen.isValid(unpublishCommand) || unpublishCommand.length === 0)
                 throw new Error("What do you want to unpublish? (Version, Project)");
         }
     }
 
     switch (unpublishCommand) {
         case "project":
-            this.cli().ok("Checking and unpublishing project");
+            self.cli.ok("Checking and unpublishing project");
             prompt.get(properties, function (err, result) {
                 if (err) {
                     throw new Error(err);
                 }
 
                 ProjectUtils.unpublishProject(project, result).then(function (res) {
-                    self.cli().ok("The project has been unpublished.");
-                    self.cli().ok('====================================================');
+                    self.cli.ok("The project has been unpublished.");
+                    self.cli.ok('====================================================');
                 }, function (err) {
-                    ProjectUtils.installError(self.cli(), err);
+                    ProjectUtils.installError(self.cli, err);
                 });
             });
 
@@ -91,12 +90,12 @@ UnpublishOmen.prototype.run = function (filename) {
             for (var iVersion = 0; iVersion < args.length; iVersion++) {
                 if (args[iVersion] == "version") {
                     versionUnpublish = args[iVersion + 1];
-                    if (versionUnpublish === null || versionUnpublish === undefined || versionUnpublish.length === 0)
+                    if (!GeneralOmen.isValid(versionUnpublish) || versionUnpublish.length === 0)
                         versionUnpublish = project.get('version');
                 }
             }
 
-            this.cli().ok("Checking and unpublishing version");
+            self.cli.ok("Checking and unpublishing version");
 
             prompt.get(properties, function (err, result) {
                 if (err) {
@@ -104,16 +103,16 @@ UnpublishOmen.prototype.run = function (filename) {
                 }
 
                 ProjectUtils.unpublishVersion(project, versionUnpublish, result).then(function (res) {
-                    self.cli().ok("The version (" + versionUnpublish + ") has been unpublished.");
-                    self.cli().ok('====================================================');
+                    self.cli.ok("The version (" + versionUnpublish + ") has been unpublished.");
+                    self.cli.ok('====================================================');
                 }, function (err) {
-                    ProjectUtils.installError(self.cli(), err);
+                    ProjectUtils.installError(self.cli, err);
                 });
             });
 
             break;
         default:
-            this.cli().info('Command not available');
+            self.cli.info('Command not available');
     }
 
 };

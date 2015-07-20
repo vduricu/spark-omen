@@ -30,37 +30,37 @@ UpdateOmen = function () {
  *
  * @var CommandOmen
  */
-UpdateOmen.prototype = new CommandOmen();
+UpdateOmen.prototype = new CommandOmen("update");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be installed.
+ * @param {Object[]} args The arguments passed to the command
  */
-UpdateOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Project update:');
-    this.cli().ok('----------------------------------------------------');
-    this.cli().info("Reading project information");
+UpdateOmen.prototype.run = function (args) {
+    var self = this,
+        project = new Project(self.filename),
+        lock = new Project('omen.lock');
 
-    var project = new Project(filename),
-        lock = new Project('omen.lock'),
-        self = this;
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Project update:');
+    self.cli.ok('----------------------------------------------------');
+    self.cli.info("Reading project information");
 
-    if (filename != lock.get('file')) {
-        this.cli().error("The file used to install the project differs from the one used for update.");
+    if (self.filename != lock.get('file')) {
+        self.cli.error("The file used to install the project differs from the one used for update.");
         return;
     }
 
-    project.executePre('update');
+    project.executePre(self.commandName);
 
-    this.cli().info("Checking project file");
+    self.cli.info("Checking project file");
     project.check();
 
-    this.cli().info("Building dependencies");
+    self.cli.info("Building dependencies");
     var dependencies = ProjectUtils.buildDependencies(project);
 
-    this.cli().info("Checking dependencies");
+    self.cli.info("Checking dependencies");
 
     var omenLock = {};
     omenLock.file = project.getFilename();
@@ -69,15 +69,16 @@ UpdateOmen.prototype.run = function (filename) {
     omenLock.packages = lock.get('packages');
 
     if (dependencies.length === 0) {
-        return ProjectUtils.omenLockWrite(this.cli(), omenLock);
+        project.executePost(self.commandName);
+        return ProjectUtils.omenLockWrite(self.cli, omenLock);
     }
 
     ProjectUtils.checkDependencies(dependencies, omenLock.packages).then(function (res) {
-        ProjectUtils.install(omenLock, self.cli(), res);
+        ProjectUtils.install(omenLock, self.cli, res);
 
-        project.executePost('update');
+        project.executePost(self.commandName);
     }, function (err) {
-        ProjectUtils.installError(self.cli(), err);
+        ProjectUtils.installError(self.cli, err);
     });
 
 };

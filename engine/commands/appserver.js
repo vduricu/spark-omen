@@ -32,22 +32,17 @@ AppserverOmen = function () {
  *
  * @var CommandOmen
  */
-AppserverOmen.prototype = new CommandOmen();
+AppserverOmen.prototype = new CommandOmen("appserver");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} [filename] The name of the file to be imported
+ * @param {Object[]} args The arguments passed to the command
  */
-AppserverOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - AppServer creation:');
-    this.cli().ok('----------------------------------------------------');
-
-    var self = this;
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var appsrvCommand = "";
-    var project = new Project(filename);
+AppserverOmen.prototype.run = function (args) {
+    var self = this,
+        appsrvCommand = "",
+        project = new Project(self.filename);
 
     var properties = [
         {
@@ -69,10 +64,16 @@ AppserverOmen.prototype.run = function (filename) {
         }
     ];
 
+    prompt.start();
+
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - AppServer creation:');
+    self.cli.ok('----------------------------------------------------');
+
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "appserver") {
+        if (args[i] == self.commandName) {
             appsrvCommand = args[i + 1];
-            if (appsrvCommand === null || appsrvCommand === undefined || appsrvCommand.length === 0)
+            if (!GeneralOmen.isValid(appsrvCommand) || appsrvCommand.length === 0)
                 throw new Error("No tool specified!");
         }
     }
@@ -85,19 +86,19 @@ AppserverOmen.prototype.run = function (filename) {
         switch (appsrvCommand) {
             /* Generates only the files for ubroker, to be manually edited. */
             case 'template':
-                self.cli().ok("Generating the ubroker.properties section template");
+                self.cli.ok("Generating the ubroker.properties section template");
                 ProjectUtils.ubrokerTemplate(project, result);
 
                 break;
 
             /* Generates the files for ubroker and tries to update it. */
             case 'create':
-                self.cli().ok("Generating the ubroker.properties section template");
+                self.cli.ok("Generating the ubroker.properties section template");
                 ProjectUtils.ubrokerTemplate(project, result);
 
                 var dlc = process.env.DLC;
-                if (dlc !== null && dlc !== undefined) {
-                    self.cli().ok("Updating the ubroker.properties");
+                if (GeneralOmen.isValid(dlc)) {
+                    self.cli.ok("Updating the ubroker.properties");
 
                     var dlcBroker = path.resolve(dlc + "/properties/ubroker.properties");
                     var appserver = fs.readFileSync(path.resolve("./appserver/.appserver"), "utf-8");

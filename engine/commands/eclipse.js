@@ -29,43 +29,42 @@ EclipseOmen = function () {
  *
  * @var CommandOmen
  */
-EclipseOmen.prototype = new CommandOmen();
+EclipseOmen.prototype = new CommandOmen("eclipse");
 
 /**
  * Code that runs when a command is executed.
  *
- * @param {String} filename The name of the file to be installed.
+ * @param {Object[]} args The arguments passed to the command
  */
-EclipseOmen.prototype.run = function (filename) {
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - Eclipse toolkit:');
-    this.cli().ok('----------------------------------------------------');
+EclipseOmen.prototype.run = function (args) {
+    var self = this,
+        eclipseCommand = "",
+        project = new Project(self.filename);
 
-    var self = this;
-    var args = GLOBAL.OMEN_CLI_ARGS;
-    var eclipseCommand = "";
-    var project = new Project(filename);
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - Eclipse toolkit:');
+    self.cli.ok('----------------------------------------------------');
 
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "eclipse") {
+        if (args[i] == self.commandName) {
             eclipseCommand = args[i + 1];
-            if (eclipseCommand === null || eclipseCommand === undefined || eclipseCommand.length === 0)
+            if (!GeneralOmen.isValid(eclipseCommand) || eclipseCommand.length === 0)
                 throw new Error("No tool specified!");
         }
     }
 
     switch (eclipseCommand) {
         case "init":
-            this.cli().ok("Initializing eclipse project");
+            self.cli.ok("Initializing eclipse project");
             EclipseUtils.initProject(project);
             break;
 
         case "update":
-            this.cli().ok("Updating eclipse project... Project files will be overwritten!");
+            self.cli.ok("Updating eclipse project... Project files will be overwritten!");
             EclipseUtils.updateProject(project);
             break;
         default:
-            this.cli().info('Command not available');
+            self.cli.info('Command not available');
     }
 };
 

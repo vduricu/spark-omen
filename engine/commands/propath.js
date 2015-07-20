@@ -28,41 +28,43 @@ PropathOmen = function () {
  *
  * @var CommandOmen
  */
-PropathOmen.prototype = new CommandOmen();
+PropathOmen.prototype = new CommandOmen("propath");
 
 /**
  * Code that runs when a command is executed.
+ *
+ * @param {Object[]} args The arguments passed to the command
  */
-PropathOmen.prototype.run = function () {
-    var lock = new Project('omen.lock'),
+PropathOmen.prototype.run = function (args) {
+    var self = this,
+        lock = new Project('omen.lock'),
         propath = OmenAPI.propath(lock),
-        args = GLOBAL.OMEN_CLI_ARGS,
         result = "full";
 
     for (var i = 0; i < args.length; i++) {
-        if (args[i] == "propath") {
+        if (args[i] == self.commandName) {
             result = args[i + 1];
-            if (result === null || result === undefined)
+            if (!GeneralOmen.isValid(result))
                 result = "full";
         }
     }
 
-    this.cli().ok('====================================================');
-    this.cli().ok('    Omen (' + Spark.version() + ') - ProPath value:');
-    this.cli().ok('----------------------------------------------------');
+    self.cli.ok('====================================================');
+    self.cli.ok('    Omen (' + Spark.version() + ') - ProPath value:');
+    self.cli.ok('----------------------------------------------------');
     switch (result) {
         case 'shell':
-            this.cli().ok((propath + '$PROPATH').replace(/;/gi, ':'));
+            self.cli.ok((propath + '$PROPATH').replace(/;/gi, ':'));
             break;
         case 'appserver':
-            this.cli().ok((propath + ';@{PROPATH}').replace(/;;/gi, ';'));
+            self.cli.ok((propath + ';@{PROPATH}').replace(/;;/gi, ';'));
             break;
         default:
         case 'full':
-            this.cli().ok(('propath = "' + propath + ';" + propath.').replace(/;;/gi, ';'));
+            self.cli.ok(('propath = "' + propath + ';" + propath.').replace(/;;/gi, ';'));
             break;
     }
-    this.cli().ok('====================================================');
+    self.cli.ok('====================================================');
 };
 
 

@@ -15,42 +15,48 @@ var CommandOmen;
  * The base command on which all other commands are created.
  *
  * @class
+ * @param {String} commandName The name of the command to be executed.
  * @return CommandOmen
  */
-CommandOmen = function () {
+CommandOmen = function (commandName) {
     /* -- Private properties definition -- */
-    var _cli = null,
-        _filename = "project.json";
+    var self = this;
+
+    /**
+     * Returns a reference to the CLI module.
+     *
+     * @property Object
+     */
+    self.cli = null;
+
+    /**
+     * Returns the filename to pe parsed.
+     *
+     * @property String
+     */
+    self.filename = null;
+
+    /**
+     * Returns the name of the command to be executed.
+     *
+     * @property String
+     */
+    self.commandName = commandName;
+
+    if(!GeneralOmen.isValid(commandName))
+        self.commandName = "";
 
     /**
      * Private properties initialisation.
      *
      * @param {Object} cli The console module reference.
-     * @param {string} [filename] The name of the file to parse.
+     * @param {String} [filename] The name of the file to parse.
      */
-    this.init = function (cli, filename) {
-        _cli = cli;
+    self.init = function (cli, filename) {
+        self.cli = cli;
 
         if (filename !== null && filename !== undefined && filename.length > 0)
-            _filename = filename;
-    };
-
-    /**
-     * Returns the filename to pe parsed.
-     *
-     * @return String
-     */
-    this.filename = function () {
-        return _filename;
-    };
-
-    /**
-     * Returns a reference to the CLI module.
-     *
-     * @return Object
-     */
-    this.cli = function () {
-        return _cli;
+            self.filename = filename;
     };
 
     /**
@@ -58,7 +64,7 @@ CommandOmen = function () {
      *
      * @param {String|Object|Object[]} [args] The parameters sent to the command.
      */
-    this.run = function (args) {
+    self.run = function (args) {
         throw new Error("Command not implemented");
     };
 

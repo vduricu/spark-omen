@@ -97,7 +97,7 @@ ProjectMandatory.dependencies = function (value) {
     if (value === null || value === undefined)
         return;
 
-    var namePattern = new RegExp("^[a-z0-9_]+\/[a-z0-9_]+$", "i"),
+    var namePattern = new RegExp("^[a-z0-9_]+(-[a-z0-9_]+)?$", "i"),
         versionPattern = new RegExp("^(<|>|<=|>=)?([0-9]+).((\\*|[0-9]+)(\.([0-9]+|\\*))?)$", "i");
 
     for (var key in value) {
