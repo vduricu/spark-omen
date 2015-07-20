@@ -36,7 +36,7 @@ if (typeof String.prototype.endsWith != 'function') {
     };
 }
 
-if (typeof Object.prototype.isValid != 'function') {
+if (typeof Object.isValid != 'function') {
     /**
      * Tests to see if a given object is valid or not.
      *
@@ -44,7 +44,7 @@ if (typeof Object.prototype.isValid != 'function') {
      *
      * @return boolean
      */
-    Object.prototype.isValid = function (object) {
+    Object.isValid = function (object) {
         return object !== null && object !== undefined;
     };
 }

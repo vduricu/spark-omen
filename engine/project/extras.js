@@ -31,10 +31,10 @@ var _contributor = function (value) {
     if (value === null || value === undefined)
         return true;
 
-    if (!String.isValid(value.name))
+    if (!Object.isValid(value.name) || value.name.length === 0)
         throw new Error("The contributor name must be filled!");
 
-    if (!String.isValid(value.email))
+    if (!Object.isValid(value.email) || value.email.length === 0)
         throw new Error("The contributor email must be filled!");
 
     if (!namePattern.test(value.name))

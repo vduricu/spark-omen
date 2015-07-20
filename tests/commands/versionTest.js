@@ -10,9 +10,9 @@
 "use strict";
 
 var Command   = require('../../engine/commands/version'),
-    CliMockup = require('../../engine/testing/cliMockup');
+    uiMockup = require('../../engine/testing/uiMockup');
 
-var cli      = new CliMockup(),
+var cli = new uiMockup(),
     filename = "../packages/simple.json",
     cmd;
 
@@ -24,10 +24,11 @@ module.exports = {
         callback();
     },
     testRun: function (test) {
-        test.expect(4);
+        test.expect(5);
 
         test.equal(cmd.cli, cli);
         test.equal(cmd.filename, "../packages/simple.json");
+        test.equal(cmd.commandName, "version");
         test.doesNotThrow(function () {
             cmd.run();
         }, "Command not implemented");

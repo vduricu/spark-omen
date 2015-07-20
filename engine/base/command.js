@@ -49,7 +49,7 @@ CommandOmen = function (commandName) {
     /**
      * Private properties initialisation.
      *
-     * @param {CliListenerOmen} cli The console module reference.
+     * @param {UiListenerOmen} cli The console module reference.
      * @param {String} [filename] The name of the file to parse.
      */
     self.init = function (cli, filename) {

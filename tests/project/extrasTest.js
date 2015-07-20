@@ -41,7 +41,6 @@ module.exports = {
                     "email": "third@duricu.ro"
                 }
             ];
-
             test.doesNotThrow(function () {
                 Extras.contributors(contributors);
             }, Error);
@@ -386,23 +385,23 @@ module.exports = {
         testOkSource: function (test) {
             test.expect(5);
 
-            test.doesNotThrow(function(){
+            test.doesNotThrow(function () {
                 Extras.src("source");
             }, EvalError);
 
-            test.doesNotThrow(function(){
+            test.doesNotThrow(function () {
                 Extras.src("src/adm2");
             }, EvalError);
 
-            test.doesNotThrow(function(){
+            test.doesNotThrow(function () {
                 Extras.src("src.32_qq/adm.32");
             }, EvalError);
 
-            test.doesNotThrow(function(){
+            test.doesNotThrow(function () {
                 Extras.src("_qq/adm.32");
             }, EvalError);
 
-            test.doesNotThrow(function(){
+            test.doesNotThrow(function () {
                 Extras.src(".pq");
             }, EvalError);
 
@@ -411,7 +410,7 @@ module.exports = {
         testEmpty: function (test) {
             test.expect(1);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src("");
             }, EvalError);
 
@@ -420,27 +419,27 @@ module.exports = {
         testInvalid: function (test) {
             test.expect(6);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src("32-aaqqq");
             }, EvalError);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src("#ana#");
             }, EvalError);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src(".correct/a#3");
             }, EvalError);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src("{.correct/a#3}");
             }, EvalError);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src("$122");
             }, EvalError);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src({} + 123);
             }, EvalError);
 
@@ -449,15 +448,15 @@ module.exports = {
         testInvalidParameters: function (test) {
             test.expect(3);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src();
             }, Error);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src([]);
             }, EvalError);
 
-            test.throws(function(){
+            test.throws(function () {
                 Extras.src({});
             }, EvalError);
 

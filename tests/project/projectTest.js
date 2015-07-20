@@ -84,7 +84,7 @@ module.exports = {
     },
     testDeps: function (test) {
         var project = new Project(files.deps);
-
+        project.check();
         test.doesNotThrow(function () {
             project.check();
         }, Error);

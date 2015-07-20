@@ -9,12 +9,12 @@
 /*jslint node: true */
 "use strict";
 
-var Command   = require('../../engine/commands/about'),
-    CliMockup = require('../../engine/testing/cliMockup');
+var Command = require('../../engine/commands/about'),
+    uiMockup = require('../../engine/testing/uiMockup');
 
-var cli    = new CliMockup(),
+var cli = new uiMockup(),
     simple = "./tests/packages/simple.json",
-    deps   = "./tests/packages/deps.json",
+    deps = "./tests/packages/deps.json",
     noDeps = "./tests/packages/noDeps.json",
     cmd;
 
@@ -30,6 +30,7 @@ module.exports = {
 
         test.equal(cmd.cli, cli);
         test.equal(cmd.filename, simple);
+        test.equal(cmd.commandName, "about");
 
         test.doesNotThrow(function () {
             cmd.run(simple);
@@ -39,7 +40,12 @@ module.exports = {
 
         test.equal(cliLines.length, 10);
         for (var i in cliLines) {
-            test.equal(cliLines[i].type, "ok");
+            if (i < 3)
+                test.equal(cliLines[i].type, "header");
+            else if (i == cliLines.length - 1)
+                test.equal(cliLines[i].type, "end");
+            else
+                test.equal(cliLines[i].type, "ok");
         }
 
         test.equal(cliLines[3].message, "Name:\t\ttest-simple");
@@ -53,6 +59,7 @@ module.exports = {
 
         test.equal(cmd.cli, cli);
         test.equal(cmd.filename, noDeps);
+        test.equal(cmd.commandName, "about");
 
         test.doesNotThrow(function () {
             cmd.run(noDeps);
@@ -62,7 +69,12 @@ module.exports = {
 
         test.equal(cliLines.length, 16);
         for (var i in cliLines) {
-            test.equal(cliLines[i].type, "ok");
+            if (i < 3)
+                test.equal(cliLines[i].type, "header");
+            else if (i == cliLines.length - 1)
+                test.equal(cliLines[i].type, "end");
+            else
+                test.equals(cliLines[i].type == "ok" || cliLines[i].type == "separator", true);
         }
 
         test.equal(cliLines[3].message, "Name:\t\ttest-noDeps");
@@ -76,6 +88,7 @@ module.exports = {
 
         test.equal(cmd.cli, cli);
         test.equal(cmd.filename, deps);
+        test.equal(cmd.commandName, "about");
 
         test.doesNotThrow(function () {
             cmd.run(deps);
@@ -85,7 +98,12 @@ module.exports = {
 
         test.equal(cliLines.length, 19);
         for (var i in cliLines) {
-            test.equal(cliLines[i].type, "ok");
+            if (i < 3)
+                test.equal(cliLines[i].type, "header");
+            else if (i == cliLines.length - 1)
+                test.equal(cliLines[i].type, "end");
+            else
+                test.equals(cliLines[i].type == "ok" || cliLines[i].type == "separator", true);
         }
 
         test.equal(cliLines[3].message, "Name:\t\ttest-deps");

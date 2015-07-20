@@ -51,7 +51,7 @@ UiListenerOmen = function () {
      *
      * @emit separator
      */
-    self.end = function(){
+    self.separator = function(){
         this.emit('separator', '----------------------------------------------------');
     };
 
