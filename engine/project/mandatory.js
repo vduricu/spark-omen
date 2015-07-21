@@ -9,6 +9,8 @@
 /*jslint node: true */
 "use strict";
 
+var Exceptions = require('./../base/exceptions');
+
 /**
  * Exposes all the methods to perform checks.
  *
@@ -21,17 +23,17 @@ var ProjectMandatory = {};
  *
  * @protected
  * @param {string} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectMandatory.name = function (value) {
     var namePattern = new RegExp("^[a-z0-9_]+(-[a-z0-9_]+)?$", "i");
 
     if (value === null || value === undefined || value.length === 0)
-        throw new Error("The project name cannot be empty!");
+        throw new Exceptions.EmptyValue("project name");
 
     if (!namePattern.test(value))
-        throw new EvalError("The project name is not valid! (example: spark/omen)");
+        throw new Exceptions.InvalidValue("project name", value, "spark-omen");
 
     return true;
 };
@@ -41,17 +43,17 @@ ProjectMandatory.name = function (value) {
  *
  * @protected
  * @param {string} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectMandatory.version = function (value) {
     var namePattern = new RegExp("^[0-9]+\.[0-9]+\.[0-9]+$", "i");
 
     if (value === null || value === undefined || value.length === 0)
-        throw new Error("The version cannot be empty!");
+        throw new Exceptions.EmptyValue("version");
 
     if (!namePattern.test(value))
-        throw new EvalError("The version is not valid! (example: 1.10.102)");
+        throw new Exceptions.InvalidValue("version", value, "1.10.102");
 
     return true;
 };
@@ -61,7 +63,7 @@ ProjectMandatory.version = function (value) {
  *
  * @protected
  * @param {Object} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectMandatory.author = function (value) {
@@ -69,18 +71,18 @@ ProjectMandatory.author = function (value) {
         emailPattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$", "i");
 
     if (value === null || value === undefined)
-        throw new Error("The author field must be filled!");
+        throw new Exceptions.EmptyValue("author");
 
     if (value.name === null || value.name === undefined || value.name.length === 0)
-        throw new Error("The author name must be filled!");
+        throw new Exceptions.EmptyValue("author name");
 
     if (value.email === null || value.email === undefined || value.email.length === 0)
-        throw new Error("The author email must be filled!");
+        throw new Exceptions.EmptyValue("author email");
 
     if (!namePattern.test(value.name))
-        throw new EvalError("The author name: '" + value.name + "' is not valid! (example: John Doe)");
+        throw new Exceptions.InvalidValue("author name", value.name, "John Doe");
     if (!emailPattern.test(value.email))
-        throw new EvalError("The author email: '" + value.email + "' is not valid! (example: john.doe@gmail.com)");
+        throw new Exceptions.InvalidValue("author email", value.email, "john.doe@gmail.com");
 
     return true;
 };
@@ -90,7 +92,7 @@ ProjectMandatory.author = function (value) {
  *
  * @protected
  * @param {Object} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Error|Exceptions.EmptyValue|Exceptions.InvalidValue|Exceptions.InvalidDependencyVersion
  * @return boolean
  */
 ProjectMandatory.dependencies = function (value) {
@@ -103,16 +105,16 @@ ProjectMandatory.dependencies = function (value) {
     for (var key in value) {
         var element = value[key];
         if (key === null || key === undefined || key.length === 0)
-            throw new Error("The dependency name cannot be empty!");
+            throw new Exceptions.EmptyValue("dependency name");
 
         if (!namePattern.test(key))
-            throw new EvalError("The dependency name: '" + key + "' is not valid! (example: spark/omen)");
+            throw new Exceptions.InvalidValue("dependency name", key, "spark-omen");
 
         if (element === null || element === undefined || element.length === 0)
             throw new Error("The dependency version for '" + key + "' cannot be empty!");
 
         if (!versionPattern.test(element))
-            throw new EvalError("The dependency version: '" + element + "' for '" + key + "' is not valid! (example: >3.0.*)");
+            throw new Exceptions.InvalidDependencyVersion(key, element);
     }
 
     return true;

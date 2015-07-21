@@ -11,7 +11,9 @@
 
 var fs = require('fs'),
     path = require('path'),
-    Handlebars = require('handlebars'),
+    Handlebars = require('handlebars');
+
+var Exceptions = require('./../base/exceptions'),
     ProgressUtils = require('./progressUtils');
 
 var basePath = "./";
@@ -73,7 +75,7 @@ var EclipseToolkit = {};
  */
 EclipseToolkit.initProject = function (project) {
     if (fs.existsSync(path.resolve('.project')))
-        throw new Error("Project already exists! Please use update command");
+        throw new Exceptions.ProjectAlreadyExists("Please use update command!");
 
     fileCreator(project);
 };

@@ -10,7 +10,9 @@
 "use strict";
 
 var fs = require('fs'),
-    extend = require('util')._extend,
+    extend = require('util')._extend;
+
+var Exceptions = require('./../base/exceptions'),
     Hookup = require('./../base/hookup');
 
 var Project;
@@ -185,7 +187,7 @@ Project = function (filename) {
      *
      * @param {String} command The command for which we execute the pre commands.
      */
-    this.executePre = function(command){
+    this.executePre = function (command) {
         _hookups.pre(command);
     };
 
@@ -194,7 +196,7 @@ Project = function (filename) {
      *
      * @param {String} command The command for which we execute the post commands.
      */
-    this.executePost = function(command){
+    this.executePost = function (command) {
         _hookups.post(command);
     };
 
@@ -205,7 +207,7 @@ Project = function (filename) {
         try {
             _information = JSON.parse(fs.readFileSync(_filename, 'utf8'));
         } catch (err) {
-            throw new Error("File '" + _filename + "' not found");
+            throw new Exceptions.FileNotFound(_filename);
         }
 
         if (!self.has('name') || !self.has('version'))

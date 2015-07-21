@@ -16,6 +16,7 @@ Changes performed to the current version:
    * code refactoring
    * extracted general functionality into general purpose module
    * Ui display using events - can be easily extended for testing framework
+   * extended Exception classes
 
 ### Version 0.2.1
 

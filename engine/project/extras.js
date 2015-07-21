@@ -9,6 +9,8 @@
 /*jslint node: true */
 "use strict";
 
+var Exceptions = require('./../base/exceptions');
+
 /**
  * Exposes all the methods to perform checks.
  *
@@ -21,7 +23,7 @@ var ProjectExtras = {};
  *
  * @private
  * @param {Object} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 var _contributor = function (value) {
@@ -32,15 +34,15 @@ var _contributor = function (value) {
         return true;
 
     if (!Object.isValid(value.name) || value.name.length === 0)
-        throw new Error("The contributor name must be filled!");
+        throw new Exceptions.EmptyValue("contributor name");
 
     if (!Object.isValid(value.email) || value.email.length === 0)
-        throw new Error("The contributor email must be filled!");
+        throw new Exceptions.EmptyValue("contributor email");
 
     if (!namePattern.test(value.name))
-        throw new EvalError("The contributor name: '" + value.name + "' is not valid! (example: John Doe)");
+        throw new Exceptions.InvalidValue('contributor name', value.name, 'John Doe');
     if (!emailPattern.test(value.email))
-        throw new EvalError("The contributor email: '" + value.email + "' is not valid! (example: john.doe@gmail.com)");
+        throw new Exceptions.InvalidValue('contributor email', value.email, 'john.doe@gmail.com');
 
     return true;
 };
@@ -50,7 +52,7 @@ var _contributor = function (value) {
  *
  * @protected
  * @param {Object} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue|Exceptions.DuplicateValue
  * @return boolean
  */
 ProjectExtras.contributors = function (value) {
@@ -62,11 +64,10 @@ ProjectExtras.contributors = function (value) {
                 continue;
 
             if (value[checkValue].name == value[mainValue].name && value[checkValue].email == value[mainValue].email)
-                throw new Error("Contributor '" + value[mainValue].name + "' with email '" + value[mainValue].email + "' already exists.");
+                throw new Exceptions.DuplicateValue(value[mainValue].name + " (" + value[mainValue].email + ")");
 
             if (value[checkValue].email == value[mainValue].email)
-                throw new Error("Contributor '" + value[mainValue].name + "' " +
-                    "and '" + value[checkValue].email + "' have the same email '" + value[mainValue].email + "'.");
+                throw new Exceptions.DuplicateValue(value[mainValue].email, value[mainValue].name, value[checkValue].name);
 
         }
     }
@@ -79,7 +80,7 @@ ProjectExtras.contributors = function (value) {
  *
  * @protected
  * @param {String[]} value The array to be checked.
- * @throws Error|EvalError
+ * @throws Error|Exceptions.EmptyValue|Exceptions.InvalidValue|Exceptions.DuplicateValue
  * @return boolean
  */
 ProjectExtras.keywords = function (value) {
@@ -90,17 +91,17 @@ ProjectExtras.keywords = function (value) {
 
     for (var i in value) {
         if (value[i] === null || value[i] === undefined || value[i].length === 0)
-            throw new Error("The contributor name must be filled!");
+            throw new Exceptions.EmptyValue("keyword");
 
         if (!keywordPattern.test(value[i]))
-            throw new EvalError("The keyword '" + value[i] + "' is not valid! (example: omen, spark, project)");
+            throw new Exceptions.InvalidValue("keyword", value[i], "omen, spark, project-omen");
 
         for (var j in value) {
             if (i == j)
                 continue;
 
             if (value[i] == value[j])
-                throw new Error("The keyword '" + value[i] + "' is already defined.");
+                throw new Exceptions.DuplicateValue(value[i]);
         }
     }
 
@@ -112,17 +113,17 @@ ProjectExtras.keywords = function (value) {
  *
  * @protected
  * @param {string} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectExtras.homepage = function (value) {
     var homepagePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi;
 
     if (value === null || value === undefined)
-        throw new Error("Cannot check the empty value agains pattern.");
+        throw new Exceptions.EmptyValue("homepage");
 
     if (!homepagePattern.test(value))
-        throw new EvalError("The homepage '" + value + "' is not valid! (example: http://omen.cloud-studio.ro)");
+        throw new Exceptions.InvalidValue("homepage", value, "http://omen.cloud-studio.ro");
 
     return true;
 };
@@ -132,7 +133,7 @@ ProjectExtras.homepage = function (value) {
  *
  * @protected
  * @param {string} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectExtras.license = function (value) {
@@ -140,11 +141,11 @@ ProjectExtras.license = function (value) {
         licenseSPattern = new RegExp("^[a-z \.-]+[a-z0-9 \.-]*$", "i");
 
     if (value === null || value === undefined)
-        throw new Error("Cannot check the empty value agains pattern.");
+        throw new Exceptions.EmptyValue("license");
 
     if (!licensePattern.test(value))
         if (!licenseSPattern.test(value))
-            throw new EvalError("The license '" + value + "' is not valid! (example: GPL, MIT, or URL to CC)");
+            throw new Exceptions.InvalidValue("license", value, "GPL, MIT, or URL to CC");
 
     return true;
 };
@@ -154,17 +155,17 @@ ProjectExtras.license = function (value) {
  *
  * @protected
  * @param {string|number} value The value to be checked.
- * @throws Error|EvalError
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectExtras.src = function (value) {
     var sourceFolderPattern = new RegExp("^([a-z0-9 \._][a-z0-9 \.\-_]*\/?)+$", "i");
 
     if (value === null || value === undefined)
-        throw new Error("Cannot check the empty value agains pattern.");
+        throw new Exceptions.EmptyValue("src");
 
     if (!sourceFolderPattern.test(value))
-        throw new EvalError("The source folder '" + value + "' is not valid!");
+        throw new Exceptions.InvalidValue("src", value);
 
     return true;
 };

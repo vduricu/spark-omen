@@ -9,6 +9,8 @@
 /*jslint node: true */
 "use strict";
 
+var Exceptions = require('./exceptions');
+
 var CommandOmen;
 
 /**
@@ -65,7 +67,7 @@ CommandOmen = function (commandName) {
      * @param {String|Object|Object[]} [args] The parameters sent to the command.
      */
     self.run = function (args) {
-        throw new Error("Command not implemented");
+        throw new Exceptions.CommandNotImplemented();
     };
 
     return this;
