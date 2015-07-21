@@ -12,7 +12,7 @@
 var fs = require('fs'),
     path = require('path'),
     Handlebars = require('handlebars'),
-    OmenAPI = require('./omenApi');
+    ProgressUtils = require('./progressUtils');
 
 var basePath = "./";
 
@@ -38,7 +38,7 @@ var fileCreator = function (project) {
         dotPropathHbs = Handlebars.compile(dotPropath, {noEscape: true});
 
     var extraEntries = [];
-    OmenAPI.propath(project, extraEntries);
+    ProgressUtils.propath(project, extraEntries);
     output = dotPropathHbs({
         extraEntries: extraEntries
     });
@@ -64,14 +64,14 @@ var fileCreator = function (project) {
  *
  * @class
  */
-var EclipseUtils = {};
+var EclipseToolkit = {};
 
 /**
  * Initializes a new project into an existing folder.
  *
  * @param {Project} project The project to initialize.
  */
-EclipseUtils.initProject = function (project) {
+EclipseToolkit.initProject = function (project) {
     if (fs.existsSync(path.resolve('.project')))
         throw new Error("Project already exists! Please use update command");
 
@@ -83,7 +83,7 @@ EclipseUtils.initProject = function (project) {
  *
  * @param {Project} project The project to be updated.
  */
-EclipseUtils.updateProject = function (project) {
+EclipseToolkit.updateProject = function (project) {
     fileCreator(project);
 };
 
@@ -92,8 +92,8 @@ EclipseUtils.updateProject = function (project) {
  *
  * @param {String} newBasePath The path to be used.
  */
-EclipseUtils.setBasePath = function (newBasePath) {
+EclipseToolkit.setBasePath = function (newBasePath) {
     basePath = newBasePath;
 };
 
-module.exports = EclipseUtils;
+module.exports = EclipseToolkit;

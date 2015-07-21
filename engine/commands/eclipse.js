@@ -12,7 +12,7 @@
 var Spark = require('./../base/spark'),
     Project = require('./../project/project'),
     CommandOmen = require('./../base/command'),
-    EclipseUtils = require('./../utils/eclipse_utils');
+    EclipseUtils = require('./../utils/eclipseToolkit');
 
 var EclipseOmen;
 

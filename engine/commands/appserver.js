@@ -9,13 +9,14 @@
 /*jslint node: true */
 "use strict";
 
-var Project = require('./../project/project'),
-    ProjectUtils = require('./../utils/project_utils'),
-    Spark = require('./../base/spark'),
-    CommandOmen = require('./../base/command'),
-    fs = require('fs'),
+var fs = require('fs'),
     path = require('path'),
     prompt = require('prompt');
+
+var Project = require('./../project/project'),
+    ProgressUtils = require('./../utils/progressUtils'),
+    Spark = require('./../base/spark'),
+    CommandOmen = require('./../base/command');
 
 var AppserverOmen;
 
@@ -85,14 +86,14 @@ AppserverOmen.prototype.run = function (args) {
             /* Generates only the files for ubroker, to be manually edited. */
             case 'template':
                 self.cli.ok("Generating the ubroker.properties section template");
-                ProjectUtils.ubrokerTemplate(project, result);
+                ProgressUtils.ubrokerTemplate(project, result);
 
                 break;
 
             /* Generates the files for ubroker and tries to update it. */
             case 'create':
                 self.cli.ok("Generating the ubroker.properties section template");
-                ProjectUtils.ubrokerTemplate(project, result);
+                ProgressUtils.ubrokerTemplate(project, result);
 
                 var dlc = process.env.DLC;
                 if (Object.isValid(dlc)) {

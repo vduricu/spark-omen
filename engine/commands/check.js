@@ -12,7 +12,7 @@
 var Project = require('./../project/project'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
-    ProjectUtils = require('./../utils/project_utils');
+    ProjectUtils = require('./../utils/projectUtils');
 var CheckOmen;
 
 

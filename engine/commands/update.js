@@ -10,7 +10,7 @@
 "use strict";
 
 var Project = require('./../project/project'),
-    ProjectUtils = require('./../utils/project_utils'),
+    ProjectUtils = require('./../utils/projectUtils'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     fs = require("fs");

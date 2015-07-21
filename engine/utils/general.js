@@ -1,5 +1,5 @@
 /**
- * String utils
+ * General utils
  *
  * @package engine/utils
  * @author Valentin Duricu (valentin@duricu.ro)
@@ -49,15 +49,3 @@ if (typeof Object.isValid != 'function') {
     };
 }
 
-if (typeof String.prototype.isValid != 'function') {
-    /**
-     * Tests to see if a given object is valid or not.
-     *
-     * @param {String} str The object to be checked.
-     *
-     * @return boolean
-     */
-    String.prototype.isValid = function (str) {
-        return str !== null && str !== undefined && str.length !== 0;
-    };
-}

@@ -12,7 +12,7 @@
 var Project = require('./../project/project'),
     Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
-    OmenAPI = require('./../utils/omenApi');
+    ProgressUtils = require('./../utils/progressUtils');
 var PropathOmen;
 
 /**
@@ -38,7 +38,7 @@ PropathOmen.prototype = new CommandOmen("propath");
 PropathOmen.prototype.run = function (args) {
     var self = this,
         lock = new Project('omen.lock'),
-        propath = OmenAPI.propath(lock),
+        propath = ProgressUtils.propath(lock),
         result = "full";
 
     for (var i = 0; i < args.length; i++) {

@@ -86,11 +86,9 @@ var templateRun = function(filename, cli){
         varsToCompile.name = "";
         varsToCompile.filename = "";
 
-        cli.ok('====================================================');
-        cli.ok('    Omen (' + Spark.version() + ') - Generate sample files from templates:');
-        cli.ok('----------------------------------------------------');
+        cli.header('Generate sample files from templates');
         cli.ok(' File [' + filename + '] has been created.');
-        cli.ok('====================================================');
+        cli.end();
     });
 };
 
