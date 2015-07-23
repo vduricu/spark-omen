@@ -17,6 +17,7 @@ Changes performed to the current version:
    * extracted general functionality into general purpose module
    * Ui display using events - can be easily extended for testing framework
    * extended Exception classes
+   * changed from nodeunit to mocha + istanbul for code coverage
 
 ### Version 0.2.1
 

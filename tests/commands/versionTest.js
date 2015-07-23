@@ -9,32 +9,36 @@
 /*jslint node: true */
 "use strict";
 
+var assert = require("assert");
+
 var Command   = require('../../engine/commands/version'),
-    uiMockup = require('../../engine/testing/uiMockup');
+    uiMockup = require('../../engine/testing/uiMockup'),
+    Exceptions = require("./../../engine/base/exceptions");
 
-var cli = new uiMockup(),
-    filename = "../packages/simple.json",
-    cmd;
+var filename = "../packages/simple.json",
+    cmd, cli;
 
-module.exports = {
-    setUp: function (callback) {
-        cmd = new Command();
-        cmd.init(cli, filename);
+describe("engine.commands.version", function () {
+    describe("run", function () {
 
-        callback();
-    },
-    testRun: function (test) {
-        test.expect(5);
+        before(function() {
+            cmd = new Command();
+            cli = new uiMockup();
+            cli.clearAll();
+            cmd.init(cli, filename);
+        });
 
-        test.equal(cmd.cli, cli);
-        test.equal(cmd.filename, "../packages/simple.json");
-        test.equal(cmd.commandName, "version");
-        test.doesNotThrow(function () {
-            cmd.run();
-        }, "Command not implemented");
+        it("should run", function () {
+            var cmd = new Command();
 
-        test.equal(cli.getAll().length, 6);
+            assert.equal(cmd.cli, cli);
+            assert.equal(cmd.filename, "../packages/simple.json");
+            assert.equal(cmd.commandName, "version");
+            assert.doesNotThrow(function () {
+                cmd.run();
+            }, Exceptions.CommandNotImplemented);
+            assert.equal(cli.getAll().length, 6);
 
-        test.done();
-    }
-};
+        });
+    });
+});

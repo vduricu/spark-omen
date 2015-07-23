@@ -5,8 +5,13 @@
   "license": "CC-BY-SA-4.0",
   "homepage": "http://omen.cloud-studio.ro",
   "keywords": [
-    "omen", "spark", "openedge", "dependency manager",
-    "progress", "progress openedge", "openedge dependency manager",
+    "omen",
+    "spark",
+    "openedge",
+    "dependency manager",
+    "progress",
+    "progress openedge",
+    "openedge dependency manager",
     "openedge project"
   ],
   "author": {
@@ -21,7 +26,7 @@
   "engines": {
     "node": ">=0.10.0"
   },
-  "bin":{
+  "bin": {
     "omen": "omen.js"
   },
   "dependencies": {
@@ -39,9 +44,11 @@
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
     "grunt-contrib-jshint": "~0.11.2",
-    "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-jsbeautifier": "~0.2.2",
-    "nodeunit": "^0.9.1"
+    "grunt-mocha-istanbul": "^2.4.0",
+    "grunt-mocha-test": "^0.12.7",
+    "istanbul": "^0.3.17",
+    "mocha": "^2.2.5"
   },
   "scripts": {
     "test": "grunt"

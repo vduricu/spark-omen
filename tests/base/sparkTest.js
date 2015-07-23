@@ -9,14 +9,15 @@
 /*jslint node: true */
 "use strict";
 
+var assert = require("assert");
 var spark = require('../../engine/base/spark');
 
-module.exports = {
-    version: function (test) {
-        test.expect(3);
-        test.equal(spark.major, 0);
-        test.equal(spark.minor, 2);
-        test.equal(spark.stage, 2);
-        test.done();
-    }
-};
+describe("engine.base.spark", function () {
+    describe("version", function () {
+        it("should be equal to 0.2.2", function () {
+            assert.equal(spark.major, 0);
+            assert.equal(spark.minor, 2);
+            assert.equal(spark.stage, 2);
+        });
+    });
+});
