@@ -9,7 +9,8 @@
 /*jslint node: true */
 "use strict";
 
-var Mandatory = require('../../engine/project/mandatory');
+var Mandatory = require('./../../engine/project/mandatory'),
+    Exceptions = require('./../../engine/base/exceptions');
 
 module.exports = {
     name: {
@@ -26,11 +27,15 @@ module.exports = {
             test.done();
         },
         testEmpty: function (test) {
-            test.expect(1);
+            test.expect(2);
 
             test.throws(function () {
                 Mandatory.name("");
-            }, Error);
+            }, Exceptions.EmptyValue);
+
+            test.throws(function () {
+                Mandatory.name();
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -39,7 +44,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.name("/test");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -48,7 +53,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.name("test/test-test");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -57,7 +62,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.name("test#test");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -66,7 +71,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.name("test/test");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
@@ -82,11 +87,15 @@ module.exports = {
             test.done();
         },
         testEmpty: function (test) {
-            test.expect(1);
+            test.expect(2);
 
             test.throws(function () {
                 Mandatory.version("");
-            }, Error);
+            }, Exceptions.EmptyValue);
+
+            test.throws(function () {
+                Mandatory.version();
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -95,7 +104,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.version("test");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -104,7 +113,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.version("1.#.t");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -113,7 +122,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.version(">1.t.1");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
@@ -137,7 +146,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author({});
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -150,7 +159,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -163,7 +172,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -176,7 +185,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -189,7 +198,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -202,7 +211,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -215,7 +224,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -228,7 +237,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -241,7 +250,7 @@ module.exports = {
 
             test.throws(function () {
                 Mandatory.author(author);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }

@@ -9,7 +9,8 @@
 /*jslint node: true */
 "use strict";
 
-var Project = require('../../engine/project/project');
+var Project = require('../../engine/project/project'),
+    Exceptions = require('./../../engine/base/exceptions');
 
 var files = {
     simpleCorrect: "./tests/packages/simpleCorrect.json",
@@ -42,7 +43,7 @@ module.exports = {
 
         test.throws(function () {
             project.check();
-        }, Error);
+        }, Exceptions.InvalidValue);
 
         test.done();
     },
@@ -51,7 +52,7 @@ module.exports = {
 
         test.throws(function () {
             project.check();
-        }, EvalError);
+        }, Exceptions.InvalidValue);
 
         test.done();
     },
@@ -60,7 +61,7 @@ module.exports = {
 
         test.throws(function () {
             project.check();
-        }, EvalError);
+        }, Exceptions.InvalidValue);
 
         test.done();
     },
@@ -69,7 +70,7 @@ module.exports = {
 
         test.throws(function () {
             project.check();
-        }, EvalError);
+        }, Exceptions.InvalidValue);
 
         test.done();
     },

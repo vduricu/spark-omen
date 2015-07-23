@@ -9,7 +9,8 @@
 /*jslint node: true */
 "use strict";
 
-var Extras = require('../../engine/project/extras');
+var Extras = require('./../../engine/project/extras'),
+    Exceptions = require('./../../engine/base/exceptions');
 
 module.exports = {
     contributors: {
@@ -66,7 +67,7 @@ module.exports = {
                         "email": "email@duricu.ro"
                     }
                 ]);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -80,7 +81,7 @@ module.exports = {
                         "email": ""
                     }
                 ]);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -94,7 +95,7 @@ module.exports = {
                         "email": ""
                     }
                 ]);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -108,7 +109,7 @@ module.exports = {
                         "email": "email@duricu.ro"
                     }
                 ]);
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -122,7 +123,7 @@ module.exports = {
                         "email": "email###"
                     }
                 ]);
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -136,7 +137,7 @@ module.exports = {
                         "email": "email#duricu.ro"
                     }
                 ]);
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -156,7 +157,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.contributors(contributors);
-            }, Error);
+            }, Exceptions.DuplicateValue);
 
             test.done();
         },
@@ -176,7 +177,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.contributors(contributors);
-            }, Error);
+            }, Exceptions.DuplicateValue);
 
             test.done();
         },
@@ -205,7 +206,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.contributors("666");
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
@@ -235,7 +236,7 @@ module.exports = {
 
             test.doesNotThrow(function () {
                 Extras.contributors([]);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -244,7 +245,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.keywords([""]);
-            }, Error);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -253,7 +254,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.keywords(["k3yw0r#"]);
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -262,7 +263,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.keywords(["keyword", "keyword"]);
-            }, Error);
+            }, Exceptions.DuplicateValue);
 
             test.done();
         },
@@ -271,7 +272,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.keywords(12333);
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
@@ -288,11 +289,15 @@ module.exports = {
             test.done();
         },
         testEmpty: function (test) {
-            test.expect(1);
+            test.expect(2);
 
             test.throws(function () {
                 Extras.homepage("");
-            }, Error);
+            }, Exceptions.EmptyValue);
+
+            test.throws(function () {
+                Extras.homepage();
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -301,20 +306,16 @@ module.exports = {
 
             test.throws(function () {
                 Extras.homepage("ht##:\\regular");
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
         testInvalidParameters: function (test) {
-            test.expect(2);
-
-            test.throws(function () {
-                Extras.homepage([]);
-            }, Error);
+            test.expect(1);
 
             test.throws(function () {
                 Extras.homepage({});
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
@@ -340,11 +341,15 @@ module.exports = {
             test.done();
         },
         testEmpty: function (test) {
-            test.expect(1);
+            test.expect(2);
 
             test.throws(function () {
-                Extras.homepage("");
-            }, Error);
+                Extras.license("");
+            }, Exceptions.EmptyValue);
+
+            test.throws(function () {
+                Extras.license();
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -352,8 +357,8 @@ module.exports = {
             test.expect(1);
 
             test.throws(function () {
-                Extras.homepage("ht##:\\regular");
-            }, Error);
+                Extras.license("ht##:\\regular");
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -361,21 +366,17 @@ module.exports = {
             test.expect(1);
 
             test.throws(function () {
-                Extras.homepage("G3P3L3 ###");
-            }, Error);
+                Extras.license("G3P3L3 ###");
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
         testInvalidParameters: function (test) {
-            test.expect(2);
+            test.expect(1);
 
             test.throws(function () {
-                Extras.homepage([]);
-            }, Error);
-
-            test.throws(function () {
-                Extras.homepage({});
-            }, Error);
+                Extras.license([]);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
@@ -387,23 +388,23 @@ module.exports = {
 
             test.doesNotThrow(function () {
                 Extras.src("source");
-            }, EvalError);
+            }, Error);
 
             test.doesNotThrow(function () {
                 Extras.src("src/adm2");
-            }, EvalError);
+            }, Error);
 
             test.doesNotThrow(function () {
                 Extras.src("src.32_qq/adm.32");
-            }, EvalError);
+            }, Error);
 
             test.doesNotThrow(function () {
                 Extras.src("_qq/adm.32");
-            }, EvalError);
+            }, Error);
 
             test.doesNotThrow(function () {
                 Extras.src(".pq");
-            }, EvalError);
+            }, Error);
 
             test.done();
         },
@@ -412,7 +413,7 @@ module.exports = {
 
             test.throws(function () {
                 Extras.src("");
-            }, EvalError);
+            }, Exceptions.EmptyValue);
 
             test.done();
         },
@@ -421,27 +422,27 @@ module.exports = {
 
             test.throws(function () {
                 Extras.src("32-aaqqq");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src("#ana#");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src(".correct/a#3");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src("{.correct/a#3}");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src("$122");
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src({} + 123);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         },
@@ -450,15 +451,15 @@ module.exports = {
 
             test.throws(function () {
                 Extras.src();
-            }, Error);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src([]);
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.throws(function () {
                 Extras.src({});
-            }, EvalError);
+            }, Exceptions.InvalidValue);
 
             test.done();
         }
