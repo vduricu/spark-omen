@@ -11,7 +11,6 @@
 
 var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     fs = require("fs"),
     path = require("path");
@@ -66,42 +65,41 @@ InstallOmen.prototype.run = function (args) {
             project.addDependency(args[i], project.MAX_VERSION);
     }
 
-    project.executePre(self.commandName);
+    project.executePre(self.commandName, function () {
+        var proDeps = project.get('dependencies');
+        for (var iDeps in proDeps) {
+            if (omenLock.packages[iDeps] !== undefined &&
+                omenLock.packages[iDeps] !== null &&
+                omenLock.packages[iDeps].length !== 0)
+                delete proDeps[iDeps];
+        }
 
-    var proDeps = project.get('dependencies');
-    for (var iDeps in proDeps) {
-        if (omenLock.packages[iDeps] !== undefined &&
-            omenLock.packages[iDeps] !== null &&
-            omenLock.packages[iDeps].length !== 0)
-            delete proDeps[iDeps];
-    }
+        projectCopy.setDependency(proDeps);
 
-    projectCopy.setDependency(proDeps);
+        self.cli.info("Checking project file");
+        project.check();
 
-    self.cli.info("Checking project file");
-    project.check();
+        self.cli.info("Building dependencies");
+        var deps = ProjectUtils.buildDependencies(projectCopy);
 
-    self.cli.info("Building dependencies");
-    var deps = ProjectUtils.buildDependencies(projectCopy);
+        if (deps.length === 0) {
+            project.executePost(self.commandName);
+            return ProjectUtils.omenLockWrite(self.cli, omenLock);
+        }
 
-    if (deps.length === 0) {
-        project.executePost(self.commandName);
-        return ProjectUtils.omenLockWrite(self.cli, omenLock);
-    }
+        if (global.OMEN_SAVE)
+            global.OMEN_PROJECT = project;
 
-    if (global.OMEN_SAVE)
-        global.OMEN_PROJECT = project;
+        self.cli.info("Checking dependencies");
 
-    self.cli.info("Checking dependencies");
+        ProjectUtils.checkDependencies(deps).then(function (res) {
+            ProjectUtils.install(omenLock, self.cli, res);
 
-    ProjectUtils.checkDependencies(deps).then(function (res) {
-        ProjectUtils.install(omenLock, self.cli, res);
-
-        project.executePost(self.commandName);
-    }, function (err) {
-        ProjectUtils.installError(self.cli, err);
+            project.executePost(self.commandName);
+        }, function (err) {
+            ProjectUtils.installError(self.cli, err);
+        });
     });
-
 };
 
 module.exports = InstallOmen;

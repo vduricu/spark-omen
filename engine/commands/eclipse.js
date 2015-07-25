@@ -9,8 +9,7 @@
 /*jslint node: true */
 "use strict";
 
-var Spark = require('./../base/spark'),
-    Project = require('./../project/project'),
+var Project = require('./../project/project'),
     CommandOmen = require('./../base/command'),
     EclipseUtils = require('./../utils/eclipseToolkit');
 

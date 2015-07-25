@@ -35,6 +35,7 @@
     "download": "~4.1.4",
     "fstream": "^1.0.4",
     "handlebars": "^3.0.3",
+    "promised-exec": "^1.0.1",
     "prompt": "<10.*",
     "q": "^1.2.0",
     "tar": "^2.1.0",

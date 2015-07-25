@@ -25,6 +25,13 @@ CliListenerOmen = function(cli){
         _cli = cli;
 
     /**
+     * Returns the usage of the omen command
+     *
+     * @return String
+     */
+    self.getUsage = _cli.getUsage;
+
+    /**
      * Listener for the header event.
      *
      * @param {String} message The message to be displayed.

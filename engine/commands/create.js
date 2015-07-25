@@ -9,12 +9,11 @@
 /*jslint node: true */
 "use strict";
 
-var Project      = require('./../project/project'),
+var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
-    Spark        = require('./../base/spark'),
-    CommandOmen  = require('./../base/command'),
+    CommandOmen = require('./../base/command'),
     EclipseUtils = require('./../utils/eclipseToolkit'),
-    fs           = require("fs");
+    fs = require("fs");
 
 var CreateOmen;
 
@@ -75,7 +74,7 @@ CreateOmen.prototype.run = function (args) {
 
     ProjectUtils.omenJsonWrite(self.cli, omenFile);
 
-    if(global.OMEN_ECLIPSE){
+    if (global.OMEN_ECLIPSE) {
         EclipseUtils.setBasePath("./" + projectName + "/");
         EclipseUtils.initProject(omenFile);
     }

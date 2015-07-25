@@ -10,7 +10,6 @@
 "use strict";
 
 var Project = require('./../project/project'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command');
 var AboutOmen;
 
@@ -32,7 +31,7 @@ AboutOmen.prototype = new CommandOmen("about");
 /**
  * Code that runs when a command is executed.
  *
- * @param {Object[]} args The name of the file to parse.
+ * @param {Object[]} args The arguments passed to the command
  */
 AboutOmen.prototype.run = function (args) {
     var self = this,

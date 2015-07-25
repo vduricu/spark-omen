@@ -11,7 +11,6 @@
 
 var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     EclipseUtils = require('./../utils/eclipseToolkit'),
     fs = require("fs"),

@@ -11,8 +11,8 @@
 
 var assert = require("assert");
 
-var Command = require('../../engine/base/command'),
-    uiMockup = require('../../engine/testing/uiMockup');
+var Command = require('./../../engine/base/command'),
+    uiMockup = require('./../../engine/testing/uiMockup');
 
 describe("engine.base.command", function () {
     describe("constructor", function(){

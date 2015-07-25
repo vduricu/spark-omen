@@ -38,7 +38,7 @@ module.exports = function (grunt) {
         },
         mocha_istanbul: {
             coverage: {
-                options:{
+                options: {
                     mochaOptions: ['--harmony'], // any extra options
                     istanbulOptions: ['--harmony'],
                     require: [

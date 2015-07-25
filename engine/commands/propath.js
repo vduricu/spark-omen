@@ -10,7 +10,6 @@
 "use strict";
 
 var Project = require('./../project/project'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     ProgressUtils = require('./../utils/progressUtils');
 var PropathOmen;

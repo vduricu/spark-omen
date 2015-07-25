@@ -10,7 +10,6 @@
 "use strict";
 
 var Project = require('./../project/project'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     ProjectUtils = require('./../utils/projectUtils');
 var CheckOmen;
@@ -81,7 +80,7 @@ CheckOmen.prototype = new CommandOmen("check");
 /**
  * Code that runs when a command is executed.
  *
- * @param {Object[]} args The arguments passed to the command.
+ * @param {Object[]} args The arguments passed to the command
  */
 CheckOmen.prototype.run = function (args) {
 

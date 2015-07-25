@@ -15,7 +15,6 @@ var fs = require('fs'),
 
 var Project = require('./../project/project'),
     ProgressUtils = require('./../utils/progressUtils'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command');
 
 var AppserverOmen;

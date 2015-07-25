@@ -11,7 +11,6 @@
 
 var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     fs = require("fs"),
     path = require("path"),

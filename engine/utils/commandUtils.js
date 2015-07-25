@@ -30,14 +30,18 @@ CommandUtils.CommandExecutor = function (command) {
     if (command === null || command === undefined)
         return _cli.getUsage();
 
-    var ClassCmd = require('./../commands/' + command + '.js');
+    try {
+        var ClassCmd = require('./../commands/' + command + '.js');
 
-    if (ClassCmd === null || ClassCmd === undefined)
+        if (ClassCmd === null || ClassCmd === undefined)
+            return _cli.getUsage();
+
+        var cmd = new ClassCmd();
+        cmd.init(_cli, _filename);
+        return cmd;
+    } catch (e) {
         return _cli.getUsage();
-
-    var cmd = new ClassCmd();
-    cmd.init(_cli, _filename);
-    return cmd;
+    }
 };
 
 /**

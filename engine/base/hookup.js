@@ -9,7 +9,8 @@
 /*jslint node: true */
 "use strict";
 
-var exec = require('child_process').exec;
+var exec = require('promised-exec'),
+    q = require("q");
 
 var HookupOmen;
 
@@ -44,16 +45,36 @@ HookupOmen = function () {
      * Executes the given list of commands.
      *
      * @param {String[]} commandList The data sent by the executed command.
+     * @return null|Object
      */
     var executeCommand = function (commandList) {
         if (commandList === null || commandList === undefined)
-            return;
+            return null;
 
+        var promises = [];
         for (var iCommand in commandList) {
-            var child = exec(commandList[iCommand]);
-            child.stdout.on('data', stdoutMessage);
-            child.stderr.on('data', stderrMessage);
+            promises.push(exec(commandList[iCommand]));
         }
+
+        return q.all(promises);
+    };
+
+    /**
+     * Sets the function used to parse the stdout.
+     *
+     * @param {function} stdout The function.
+     */
+    self.setStdout = function (stdout) {
+        stdoutMessage = stdout;
+    };
+
+    /**
+     * Sets the function used to parse the stderr.
+     *
+     * @param {function} stderr The function.
+     */
+    self.setStderr = function (stderr) {
+        stderrMessage = stderr;
     };
 
     /**
@@ -63,6 +84,9 @@ HookupOmen = function () {
      * @param {Object} scripts A dictionary with commands and zones.
      */
     self.parse = function (scripts) {
+        preCommands = {};
+        postCommands = {};
+
         for (var cScript in scripts) {
             var result = /^(post|pre)-([a-z]+)-cmd$/gi.exec(cScript);
             var zone = result[1].charAt(0).toUpperCase() + result[1].substring(1),
@@ -75,21 +99,110 @@ HookupOmen = function () {
     };
 
     /**
+     * Returns the number of commands for the given zone and command.
+     *
+     * @param {String} zone The needed zone.
+     * @param {String} command The name of the command.
+     * @return {Number}
+     */
+    self.size = function (zone, command) {
+        return self["size" + zone.charAt(0).toUpperCase() + zone.substring(1)](command);
+    };
+
+    /**
+     * Returns the number of post commands for the given command.
+     *
+     * @param {String} command The name of the command.
+     * @return {Number}
+     */
+    self.sizePost = function (command) {
+        if (!Object.isValid(postCommands[command]))
+            return 0;
+        return postCommands[command].length;
+    };
+
+    /**
+     * Returns the number of pre commands for the given command.
+     *
+     * @param {String} command The name of the command.
+     * @return {Number}
+     */
+    self.sizePre = function (command) {
+        if (!Object.isValid(preCommands[command]))
+            return 0;
+        return preCommands[command].length;
+    };
+
+    /**
      * Executes the post command execution commands for the given command.
      *
      * @param {String} command The command for which the commands are executed.
+     * @param {function} [then] Callback to be executed after success.
+     * @param {function} [err] Callback to be executed after error.
+     * @return null|Object
      */
-    self.post = function (command) {
-        executeCommand(postCommands[command]);
+    self.post = function (command, then, err) {
+        var result = executeCommand(postCommands[command]);
+
+        if(!Object.isValid(result))
+            return null;
+
+        return result.then(function (promise) {
+            promise.forEach(function (result) {
+                var value = "";
+                if (result.state === "fulfilled") {
+                    value = result.value.trim();
+                } else {
+                    value = result.reason.trim();
+                }
+
+                stdoutMessage(value);
+
+                if (Object.isValid(then))
+                    then();
+            });
+        }, function (errMsg) {
+            stderrMessage(errMsg.string);
+            if (Object.isValid(err))
+                err();
+        });
     };
 
     /**
      * Executes the pre command execution commands for the given command.
      *
      * @param {String} command The command for which the commands are executed.
+     * @param {function} [then] Callback to be executed after success.
+     * @param {function} [err] Callback to be executed after error.
+     * @return null|Object
      */
-    self.pre = function (command) {
-        executeCommand(preCommands[command]);
+    self.pre = function (command, then, err) {
+        var result = executeCommand(preCommands[command]);
+
+        if(!Object.isValid(result))
+            return null;
+
+        return result.then(function (promise) {
+            promise.forEach(function (result) {
+                var value = "";
+                if (result.state === "fulfilled") {
+                    value = result.value.trim();
+                } else {
+                    value = result.reason.trim();
+                }
+
+                stdoutMessage(value);
+
+                if (Object.isValid(then)) {
+                    then();
+                }
+            });
+        }, function (errMsg) {
+            stderrMessage(errMsg.string);
+            if (Object.isValid(err)) {
+                err();
+            }
+        });
     };
 
     /**

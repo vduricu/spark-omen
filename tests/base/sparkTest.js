@@ -10,7 +10,7 @@
 "use strict";
 
 var assert = require("assert");
-var spark = require('../../engine/base/spark');
+var spark = require('./../../engine/base/spark');
 
 describe("engine.base.spark", function () {
     describe("version", function () {

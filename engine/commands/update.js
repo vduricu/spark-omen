@@ -11,7 +11,6 @@
 
 var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
-    Spark = require('./../base/spark'),
     CommandOmen = require('./../base/command'),
     fs = require("fs");
 
@@ -50,33 +49,33 @@ UpdateOmen.prototype.run = function (args) {
         return;
     }
 
-    project.executePre(self.commandName);
+    project.executePre(self.commandName, function () {
+        self.cli.info("Checking project file");
+        project.check();
 
-    self.cli.info("Checking project file");
-    project.check();
+        self.cli.info("Building dependencies");
+        var dependencies = ProjectUtils.buildDependencies(project);
 
-    self.cli.info("Building dependencies");
-    var dependencies = ProjectUtils.buildDependencies(project);
+        self.cli.info("Checking dependencies");
 
-    self.cli.info("Checking dependencies");
+        var omenLock = {};
+        omenLock.file = project.getFilename();
+        omenLock.name = project.get('name');
+        omenLock.version = project.get('version');
+        omenLock.packages = lock.get('packages');
 
-    var omenLock = {};
-    omenLock.file = project.getFilename();
-    omenLock.name = project.get('name');
-    omenLock.version = project.get('version');
-    omenLock.packages = lock.get('packages');
+        if (dependencies.length === 0) {
+            project.executePost(self.commandName);
+            return ProjectUtils.omenLockWrite(self.cli, omenLock);
+        }
 
-    if (dependencies.length === 0) {
-        project.executePost(self.commandName);
-        return ProjectUtils.omenLockWrite(self.cli, omenLock);
-    }
+        ProjectUtils.checkDependencies(dependencies, omenLock.packages).then(function (res) {
+            ProjectUtils.install(omenLock, self.cli, res);
 
-    ProjectUtils.checkDependencies(dependencies, omenLock.packages).then(function (res) {
-        ProjectUtils.install(omenLock, self.cli, res);
-
-        project.executePost(self.commandName);
-    }, function (err) {
-        ProjectUtils.installError(self.cli, err);
+            project.executePost(self.commandName);
+        }, function (err) {
+            ProjectUtils.installError(self.cli, err);
+        });
     });
 
 };
