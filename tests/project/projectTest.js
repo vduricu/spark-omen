@@ -9,6 +9,8 @@
 /*jslint node: true */
 "use strict";
 
+var assert = require("assert");
+
 var Project = require('../../engine/project/project'),
     Exceptions = require('./../../engine/base/exceptions');
 
@@ -22,74 +24,66 @@ var files = {
     simple: "./tests/packages/simple.json"
 };
 
-module.exports = {
-    testProjectSimpleOk: function (test) {
+describe("engine.project.project", function () {
+    it("simple project should be ok", function () {
         var project = new Project(files.simpleCorrect);
 
-        test.doesNotThrow(function () {
+        assert.doesNotThrow(function () {
             project.check();
         }, Error);
 
-        test.equal(project.get('name'), "test-simple");
-        test.equal(project.get('version'), "0.1.2");
+        assert.equal(project.get('name'), "test-simple");
+        assert.equal(project.get('version'), "0.1.2");
         var author = project.get('author');
-        test.equal(author.name, "Tester");
-        test.equal(author.email, "test@duricu.ro");
+        assert.equal(author.name, "Tester");
+        assert.equal(author.email, "test@duricu.ro");
+    });
 
-        test.done();
-    },
-    testIncompleteDefinition: function (test) {
+    it("incomplete definition should not be ok", function () {
         var project = new Project(files.simple);
 
-        test.throws(function () {
+        assert.throws(function () {
             project.check();
         }, Exceptions.InvalidValue);
+    });
 
-        test.done();
-    },
-    testInvalidName: function (test) {
+    it("invalid name should not be ok", function () {
         var project = new Project(files.invalidName);
 
-        test.throws(function () {
+        assert.throws(function () {
             project.check();
         }, Exceptions.InvalidValue);
+    });
 
-        test.done();
-    },
-    testInvalidVersion: function (test) {
+    it("invalid version should not be ok", function () {
         var project = new Project(files.invalidVersion);
 
-        test.throws(function () {
+        assert.throws(function () {
             project.check();
         }, Exceptions.InvalidValue);
+    });
 
-        test.done();
-    },
-    testInvalidDeps: function (test) {
+    it("invalid dependencies should not be ok", function () {
         var project = new Project(files.invalidDeps);
 
-        test.throws(function () {
+        assert.throws(function () {
             project.check();
         }, Exceptions.InvalidValue);
+    });
 
-        test.done();
-    },
-    testNoDeps: function (test) {
+    it("no dependencies should be ok", function () {
         var project = new Project(files.noDeps);
 
-        test.doesNotThrow(function () {
+        assert.doesNotThrow(function () {
             project.check();
         }, Error);
+    });
 
-        test.done();
-    },
-    testDeps: function (test) {
+    it("dependencies should be ok", function () {
         var project = new Project(files.deps);
-        project.check();
-        test.doesNotThrow(function () {
+
+        assert.doesNotThrow(function () {
             project.check();
         }, Error);
-
-        test.done();
-    }
-};
+    });
+});
