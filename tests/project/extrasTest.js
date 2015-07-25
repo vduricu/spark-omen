@@ -218,7 +218,7 @@ describe("engine.project.extras", function () {
         });
     });
 
-    describe("homepage", function () {
+    describe("license", function () {
         it("name should be ok", function () {
             assert.doesNotThrow(function () {
                 Extras.license("GPL V.3");
@@ -259,46 +259,33 @@ describe("engine.project.extras", function () {
             }, Exceptions.InvalidValue);
         });
     });
-    describe("license", function () {
-        it("one should be ok", function () {
+
+    describe("homepage", function () {
+        it("value should be ok", function () {
             assert.doesNotThrow(function () {
-                Extras.keywords(["keyword"]);
+                Extras.homepage("http://omen.cloud-studio.ro");
             }, Error);
         });
 
-        it("two or more should be ok", function () {
-            assert.doesNotThrow(function () {
-                Extras.keywords(["keyword1", "keyword2", "keywordn"]);
-            }, Error);
-        });
+        it("empty value should not be ok", function () {
+            assert.throws(function () {
+                Extras.homepage("");
+            }, Exceptions.EmptyValue);
 
-        it("empty list should be ok", function () {
-            assert.doesNotThrow(function () {
-                Extras.contributors([]);
+            assert.throws(function () {
+                Extras.homepage();
             }, Exceptions.EmptyValue);
         });
 
-        it("empty keywords should not be ok", function () {
+        it("invalid value should not be ok", function () {
             assert.throws(function () {
-                Extras.keywords([""]);
-            }, Exceptions.EmptyValue);
-        });
-
-        it("invalid keyword should not be ok", function () {
-            assert.throws(function () {
-                Extras.keywords(["k3yw0r#"]);
+                Extras.homepage("ht##:\\regular");
             }, Exceptions.InvalidValue);
-        });
-
-        it("duplicate keywords should not be ok", function () {
-            assert.throws(function () {
-                Extras.keywords(["keyword", "keyword"]);
-            }, Exceptions.DuplicateValue);
         });
 
         it("invalid parameters should not be ok", function () {
             assert.throws(function () {
-                Extras.keywords(12333);
+                Extras.homepage({});
             }, Exceptions.InvalidValue);
         });
     });
