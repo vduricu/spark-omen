@@ -50,6 +50,10 @@ An Omen project file is described by the following elements: *v0.1.1*
         "auth": "1.0.1",
         "session": "1.0.3"
     },
+    "repository":{
+        "type": "git",
+        "url": "git://github.com/user/repository.git"
+    },
     "scripts": {
         "post-install-cmd": [
             "echo 'aaa'"

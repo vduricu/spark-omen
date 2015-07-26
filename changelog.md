@@ -3,7 +3,16 @@
 
 Dependency manager for OpenEdge applications.
 
-## Version 0.2.x (Latest: 0.2.2)
+## Version 0.2.x (Latest: 0.2.3)
+
+### Version 0.2.3
+
+Changes performed to the current version:
+   * added repository field to the project.json
+   * added the adduser command - used to login and create new user
+   * modified the protocol to publish/unpublish project - use token based authentication
+   * updated OmenAPI to create a config file in the userdir
+   * use config file in userdir for various things (authentication token, which config repository to be used)
 
 ### Version 0.2.2
 

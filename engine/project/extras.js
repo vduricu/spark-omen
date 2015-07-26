@@ -30,7 +30,7 @@ var _contributor = function (value) {
     var namePattern = new RegExp("^[a-z \-]*$", "i"),
         emailPattern = new RegExp("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$", "i");
 
-    if (value === null || value === undefined)
+    if (!Object.isValid(value))
         return true;
 
     if (!Object.isValid(value.name) || value.name.length === 0)
@@ -90,7 +90,7 @@ ProjectExtras.keywords = function (value) {
         throw new Error("Invalid parameter sent!");
 
     for (var i in value) {
-        if (value[i] === null || value[i] === undefined || value[i].length === 0)
+        if (!Object.isValid(value[i]) || value[i].length === 0)
             throw new Exceptions.EmptyValue("keyword");
 
         if (!keywordPattern.test(value[i]))
@@ -119,7 +119,7 @@ ProjectExtras.keywords = function (value) {
 ProjectExtras.homepage = function (value) {
     var homepagePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi;
 
-    if (value === null || value === undefined)
+    if (!Object.isValid(value))
         throw new Exceptions.EmptyValue("homepage");
 
     if (!homepagePattern.test(value))
@@ -140,7 +140,7 @@ ProjectExtras.license = function (value) {
     var licensePattern = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi,
         licenseSPattern = new RegExp("^[a-z \.-]+[a-z0-9 \.-]*$", "i");
 
-    if (value === null || value === undefined)
+    if (!Object.isValid(value))
         throw new Exceptions.EmptyValue("license");
 
     if (!licensePattern.test(value))
@@ -154,18 +154,48 @@ ProjectExtras.license = function (value) {
  * Checks the name of the source folder to be valid.
  *
  * @protected
- * @param {string|number} value The value to be checked.
+ * @param {String} value The value to be checked.
  * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
  * @return boolean
  */
 ProjectExtras.src = function (value) {
     var sourceFolderPattern = new RegExp("^([a-z0-9 \._][a-z0-9 \.\-_]*\/?)+$", "i");
 
-    if (value === null || value === undefined)
+    if (!Object.isValid(value))
         throw new Exceptions.EmptyValue("src");
 
     if (!sourceFolderPattern.test(value))
         throw new Exceptions.InvalidValue("src", value);
+
+    return true;
+};
+
+/**
+ * Checks the repository field.
+ *
+ * @protected
+ * @param {Object} value The value to be checked.
+ * @throws Exceptions.EmptyValue|Exceptions.InvalidValue
+ * @return boolean
+ */
+ProjectExtras.repository = function (value) {
+    var repositoryField = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})\/?([\/\w \.-]*)*$/gi,
+        repositoryType = /^(git|mercurial|svn)$/gi;
+
+    if (value === null || value === undefined)
+        throw new Exceptions.EmptyValue("repository");
+
+    if (!Object.isValid(value.url) || value.url.length === 0)
+        throw new Exceptions.EmptyValue("repository url");
+
+    if (!Object.isValid(value.type) || value.type.length === 0)
+        throw new Exceptions.EmptyValue("repository type");
+
+    if (!repositoryField.test(value.url))
+        throw new Exceptions.InvalidValue("repository url", value.url);
+
+    if (!repositoryType.test(value.type))
+        throw new Exceptions.InvalidValue("repository url", value.type);
 
     return true;
 };

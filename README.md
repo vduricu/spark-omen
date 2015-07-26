@@ -3,9 +3,11 @@
 
 Dependency manager for OpenEdge applications.
 
-**Stable Version**: 0.1.5
+**Stable Version**: 0.2.3
 
-**Unstable Version**: 0.2.2
+**Unstable Version**: - (0.3.0)
+
+**Legacy Version**: 0.1.5
 
 ## About
 
@@ -40,6 +42,7 @@ Omen will be installed globally, such that whenever you need it, you can use it.
 The following commands are available to the end user:
 
    * **[omen about](#omen-about)**
+   * **[omen adduser](#omen-adduser)**
    * **[omen appserver](#omen-appserver)**
    * **[omen check](#omen-check)**
    * **[omen create](#omen-create)**
@@ -61,6 +64,14 @@ Displays information about the current package.
 **Command:**
 ```
 omen about
+```
+
+### <a name="omen-adduser"></a>omen adduser
+Authenticates the given user or creates a new one based on the given information.
+
+**Command:**
+```
+omen adduser
 ```
 
 ### <a name="omen-appserver"></a>omen appserver

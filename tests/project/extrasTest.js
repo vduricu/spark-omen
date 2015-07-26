@@ -362,4 +362,124 @@ describe("engine.project.extras", function () {
             }, Exceptions.InvalidValue);
         });
     });
+    describe("repository", function () {
+        it("value should be ok", function () {
+            assert.doesNotThrow(function () {
+                Extras.repository({
+                    type: "git",
+                    url: "http://github.com/bing/test.git"
+                });
+            }, Error);
+
+            assert.doesNotThrow(function () {
+                Extras.repository({
+                    type: "svn",
+                    url: "http://github.com/bing/test.svn"
+                });
+            }, Error);
+
+            assert.doesNotThrow(function () {
+                Extras.repository({
+                    type: "mercurial",
+                    url: "http://github.com/bing/test.hg"
+                });
+            }, Error);
+        });
+
+        it("empty value should not be ok", function () {
+            assert.throws(function () {
+                Extras.repository("");
+            }, Exceptions.EmptyValue);
+
+            assert.throws(function () {
+                Extras.repository();
+            }, Exceptions.EmptyValue);
+
+            assert.throws(function () {
+                Extras.repository({});
+            }, Exceptions.EmptyValue);
+        });
+
+        it("invalid value should not be ok", function () {
+            assert.throws(function () {
+                Extras.repository("32-aaqqq");
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository("#ana#");
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository(".correct/a#3");
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.src("{.correct/a#3}");
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository("$122");
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({} + 123);
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({
+                    type: "cvs",
+                    url: "http://github.com/bing/test.git"
+                });
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({
+                    type: "svn",
+                    url: "csv"
+                });
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({
+                    type: 231,
+                    url: "http://github.com/bing/test.git"
+                });
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({
+                    type: "svn",
+                    url: "http://gith##ub.com/bing/test.git"
+                });
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({
+                    type: "svn",
+                    url: 1234
+                });
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({
+                    type: "svn",
+                    url: {}
+                });
+            }, Exceptions.InvalidValue);
+        });
+
+        it("invalid parameters should not be ok", function () {
+            assert.throws(function () {
+                Extras.src("{.correct/a#3}");
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository(123);
+            }, Exceptions.InvalidValue);
+
+            assert.throws(function () {
+                Extras.repository({} + 123);
+            }, Exceptions.InvalidValue);
+        });
+    });
 });

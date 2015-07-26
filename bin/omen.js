@@ -5,7 +5,8 @@ require('./../engine/utils/general');
 
 var cli = require('cli').enable('status'),
     commandUtils = require('./../engine/utils/commandUtils'),
-    CliListenerOmen = require('./../engine/ui/cliListener');
+    CliListenerOmen = require('./../engine/ui/cliListener'),
+    OmenAPI = require("./../engine/utils/omenApi");
 
 global.OMEN_CONFIG = require('./../config/app.json');
 
@@ -24,6 +25,11 @@ cli.main(function (args, options) {
         global.OMEN_CLI_ARGS = args;
 
         global.OMEN_ENV = global.OMEN_CONFIG[global.OMEN_CONFIG.env];
+
+        var userenv = OmenAPI.readEnv();
+        if (Object.isValid(userenv) && userenv.length != 0)
+            global.OMEN_CONFIG[userenv];
+
         if (process.env.OMEN_ENV)
             global.OMEN_ENV = global.OMEN_CONFIG[process.env.OMEN_ENV];
 

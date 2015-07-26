@@ -14,7 +14,7 @@ var Project = require('./../project/project'),
     CommandOmen = require('./../base/command'),
     fs = require("fs"),
     path = require("path"),
-    prompt = require('prompt');
+    OmenAPI = require('./../utils/omenApi');
 
 var UnpublishOmen;
 
@@ -42,17 +42,12 @@ UnpublishOmen.prototype.run = function (args) {
     var self = this,
         unpublishCommand = "",
         versionUnpublish = "",
-        project = new Project(self.filename);
+        project = new Project(self.filename),
+        authToken = OmenAPI.readToken();
 
-    var properties = [
-        {
-            name: 'Password',
-            hidden: true,
-            required: true
-        }
-    ];
-
-    prompt.start();
+    if (!Object.isValid(authToken) || authToken.length === 0) {
+        throw new Error("You cannot unpublish a project without authorization!\nUse `omen adduser` to authorize yourself!");
+    }
 
     self.cli.header("Project unpublishing");
     self.cli.info("Reading project information");
@@ -68,17 +63,12 @@ UnpublishOmen.prototype.run = function (args) {
     switch (unpublishCommand) {
         case "project":
             self.cli.ok("Checking and unpublishing project");
-            prompt.get(properties, function (err, result) {
-                if (err) {
-                    throw new Error(err);
-                }
 
-                ProjectUtils.unpublishProject(project, result).then(function (res) {
-                    self.cli.ok("The project has been unpublished.");
-                    self.cli.end();
-                }, function (err) {
-                    ProjectUtils.installError(self.cli, err);
-                });
+            ProjectUtils.unpublishProject(project, authToken).then(function (res) {
+                self.cli.ok("The project has been unpublished.");
+                self.cli.end();
+            }, function (err) {
+                ProjectUtils.installError(self.cli, err);
             });
 
             break;
@@ -94,17 +84,12 @@ UnpublishOmen.prototype.run = function (args) {
 
             self.cli.ok("Checking and unpublishing version");
 
-            prompt.get(properties, function (err, result) {
-                if (err) {
-                    throw new Error(err);
-                }
 
-                ProjectUtils.unpublishVersion(project, versionUnpublish, result).then(function (res) {
-                    self.cli.ok("The version (" + versionUnpublish + ") has been unpublished.");
-                    self.cli.end();
-                }, function (err) {
-                    ProjectUtils.installError(self.cli, err);
-                });
+            ProjectUtils.unpublishVersion(project, versionUnpublish, authToken).then(function (res) {
+                self.cli.ok("The version (" + versionUnpublish + ") has been unpublished.");
+                self.cli.end();
+            }, function (err) {
+                ProjectUtils.installError(self.cli, err);
             });
 
             break;

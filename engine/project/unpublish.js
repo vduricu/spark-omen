@@ -31,15 +31,14 @@ ProjectUnpublishOmen = function(){
      * Unpublishes a project from the repository.
      *
      * @param {Project} project The project to be unpublished.
-     * @param {Object} promptResult The password and other questions asked by the application.
+     * @param {String} authToken The authorization token.
      * @return Promise
      */
-    self.unpublishProject = function (project, promptResult) {
+    self.unpublishProject = function (project, authToken) {
         var deferred = Q.defer(),
             data = {
                 name: project.get('name'),
-                user: project.get('author').email,
-                pass: promptResult.Password
+                token: authToken
             };
 
         /* The check of the dependencies is being done on the server. */
@@ -62,16 +61,15 @@ ProjectUnpublishOmen = function(){
      *
      * @param {Project} project The project to be unpublished.
      * @param {String} version The version to be unpublished.
-     * @param {Object} promptResult The password and other questions asked by the application.
+     * @param {String} authToken The authorization token.
      * @return Promise
      */
-    self.unpublishVersion = function (project, version, promptResult) {
+    self.unpublishVersion = function (project, version, authToken) {
         var deferred = Q.defer(),
             data = {
                 name: project.get('name'),
                 version: version,
-                user: project.get('author').email,
-                pass: promptResult.Password
+                token: authToken
             };
 
         /* The check of the dependencies is being done on the server. */

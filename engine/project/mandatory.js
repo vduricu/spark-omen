@@ -70,13 +70,13 @@ ProjectMandatory.author = function (value) {
     var namePattern = new RegExp("^[a-z \-]*$", "i"),
         emailPattern = new RegExp("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$", "i");
 
-    if (value === null || value === undefined)
+    if (!Object.isValid(value))
         throw new Exceptions.EmptyValue("author");
 
-    if (value.name === null || value.name === undefined || value.name.length === 0)
+    if (!Object.isValid(value.name) || value.name.length === 0)
         throw new Exceptions.EmptyValue("author name");
 
-    if (value.email === null || value.email === undefined || value.email.length === 0)
+    if (!Object.isValid(value.email) || value.email.length === 0)
         throw new Exceptions.EmptyValue("author email");
 
     if (!namePattern.test(value.name))
@@ -96,7 +96,7 @@ ProjectMandatory.author = function (value) {
  * @return boolean
  */
 ProjectMandatory.dependencies = function (value) {
-    if (value === null || value === undefined)
+    if (!Object.isValid(value))
         return;
 
     var namePattern = new RegExp("^[a-z0-9_]+(-[a-z0-9_]+)?$", "i"),
@@ -104,13 +104,13 @@ ProjectMandatory.dependencies = function (value) {
 
     for (var key in value) {
         var element = value[key];
-        if (key === null || key === undefined || key.length === 0)
+        if (!Object.isValid(key) || key.length === 0)
             throw new Exceptions.EmptyValue("dependency name");
 
         if (!namePattern.test(key))
             throw new Exceptions.InvalidValue("dependency name", key, "spark-omen");
 
-        if (element === null || element === undefined || element.length === 0)
+        if (!Object.isValid(element) || element.length === 0)
             throw new Error("The dependency version for '" + key + "' cannot be empty!");
 
         if (!versionPattern.test(element))

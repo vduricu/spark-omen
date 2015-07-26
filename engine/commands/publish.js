@@ -13,7 +13,7 @@ var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
     CommandOmen = require('./../base/command'),
     fs = require("fs"),
-    prompt = require('prompt');
+    OmenAPI = require('./../utils/omenApi');
 
 var PublishOmen;
 
@@ -39,19 +39,14 @@ PublishOmen.prototype = new CommandOmen("publish");
  */
 PublishOmen.prototype.run = function (args) {
     var self = this,
-        project = new Project(self.filename);
-
-    var properties = [
-        {
-            name: 'Password',
-            hidden: true,
-            required: true
-        }
-    ];
-
-    prompt.start();
+        project = new Project(self.filename),
+        authToken = OmenAPI.readToken();
 
     self.cli.header("Project publication");
+
+    if (!Object.isValid(authToken) || authToken.length === 0) {
+        throw new Error("You cannot publish a project without authorization!\nUse `omen adduser` to authorize yourself!");
+    }
 
     self.cli.info("Reading project information");
 
@@ -77,27 +72,22 @@ PublishOmen.prototype.run = function (args) {
             return;
         }
 
-        prompt.get(properties, function (err, result) {
-            if (err) {
-                throw new Error(err);
-            }
 
-            ProjectUtils.publish(project, result).then(function (result) {
-                if (result.status == "update")
-                    self.cli.ok("Package updated!");
+        ProjectUtils.publish(project, authToken).then(function (result) {
+            if (result.status == "update")
+                self.cli.ok("Package updated!");
+            else
+                self.cli.ok("Packages published");
+
+            self.cli.end();
+        }, function (err) {
+            if (Object.isValid(err.body)) {
+                if (Object.isValid(err.body.error !== null && err.body.error !== undefined))
+                    self.cli.error(err.body.error.message);
                 else
-                    self.cli.ok("Packages published");
-
-                self.cli.end();
-            }, function (err) {
-                if (Object.isValid(err.body)) {
-                    if (Object.isValid(err.body.error !== null && err.body.error !== undefined))
-                        self.cli.error(err.body.error.message);
-                    else
-                        self.cli.error(err.body.message);
-                }
-                self.cli.end();
-            });
+                    self.cli.error(err.body.message);
+            }
+            self.cli.end();
         });
     }, function (err) {
         if (Object.isValid(err.body)) {

@@ -14,10 +14,10 @@ var spark = require('./../../engine/base/spark');
 
 describe("engine.base.spark", function () {
     describe("version", function () {
-        it("should be equal to 0.2.2", function () {
+        it("should be equal to 0.2.3", function () {
             assert.equal(spark.major, 0);
             assert.equal(spark.minor, 2);
-            assert.equal(spark.stage, 2);
+            assert.equal(spark.stage, 3);
         });
     });
 });

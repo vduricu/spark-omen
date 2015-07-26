@@ -27,7 +27,7 @@ var ProjectPublishOmen;
  * @class
  * @return ProjectPublishOmen
  */
-ProjectPublishOmen = function(){
+ProjectPublishOmen = function () {
     var self = this;
 
     /**
@@ -96,10 +96,10 @@ ProjectPublishOmen = function(){
      * Publishes the local package to the system defined repository.
      *
      * @param {Project} project The information about the current package.
-     * @param {Object} promptResult The password and other questions asked by the application.
+     * @param {String} authToken The authorization token.
      * @return Promise
      */
-    self.publish = function (project, promptResult) {
+    self.publish = function (project, authToken) {
         var deferred, lines, data, fullPath;
 
         deferred = Q.defer();
@@ -123,8 +123,7 @@ ProjectPublishOmen = function(){
                 .attach('file', './omenpackage.spk') // Attachment
                 //.field("omenFile", JSON.stringify(project.all()))
                 .field("omenFile", project.all())
-                .field("user", project.get('author').email)
-                .field("pass", promptResult.Password)
+                .field("token", authToken)
                 .end(function (response) {
                     //console.log(response.body);
                     fs.unlinkSync(path.resolve('./omenpackage.spk'));
