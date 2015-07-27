@@ -3,7 +3,13 @@
 
 Dependency manager for OpenEdge applications.
 
-## Version 0.2.x (Latest: 0.2.3)
+## Version 0.2.x (Latest: 0.2.4)
+
+### Version 0.2.4
+
+Changes performed to the current version:
+   * small bugfixes
+   * read the readme file if exists and pass it to the publish command
 
 ### Version 0.2.3
 

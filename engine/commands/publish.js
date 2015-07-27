@@ -72,7 +72,6 @@ PublishOmen.prototype.run = function (args) {
             return;
         }
 
-
         ProjectUtils.publish(project, authToken).then(function (result) {
             if (result.status == "update")
                 self.cli.ok("Package updated!");

@@ -96,10 +96,10 @@ OmenAPI.doLogin = function (data) {
 OmenAPI.readToken = function () {
     var data = OmenAPI.readUserData();
 
-    if (!Object.isValid(data.token))
+    if (!Object.isValid(data.authToken))
         return "";
 
-    return data.token;
+    return data.authToken;
 };
 
 /**

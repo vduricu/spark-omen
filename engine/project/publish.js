@@ -114,6 +114,17 @@ ProjectPublishOmen = function () {
 
         }
 
+        var readmeFiles = ["readme", "README", "ReadMe", "Read.ME", "read.me", "readme.md", "README.MD"];
+        var readme = "";
+        for (var iReadme in readmeFiles) {
+            var readmeFile = path.resolve("./" + readmeFiles[iReadme]);
+
+            if (fs.existsSync(readmeFile)) {
+                readme = fs.readFileSync(readmeFile, "utf-8");
+                break;
+            }
+        }
+
         var writer = self.packageWriter('omenpackage.spk', fullPath, lines);
 
         /* When the archive has been written to the fs, send it to the repository. */
@@ -123,6 +134,7 @@ ProjectPublishOmen = function () {
                 .attach('file', './omenpackage.spk') // Attachment
                 //.field("omenFile", JSON.stringify(project.all()))
                 .field("omenFile", project.all())
+                .field("readme", readme)
                 .field("token", authToken)
                 .end(function (response) {
                     //console.log(response.body);
