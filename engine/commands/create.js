@@ -13,6 +13,7 @@ var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
     CommandOmen = require('./../base/command'),
     EclipseUtils = require('./../utils/eclipseToolkit'),
+    OmenAPI = require('./../utils/omenApi'),
     fs = require("fs");
 
 var CreateOmen;
@@ -71,6 +72,22 @@ CreateOmen.prototype.run = function (args) {
         name: "Author",
         email: "author@email.domain"
     };
+
+    var userData = OmenAPI.readUserData();
+    if (Object.isValid(userData.name) && userData.name.length !== 0)
+        omenFile.author.name = userData.name;
+    if (Object.isValid(userData.email) && userData.email.length !== 0)
+        omenFile.author.email = userData.email;
+
+    if (!global.OMEN_FAST_CREATE)
+        return ProjectUtils.nonFastCreate(omenFile, function () {
+            ProjectUtils.omenJsonWrite(self.cli, omenFile);
+
+            if (global.OMEN_ECLIPSE) {
+                EclipseUtils.setBasePath("./" + projectName + "/");
+                EclipseUtils.initProject(omenFile);
+            }
+        });
 
     ProjectUtils.omenJsonWrite(self.cli, omenFile);
 

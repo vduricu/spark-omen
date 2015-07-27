@@ -11,7 +11,8 @@
 
 var fs = require('fs'),
     path = require('path'),
-    Q = require("q");
+    Q = require("q"),
+    prompt = require('prompt');
 
 
 var ProjectDependencyOmen = require('./../project/dependency'),
@@ -251,5 +252,58 @@ ProjectUtils.unpublishProject = ProjectUnpublishOmen.unpublishProject;
  * @return Promise
  */
 ProjectUtils.unpublishVersion = ProjectUnpublishOmen.unpublishVersion;
+
+
+/**
+ * Asks the user information regarding the project.
+ *
+ * @param {Object} omenFile The project description object.
+ * @param {function} successPrompt The callback function used after the user answers the questions.
+ */
+ProjectUtils.nonFastCreate = function (omenFile, successPrompt) {
+    var properties = [
+        {
+            name: 'name',
+            description: 'Project Name',
+            required: true,
+            default: omenFile.name
+        },
+        {
+            name: 'version',
+            description: 'Version',
+            required: true,
+            default: omenFile.version
+        },
+        {
+            name: 'authorName',
+            description: 'Author Name',
+            required: true,
+            default: omenFile.author.name
+        },
+        {
+            name: 'authorEmail',
+            description: 'Author Email',
+            required: true,
+            default: omenFile.author.email
+        }
+    ];
+
+    prompt.start();
+
+    prompt.get(properties, function (err, result) {
+        if (err) {
+            throw new Error(err);
+        }
+
+        omenFile.name = result.name;
+        omenFile.version = result.version;
+        omenFile.author = {
+            name: result.authorName,
+            email: result.authorEmail
+        };
+
+        successPrompt();
+    });
+};
 
 module.exports = ProjectUtils;

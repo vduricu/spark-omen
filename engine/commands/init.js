@@ -13,6 +13,7 @@ var Project = require('./../project/project'),
     ProjectUtils = require('./../utils/projectUtils'),
     CommandOmen = require('./../base/command'),
     EclipseUtils = require('./../utils/eclipseToolkit'),
+    OmenAPI = require('./../utils/omenApi'),
     fs = require("fs"),
     path = require("path");
 
@@ -48,7 +49,7 @@ InitOmen.prototype.run = function (args) {
         if (args[i] == self.commandName) {
             projectName = args[i + 1];
             if (!Object.isValid(projectName) || projectName.length === 0)
-                projectName = 'omen-sample';
+                projectName = null;
         }
     }
 
@@ -56,7 +57,7 @@ InitOmen.prototype.run = function (args) {
         throw new Error("Project already initialized!");
 
     if (!Object.isValid(projectName) || projectName.length === 0)
-        throw new Error("No name specified!");
+        projectName = path.basename(path.resolve('.'));
 
     projectName = projectName.replace(/[ -\/\\:;\.,]/ig, "_");
 
@@ -70,11 +71,25 @@ InitOmen.prototype.run = function (args) {
         email: "author@email.domain"
     };
 
+    var userData = OmenAPI.readUserData();
+    if (Object.isValid(userData.name) && userData.name.length !== 0)
+        omenFile.author.name = userData.name;
+    if (Object.isValid(userData.email) && userData.email.length !== 0)
+        omenFile.author.email = userData.email;
+
+    if (!global.OMEN_FAST_CREATE)
+        return ProjectUtils.nonFastCreate(omenFile, function(){
+            ProjectUtils.omenJsonInit(self.cli, omenFile);
+
+            if (global.OMEN_ECLIPSE)
+                EclipseUtils.initProject(omenFile);
+        });
+
     ProjectUtils.omenJsonInit(self.cli, omenFile);
 
-    if(global.OMEN_ECLIPSE){
+    if (global.OMEN_ECLIPSE)
         EclipseUtils.initProject(omenFile);
-    }
+
 };
 
 

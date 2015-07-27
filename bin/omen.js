@@ -13,8 +13,9 @@ global.OMEN_CONFIG = require('./../config/app.json');
 cli.parse({
     //file: ['f', 'Selects the file to work with.'],
     save: ['s', 'Save the package.'],
-    eclipse: ['e', 'Creates the eclipse project files. (Used only with omen create and init)'],
-    version: ['v', "Displays the application version information."]
+    eclipse: ['e', 'Creates the eclipse project files. (create and init)'],
+    version: ['v', "Displays the application version information."],
+    fast: [null, "Initialises a project.json fast without asking questions. (create and init)"]
 });
 
 cli.main(function (args, options) {
@@ -28,7 +29,7 @@ cli.main(function (args, options) {
 
         var userenv = OmenAPI.readEnv();
         if (Object.isValid(userenv) && userenv.length != 0)
-            global.OMEN_CONFIG[userenv];
+            global.OMEN_ENV = global.OMEN_CONFIG[userenv];
 
         if (process.env.OMEN_ENV)
             global.OMEN_ENV = global.OMEN_CONFIG[process.env.OMEN_ENV];
@@ -42,6 +43,7 @@ cli.main(function (args, options) {
 
         global.OMEN_SAVE = options.save ? true : false;
         global.OMEN_ECLIPSE = options.eclipse ? true : false;
+        global.OMEN_FAST_CREATE = options.fast ? true : false;
 
         commandUtils.SetInit(cliListener, filename);
 
