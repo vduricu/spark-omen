@@ -11,7 +11,9 @@
 
 var unirest = require('unirest'),
     Download = require('download'),
-    Q = require("q");
+    Q = require("q"),
+    fs = require("fs"),
+    path = require("path");
 
 var OmenAPI = require('./../utils/omenApi');
 
@@ -23,7 +25,7 @@ var ProjectDependencyOmen;
  * @class
  * @return ProjectDependencyOmen
  */
-ProjectDependencyOmen = function(){
+ProjectDependencyOmen = function () {
     var self = this;
 
     /**
@@ -132,6 +134,35 @@ ProjectDependencyOmen = function(){
 
             deferred.resolve(files);
         });
+
+        return deferred.promise;
+    };
+
+    /**
+     * Downloads a given project locally
+     *
+     * @param {String} project The name of the project to be downloaded.
+     * @return Promise
+     */
+    self.downloadProject = function (project) {
+        var downloads = (new Download({mode: '755', extract: true, strip: true})).dest('./' + project),
+            deferred = Q.defer();
+
+        if (!fs.existsSync(path.resolve("./" + project))) {
+            downloads.get(OmenAPI.buildURL('/dependency/extend/' + project));
+
+            /* Downloads the files. */
+            downloads.run(function (err, files) {
+                if (Object.isValid(err)) {
+                    deferred.reject(new Error(err));
+                    return;
+                }
+
+                deferred.resolve(files);
+            });
+        }
+        else
+            deferred.reject(new Error("You cannot override an existing project!"));
 
         return deferred.promise;
     };

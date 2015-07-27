@@ -15,6 +15,7 @@ Changes performed to the current version:
    * use config file in userdir for various things (authentication token, which config repository to be used)
    * added --fast option for create and init commands to skip the question answering
    * use stored user and email for create and init commands
+   * added the extend command - downloads an existing project
 
 ### Version 0.2.2
 

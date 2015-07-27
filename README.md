@@ -47,6 +47,7 @@ The following commands are available to the end user:
    * **[omen check](#omen-check)**
    * **[omen create](#omen-create)**
    * **[omen eclipse](#omen-eclipse)**
+   * **[omen extend](#omen-extend)**
    * **[omen init](#omen-init)**
    * **[omen install](#omen-install)**
    * **[omen pack](#omen-pack)**
@@ -147,6 +148,19 @@ be imported into Developer Studio.
      * **description**: Updates the eclipse project components for the project, such that it could
 be imported into Developer Studio.
      * **mandatory**: Yes
+     
+### <a name="omen-extend"></a>omen extend
+Downloads an existing project
+
+**Command:**
+```
+omen extend <project-name>
+```
+
+**Arguments:**
+   * **&lt;project-name&gt;**
+      * **description**: Specifies the name of the project.
+      * **mandatory**: Yes
      
 ### <a name="omen-init"></a>omen init
 Init a project.json file in an existing location.
