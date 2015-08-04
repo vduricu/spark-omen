@@ -3,7 +3,16 @@
 
 Dependency manager for OpenEdge applications.
 
-## Version 0.2.x (Latest: 0.2.4)
+## Version 0.2.x (Latest: 0.2.5)
+
+### Version 0.2.5
+
+Changes performed to the current version:
+   * bug: install/update command weren't executed after the hookups ended
+   * fix: only one source folder
+   * bug: initialize listing variable if empty parameter is given
+   * bug: appserver template not working
+   * fix: add src folder to propath if it exists
 
 ### Version 0.2.4
 

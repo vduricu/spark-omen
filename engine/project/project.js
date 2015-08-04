@@ -186,18 +186,20 @@ Project = function (filename) {
      * Executes the pre command commands.
      *
      * @param {String} command The command for which we execute the pre commands.
+     * @param {function} callback The function to be executed after the pre commands are executed.
      */
-    this.executePre = function (command) {
-        _hookups.pre(command);
+    this.executePre = function (command, callback) {
+        _hookups.pre(command, callback);
     };
 
     /**
      * Executes the post command commands.
      *
      * @param {String} command The command for which we execute the post commands.
+     * @param {function} callback The function to be executed after the post commands are executed.
      */
-    this.executePost = function (command) {
-        _hookups.post(command);
+    this.executePost = function (command, callback) {
+        _hookups.post(command, callback);
     };
 
     /**

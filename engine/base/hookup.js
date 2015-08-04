@@ -144,8 +144,12 @@ HookupOmen = function () {
     self.post = function (command, then, err) {
         var result = executeCommand(postCommands[command]);
 
-        if(!Object.isValid(result))
+        if (!Object.isValid(result)) {
+            if (Object.isValid(then)) {
+                then();
+            }
             return null;
+        }
 
         return result.then(function (promise) {
             promise.forEach(function (result) {
@@ -179,8 +183,12 @@ HookupOmen = function () {
     self.pre = function (command, then, err) {
         var result = executeCommand(preCommands[command]);
 
-        if(!Object.isValid(result))
+        if (!Object.isValid(result)) {
+            if (Object.isValid(then)) {
+                then();
+            }
             return null;
+        }
 
         return result.then(function (promise) {
             promise.forEach(function (result) {

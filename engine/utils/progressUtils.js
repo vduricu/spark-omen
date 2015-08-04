@@ -39,7 +39,13 @@ ProgressUtils = function () {
             sourceFolder = ["src", "source"],
             vendors = fsOmen.folderLister('./vendors/');
 
+        if (!Object.isValid(listing))
+            listing = [];
+
         propath += fsOmen.resolve('.') + ";";
+
+        if (fs.existsSync(fsOmen.resolve("./src")))
+            propath += fsOmen.resolve('./src') + ";";
 
         for (var vendor in vendors.content) {
             var omenPackage = vendors.content[vendor];
@@ -82,9 +88,14 @@ ProgressUtils = function () {
         var appserver = fs.readFileSync(path.resolve(__dirname + '/utilsTemplates/appserver.hbs'), "utf-8"),
             appserverHbs = Handlebars.compile(appserver, {noEscape: true});
 
+        var ending = ';${PROPATH}';
+
+        if (/^win/.test(process.platform))
+            ending = ';@{WinChar Startup\\PROPATH}';
+
         var output = appserverHbs({
             name: project.get('name'),
-            propath: (self.propath(project) + ';@{PROPATH}').replace(/;;/gi, ';'),
+            propath: (self.propath(project) + ending).replace(/;;/gi, ';'),
             brokerLog: path.resolve('./appserver/logs/' + project.get('name') + '.broker.log'),
             serverLog: path.resolve('./appserver/logs/' + project.get('name') + '.server.log'),
             workdir: path.resolve('./appserver'),

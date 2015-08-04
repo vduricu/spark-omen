@@ -32,7 +32,7 @@ var Spark = {
      *
      * @var {number}
      */
-    stage: 4,
+    stage: 5,
     /**
      * The codename of the version.
      *
